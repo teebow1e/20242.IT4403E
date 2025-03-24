@@ -6,22 +6,22 @@ function Footer () {
         <div className="footer-container">
             <div className="social">
                 <a href="https://spotify.com">
-                    <img src="./public/social-spotify.svg" alt="" />
+                    <img src="/social-spotify.svg" alt="" />
                 </a>
                 <a href="https://facebook.com">
-                    <img src="./public/social-facebook.svg" alt="" />
+                    <img src="/social-facebook.svg" alt="" />
                 </a>
                 <a href="https://pinterest.com">
-                    <img src="./public/social-pinterest.svg" alt="" />
+                    <img src="/social-pinterest.svg" alt="" />
                 </a>
                 <a href="https://instagram.com">
-                    <img src="./public/social-instagram.svg" alt="" />
+                    <img src="/social-instagram.svg" alt="" />
                 </a>
                 <a href="https://youtube.com">
-                    <img src="./public/social-youtube.svg" alt="" />
+                    <img src="/social-youtube.svg" alt="" />
                 </a>
                 <a href="https://twitter.com">
-                    <img src="./public/social-twitter.svg" alt="" />
+                    <img src="/social-twitter.svg" alt="" />
                 </a>
             </div>
 
