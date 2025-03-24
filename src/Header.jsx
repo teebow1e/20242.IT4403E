@@ -1,4 +1,24 @@
+import { useEffect } from 'react';
+import './Header.css'
+
 function Header() {
+    useEffect(() => {
+        const btn = document.getElementById('menu-btn');
+        const nav = document.getElementById('menu');
+    
+        function navToggle() {
+            btn.classList.toggle('open');
+            nav.classList.toggle('hidden');
+            document.body.classList.toggle('no-scroll');
+        }
+    
+        btn.addEventListener('click', navToggle);
+    
+        return () => {
+            btn.removeEventListener('click', navToggle);
+        };
+      }, []);
+
     return (
         <>
             <header>
@@ -45,6 +65,26 @@ function Header() {
                         </button>
                     </div>
                 </nav>
+
+                {/* Mobile Menu */}
+                <div class="mobile-menu hidden" id="menu">
+                    <ul>
+                        <li> <a href="#">Menu</a> </li>
+                        <li> <a href="#">Rewards</a> </li>
+                        <li> <a href="#">Gift Cards</a> </li>
+                    </ul>
+
+                    <div className="mobile-menu-bottom">
+                        <button className="btn btn-dark-outline">Sign in</button>
+                        <button className="btn btn-dark">Join now</button>
+                        {/* <div>
+                            <a href="#">
+                                <img src="img/marker.svg" alt="" />
+                                <span>Find a store</span>
+                            </a>
+                        </div> */}
+                    </div>
+                </div>
             </header>
         </>
     );
