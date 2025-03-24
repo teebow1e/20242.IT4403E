@@ -1,42 +1,40 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+
+:root {
+    --color-primary: #006241;
+    --color-secondary: #d50032;
+    --color-extra: #d4e9e2;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+html, body {
+    font-family: "Open Sans", sans-serif;
+    line-height: 2;
+    color: #000;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+a {
+    color: #000;
 }
 
-.card {
-  padding: 2em;
+ul {
+    list-style: none;
 }
 
-.read-the-docs {
-  color: #888;
+p {
+    margin: 5px 0;
+    line-height: 1.7;
+}
+
+img {
+    max-width: 100%;
+}
+
+section a {
+    color: #fff;
 }
