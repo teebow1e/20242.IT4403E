@@ -1,0 +1,45 @@
+.footer-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px 60px 10px;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 70%), 0 2px 2px rgb(0 0 0 / 6%),
+        0 0 2px rgb(0 0 0 / 7%);
+    font-size: small;
+}
+
+.social {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.social img {
+    width: 30px;
+    height: 30px;
+}
+
+.social a {
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+.divider {
+    width: 95%;
+    height: 1px;
+    background-color: #ccc;
+    margin: 40px auto;
+}
+
+.more-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.copyright {
+    text-align: center;
+    margin-top: 20px;
+    opacity: 70%;
+}
+
