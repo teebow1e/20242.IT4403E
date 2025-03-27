@@ -1,4 +1,3 @@
-import {useState} from 'react'
 import './App.css'
 
 import Header from './Header'
@@ -6,9 +5,8 @@ import Body from './Body'
 import Footer from './Footer'
 
 function App() {
-
 	return (
-		<> 
+		<>
         	<Header></Header>
 			<Body></Body>
 			<Footer></Footer>
@@ -17,4 +15,3 @@ function App() {
 }
 
 export default App
-

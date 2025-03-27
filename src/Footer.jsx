@@ -2,7 +2,7 @@ import './Footer.css'
 
 function Footer () {
     return (
-        <footer class="footer">
+        <footer className="footer">
         <div className="footer-container">
             <div className="social">
                 <a href="https://spotify.com">
