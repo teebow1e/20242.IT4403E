@@ -1,23 +1,18 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 import './Header.css'
 
 function Header() {
-    useEffect(() => {
-        const btn = document.getElementById('menu-btn');
-        const nav = document.getElementById('menu');
-    
-        function navToggle() {
-            btn.classList.toggle('open');
-            nav.classList.toggle('hidden');
-            document.body.classList.toggle('no-scroll');
+    const [isNavToggled, setIsNavToggled] = useState(true)
+
+    let navToggle = () => {
+        console.log("navToggle triggered")
+        setIsNavToggled(() => !isNavToggled)
+        if (isNavToggled) {
+            document.body.classList.toggle('no-scroll')
+        } else {
+            document.body.classList.remove('no-scroll')
         }
-    
-        btn.addEventListener('click', navToggle);
-    
-        return () => {
-            btn.removeEventListener('click', navToggle);
-        };
-      }, []);
+    }
 
     return (
         <>
@@ -58,8 +53,8 @@ function Header() {
                         </ul>
 
                         {/* Hamburger Menu */}
-                        <button type="button" className="hamburger" id="menu-btn">
-                            <span className="hamburger-top"></span>
+                        <button type="button" className={`hamburger ${isNavToggled ? "open" : ""}`} onClick={navToggle}>
+                            <span className="hamburger-top">Hamburger top</span>
                             <span className="hamburger-middle"></span>
                             <span className="hamburger-bottom"></span>
                         </button>
@@ -67,7 +62,7 @@ function Header() {
                 </nav>
 
                 {/* Mobile Menu */}
-                <div class="mobile-menu hidden" id="menu">
+                <div className={`mobile-menu ${isNavToggled ? "hidden" : ""}`} id="menu">
                     <ul>
                         <li> <a href="#">Menu</a> </li>
                         <li> <a href="#">Rewards</a> </li>
