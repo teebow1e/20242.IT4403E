@@ -2,7 +2,7 @@ import './Footer.css'
 
 function Footer () {
     return (
-        <footer class="footer">
+        <footer className="footer">
             <div className='seperator'></div>
             <div className="footer-container">
                 <div className="social">
