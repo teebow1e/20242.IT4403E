@@ -23,8 +23,20 @@ const JWT_SECRET = 'j9RQzElkF4UcT61EMjCvFM5ppaFrttBM8C7SzfPVuSMT0SQQdQEK1Lb0iuRw
 // Index endpoint
 // -------------------------
 app.get('/', async (req, res) => {
-    res.status(200).json({"message": "hello world! 🔥"})
-});
+    const bearerHeader = req.headers['authorization'];
+    if (bearerHeader) {
+      const bearer = bearerHeader.split(' ');
+      const token = bearer[1];
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        return res.status(200).json({ message: `hello ${decoded.username}! 🔥`, username: decoded.username });
+      } catch (err) {
+        return res.status(401).json({ message: 'Invalid token.' });
+      }
+    }
+
+    res.status(200).json({ message: 'hello world! 🔥' });
+  });
 
 // -------------------------
 // Health Check Endpoint
