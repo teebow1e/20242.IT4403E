@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import {TextField, Button} from '@mui/material';
 import {Close, DangerousSharp, VisibilityOffOutlined, VisibilityOutlined} from '@mui/icons-material';
 import './LoginScreen.css';
+import FormSubmit from './FormSubmit';
 import Footer from './Footer';
 
 function LoginScreen() {
@@ -16,15 +17,19 @@ function LoginScreen() {
   return (
     <div>
       <div className="loginScreen">
-        <div className="loginScreen__left">
-          <Link to="/">
-            <img src="/logo.svg" alt="Starbucks" />
-          </Link>
-          <div className="loginScreen__info">
-            <h1>Sign in or create an account</h1>
+        <nav className="navbar">
+          <div className="navbar-container">
+            <div className="navbar-brand">
+              <Link to="/">
+                <img src="/logo.svg" alt="Starbucks" />
+              </Link>
+            </div>
           </div>
+        </nav>
+        <div className="loginScreen__info">
+          <h1>Sign in or create an account</h1>
         </div>
-        <div className="loginScreen__right">
+        <div className="loginScreen__main">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className='loginScreen__inputContainer'>
               <TextField 
@@ -88,17 +93,17 @@ function LoginScreen() {
                 <Link >Forgot your password?</Link>
               </div>
 
-              <Button name="Sign in" type="submit" variant='contained'>Sign in</Button>
+              <FormSubmit name="Sign in" type="submit" variant='contained'>Sign in</FormSubmit>
             </div>
-
-            <div className='loginScreen__rewards'>
+          </form>
+          <div className='loginScreen__rewards'>
               <h4>JOIN STARBUCK® REWARDS</h4>
               <p>As a member, start earning free food and drinks, unlock our best offers and celebrate your birthday with a treat from us. Best of all, it's free to join.</p>
-              <Button className="loginScreen__joinButton" variant="outlined">Join now</Button>
-            </div>
-
-            <Footer />
-          </form>
+          </div>
+          <div className='loginScreen__joinNow'>
+            <Link to="/account/create">Join now</Link>
+          </div>
+          <Footer />
         </div>
       </div>
     </div>
