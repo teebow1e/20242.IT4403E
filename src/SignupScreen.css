@@ -1,0 +1,69 @@
+.signupScreen {
+    align-items: center;
+}
+.signupScreen__nav {
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+    padding: 15px;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 10%), 0 2px 2px rgb(0 0 0 / 6%),
+        0 0 2px rgb(0 0 0 / 7%);
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.signupScreen__info {
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    margin-top: 30px;
+
+}
+
+.signupScreen__main {
+    display: grid;
+    place-items: center;
+    flex: 1;
+}
+
+.signupScreen__rewards {
+    display: grid;
+    place-items: center;
+    flex: 1;
+    text-align: center;
+    box-sizing: inherit;
+    padding: 20px 20px;
+    max-width: 50%;
+    color: gray;
+}
+
+.signupScreen__rewards > h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.signupScreen__rewards > p {
+    font-size: 14px;
+    max-width: 80%;
+}
+
+.signupScreen__rewards > p > a {
+    color: gray;
+    text-decoration: underline;
+}
+
+.signupScreen__rewards > p > a:hover {
+    text-decoration: none;
+}
+

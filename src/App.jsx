@@ -51,7 +51,7 @@ function App() {
 
         {/* Sign up route with redirect if logged in */}
         <Route
-          path="/account/signup"
+          path="/account/create"
           element={
             user ? <Navigate to="/menu" replace /> : <SignupScreen />
           }
