@@ -115,8 +115,8 @@ function LoginScreen() {
           <div className='loginScreen__joinNow'>
             <Link to="/account/create">Join now</Link>
           </div>
-          <Footer />
         </div>
+        <Footer />
       </div>
     </div>
   );
