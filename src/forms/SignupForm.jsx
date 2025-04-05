@@ -2,6 +2,7 @@ import {TextField, Button} from '@mui/material';
 import {useForm} from 'react-hook-form';
 import {useState} from 'react';
 import {Close, DangerousSharp, VisibilityOffOutlined, VisibilityOutlined} from '@mui/icons-material';
+import FormSubmit from '../forms/FormSubmit';
 
 import './SignupForm.css'
 
@@ -21,12 +22,12 @@ function SignupForm() {
               <h4 className='signupForm__section'>Personal Information</h4>
               <div className="signupForm__inputContainer">
                 <TextField 
-                  label="* First name" 
+                  label="First name" 
                   name="fName" 
                   type="text" 
                   slotProps={{
                     style: { color: "rgba(0,0,0,.56)" },
-                    htmlInput: { style: { fontWeight: "800" } }
+                    htmlInput: { style: { fontWeight: "400" } }
                   }}
                   className='signupForm__input' 
                   // error={!!errors.fName}
@@ -46,16 +47,16 @@ function SignupForm() {
 
               <div className="signupForm__inputContainer">
                 <TextField 
-                  label="* Last name" 
+                  label="Last name" 
                   name="lName" 
                   type="text" 
                   slotProps={{
                     style: { color: "rgba(0,0,0,.56)" },
-                    htmlInput: { style: { fontWeight: "800" } }
+                    htmlInput: { style: { fontWeight: "400" } }
                   }}
                   className='signupForm__input' 
                   // error={!!errors.lName}
-                  {...register("Last name", { required: true })}
+                  {...register("email", { required: true })}
                 />
                 {errors.lName && 
                   <div className="signupForm__error">
@@ -78,7 +79,7 @@ function SignupForm() {
                   type="email" 
                   slotProps={{
                     style: { color: "rgba(0,0,0,.56)" },
-                    htmlInput: { style: { fontWeight: "800" } }
+                    htmlInput: { style: { fontWeight: "400" } }
                   }}
                   className='signupForm__input' 
                   // error={!!errors.email}
@@ -103,7 +104,7 @@ function SignupForm() {
                   type={passwordShown ? "text" : "password"}
                   slotProps={{
                     style: { color: "rgba(0,0,0,.30)" },
-                    htmlInput: { style: { fontWeight: "800" } }
+                    htmlInput: { style: { fontWeight: "400" } }
                   }}
                   className='signupForm__passwordInput'
                   {...register("Password", { required: true })}
@@ -130,12 +131,16 @@ function SignupForm() {
                     />
                   </div>
                 }
+                <h5>Create a password 8 to 25 characters long that includes at least 1 uppercase and 1 lowercase letter, 1 number and 1 special character like an exclamation point or asterisk.</h5>
               </div>
               
               <h4 className='signupForm__rewards'> 
                 Collect more Stars & Earn Rewards
               </h4>
-              <span className='signupForm__span'></span>
+              <span className='signupForm__span'>
+                Email is a great way to know about offers and what's new from Starbucks.
+              </span>
+              <FormSubmit name='Create account' type='submit'>Sign up</FormSubmit>
             </form>
         </div>
       </div>

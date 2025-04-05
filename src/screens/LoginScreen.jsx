@@ -40,7 +40,7 @@ function LoginScreen() {
                 type="email" 
                 slotProps={{
                   style: { color: "rgba(0,0,0,.30)" },
-                  htmlInput: { style: { fontWeight: "800" } }
+                  htmlInput: { style: { fontWeight: "400" } }
                 }}
                 className='loginScreen__emailInput'
                 {...register("Username or email", { required: true })}
@@ -64,7 +64,7 @@ function LoginScreen() {
                 type={passwordShown ? "text" : "password"}
                 slotProps={{
                   style: { color: "rgba(0,0,0,.30)" },
-                  htmlInput: { style: { fontWeight: "800" } }
+                  htmlInput: { style: { fontWeight: "400" } }
                 }}
                 className='loginScreen__passwordInput'
                 {...register("Password", { required: true })}

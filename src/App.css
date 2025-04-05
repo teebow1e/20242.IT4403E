@@ -38,3 +38,11 @@ img {
 section a {
     color: #fff;
 }
+
+h5 {
+    color: rgba(0, 0, 0, 0.56);
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.5;
+    margin: 10px 0;
+  }
