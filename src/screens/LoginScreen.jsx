@@ -6,9 +6,8 @@ import {TextField} from '@mui/material';
 import {Close, DangerousSharp, VisibilityOffOutlined, VisibilityOutlined} from '@mui/icons-material';
 import './LoginScreen.css';
 import FormSubmit from '../forms/FormSubmit';
-import Footer from './Footer';
-import {auth} from './firebase';
-import {login} from './features/UserSlice';
+import {auth} from '../firebase';
+import {login} from '../features/UserSlice';
 import { useDispatch } from 'react-redux';
 
 function LoginScreen() {
@@ -109,7 +108,6 @@ function LoginScreen() {
             <Link to="/account/create">Join now</Link>
           </div>
         </div>
-        <Footer />
       </div>
     </div>
   );

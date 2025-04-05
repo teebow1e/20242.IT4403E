@@ -96,31 +96,6 @@ function SignupForm() {
                 }
               </div>
 
-              <div className="signupForm__inputContainer">
-                <TextField 
-                  label="Email Address" 
-                  name="email" 
-                  type="email" 
-                  slotProps={{
-                    style: { color: "rgba(0,0,0,.56)" },
-                    htmlInput: { style: { fontWeight: "800" } }
-                  }}
-                  className='signupForm__input' 
-                  // error={!!errors.email}
-                  {...register("Last name", { required: true })}
-                />
-                {errors.email && 
-                  <div className="signupForm__error">
-                    <Close fontSize="small" />
-                    <span>Enter an email.</span>
-                    <DangerousSharp
-                      fontSize="small"
-                      className="signupForm__reportIcon"
-                    />
-                  </div>
-                }
-              </div>
-
               <div className='signupForm__inputContainer'>
                 <TextField 
                   label="Password" 
