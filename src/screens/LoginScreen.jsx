@@ -27,7 +27,7 @@ function LoginScreen() {
                 name="email" 
                 type="email" 
                 slotProps={{
-                  style: { color: "rgba(0,0,0,.56)" },
+                  style: { color: "rgba(0,0,0,.30)" },
                   htmlInput: { style: { fontWeight: "800" } }
                 }}
                 className='loginScreen__emailInput'
@@ -43,13 +43,15 @@ function LoginScreen() {
                   />
                 </div>
               }
+            </div>
 
+            <div className='loginScreen__inputContainer'>
               <TextField 
                 label="Password" 
                 name="password" 
                 type={passwordShown ? "text" : "password"}
                 slotProps={{
-                  style: { color: "rgba(0,0,0,.56)" },
+                  style: { color: "rgba(0,0,0,.30)" },
                   htmlInput: { style: { fontWeight: "800" } }
                 }}
                 className='loginScreen__passwordInput'
@@ -77,14 +79,14 @@ function LoginScreen() {
                   />
                 </div>
               }
-
-              <div className='loginScreen__resetLink'>
-                <Link >Forgot your username?</Link>
-                <Link >Forgot your password?</Link>
-              </div>
-
-              <FormSubmit name="Sign in" type="submit" variant='contained'>Sign in</FormSubmit>
             </div>
+
+            <div className='loginScreen__resetLink'>
+              <Link >Forgot your username?</Link>
+              <Link >Forgot your password?</Link>
+            </div>
+
+            <FormSubmit name="Sign in" type="submit" variant='contained'>Sign in</FormSubmit>
           </form>
           <div className='loginScreen__rewards'>
               <h4>JOIN STARBUCK® REWARDS</h4>

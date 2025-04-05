@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import SignupForm from '../forms/SignupForm';
 import './SignupScreen.css';
 
 function SignupScreen() {
@@ -20,7 +21,7 @@ function SignupScreen() {
             Get access to mobile ordering, a birthday Reward, 
             and <Link href='https://www.starbucks.com/rewards'>more</Link>.</p>
         </div>
-        {/* <SignupForm /> */}
+        <SignupForm />
       </div>
     </div>
   );

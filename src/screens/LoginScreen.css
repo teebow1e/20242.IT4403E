@@ -43,7 +43,7 @@
     min-height: 150px;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 20px;
 }
 
 .loginScreen__inputContainer {
@@ -95,8 +95,7 @@
     color: gray;
     position: absolute;
     right: 5%;
-    top: 20%;
-    transform: translateY(120%);
+    transform: translateY(70%);
 }
 
 .loginScreen__rewards {
