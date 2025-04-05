@@ -239,10 +239,6 @@
     .navbar .navbar-nav-right {
         display: none;
     }
-
-    .footer {
-        text-align: center;
-    }
 }
 
 @media (min-width: 1440px) {
