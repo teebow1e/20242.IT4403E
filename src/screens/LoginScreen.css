@@ -60,7 +60,7 @@
 .loginScreen__resetLink > a {
     display: block;
     margin-bottom: 15px;
-    text-decoration: underline;
+    /* text-decoration: underline; */
     color: #00653e;
     font-weight: 1000;
     font-size: 15px;
@@ -94,7 +94,7 @@
     cursor: pointer;
     color: gray;
     position: absolute;
-    right: 10%;
+    right: 5%;
     top: 20%;
     transform: translateY(120%);
 }

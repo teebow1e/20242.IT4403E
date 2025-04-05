@@ -5,8 +5,7 @@ import { useForm } from "react-hook-form";
 import {TextField, Button} from '@mui/material';
 import {Close, DangerousSharp, VisibilityOffOutlined, VisibilityOutlined} from '@mui/icons-material';
 import './LoginScreen.css';
-import FormSubmit from './FormSubmit';
-import Footer from './Footer';
+import FormSubmit from '../forms/FormSubmit';
 
 function LoginScreen() {
   const { handleSubmit, register, formState: { errors } } = useForm();
@@ -17,15 +16,6 @@ function LoginScreen() {
   return (
     <div>
       <div className="loginScreen">
-        <nav className="navbar">
-          <div className="navbar-container">
-            <div className="navbar-brand">
-              <Link to="/">
-                <img src="/logo.svg" alt="Starbucks" />
-              </Link>
-            </div>
-          </div>
-        </nav>
         <div className="loginScreen__info">
           <h1>Sign in or create an account</h1>
         </div>
@@ -103,7 +93,6 @@ function LoginScreen() {
           <div className='loginScreen__joinNow'>
             <Link to="/account/create">Join now</Link>
           </div>
-          <Footer />
         </div>
       </div>
     </div>
