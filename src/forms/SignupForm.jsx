@@ -1,17 +1,36 @@
-import {TextField, Button} from '@mui/material';
+import {TextField} from '@mui/material';
 import {useForm} from 'react-hook-form';
 import {useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
 import {Close, DangerousSharp, VisibilityOffOutlined, VisibilityOutlined} from '@mui/icons-material';
 import FormSubmit from '../forms/FormSubmit';
+import {auth} from '../firebase';
+import {createUserWithEmailAndPassword} from 'firebase/auth';
 
 import './SignupForm.css'
 
 function SignupForm() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [passwordShown, setPasswordShown] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = ({fName, lName, email, password}) => {
+    console.log("please sign up this user!")
+    console.log(fName, lName, email, password);
+    createUserWithEmailAndPassword(auth, email, password).then((userAuth) => {
+      userAuth.user.updateProfile({
+        displayName: fName
+      }).then(() => {
+        dispatch(login({
+          email: userAuth.user.email,
+          uid: userAuth.user.uid,
+          displayName: fName
+        }))
+      })
+      navigate("/menu");
+    }).catch((error) => alert(error.message));
   };
 
   return (
@@ -31,7 +50,7 @@ function SignupForm() {
                   }}
                   className='signupForm__input' 
                   // error={!!errors.fName}
-                  {...register("First name", { required: true })}
+                  {...register("fName", { required: true })}
                 />
                 {errors.fName && 
                   <div className="signupForm__error">
@@ -56,7 +75,7 @@ function SignupForm() {
                   }}
                   className='signupForm__input' 
                   // error={!!errors.lName}
-                  {...register("email", { required: true })}
+                  {...register("lName", { required: true })}
                 />
                 {errors.lName && 
                   <div className="signupForm__error">
@@ -83,7 +102,7 @@ function SignupForm() {
                   }}
                   className='signupForm__input' 
                   // error={!!errors.email}
-                  {...register("Last name", { required: true })}
+                  {...register("email", { required: true })}
                 />
                 {errors.email && 
                   <div className="signupForm__error">
@@ -107,7 +126,7 @@ function SignupForm() {
                     htmlInput: { style: { fontWeight: "400" } }
                   }}
                   className='signupForm__passwordInput'
-                  {...register("Password", { required: true })}
+                  {...register("password", { required: true })}
                 />
                 {passwordShown ? (
                   <VisibilityOutlined
