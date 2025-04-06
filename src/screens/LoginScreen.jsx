@@ -9,6 +9,7 @@ import FormSubmit from '../forms/FormSubmit';
 import {auth} from '../firebase';
 import {login} from '../features/UserSlice';
 import { useDispatch } from 'react-redux';
+import {signInWithEmailAndPassword} from 'firebase/auth';
 
 function LoginScreen() {
   const { handleSubmit, register, formState: { errors } } = useForm();
@@ -17,7 +18,7 @@ function LoginScreen() {
 
   // Firebase Auth
   const onSubmit = ({email, password}) => {
-    auth.SignInWithEmailAndPassword(email, password).then((userAuth) => {
+    signInWithEmailAndPassword(auth, email, password).then((userAuth) => {
       dispatch(login({
         email: userAuth.user.email,
         uid: userAuth.user.uid,
@@ -36,7 +37,7 @@ function LoginScreen() {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className='loginScreen__inputContainer'>
                 <TextField 
-                  label="Username or email address" 
+                  label="Email address" 
                   name="email" 
                   type="email" 
                   slotProps={{
@@ -44,12 +45,12 @@ function LoginScreen() {
                     htmlInput: { style: { fontWeight: "400" } }
                   }}
                   className='loginScreen__input'
-                  {...register("Username or email", { required: true })}
+                  {...register("email", { required: true })}
                 />
                 {errors.email && 
                   <div className="loginScreen__error">
                     <Close fontSize="small" />
-                    <span>Enter an email/username</span>
+                    <span>Enter an email/username.</span>
                     <DangerousSharp
                       fontSize="small"
                       className="loginScreen__reportIcon"
@@ -68,7 +69,7 @@ function LoginScreen() {
                     htmlInput: { style: { fontWeight: "400" } }
                   }}
                   className='loginScreen__input'
-                  {...register("Password", { required: true })}
+                  {...register("password", { required: true })}
                 />
                 {passwordShown ? (
                   <VisibilityOutlined
