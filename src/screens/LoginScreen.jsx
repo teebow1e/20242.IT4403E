@@ -32,74 +32,76 @@ function LoginScreen() {
           <h1>Sign in or create an account</h1>
         </div>
         <div className="loginScreen__main">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className='loginScreen__inputContainer'>
-              <TextField 
-                label="Username or email address" 
-                name="email" 
-                type="email" 
-                slotProps={{
-                  style: { color: "rgba(0,0,0,.30)" },
-                  htmlInput: { style: { fontWeight: "400" } }
-                }}
-                className='loginScreen__emailInput'
-                {...register("Username or email", { required: true })}
-              />
-              {errors.email && 
-                <div className="loginScreen__error">
-                  <Close fontSize="small" />
-                  <span>Enter an email/username</span>
-                  <DangerousSharp
-                    fontSize="small"
-                    className="loginScreen__reportIcon"
-                  />
-                </div>
-              }
-            </div>
-
-            <div className='loginScreen__inputContainer'>
-              <TextField 
-                label="Password" 
-                name="password" 
-                type={passwordShown ? "text" : "password"}
-                slotProps={{
-                  style: { color: "rgba(0,0,0,.30)" },
-                  htmlInput: { style: { fontWeight: "400" } }
-                }}
-                className='loginScreen__passwordInput'
-                {...register("Password", { required: true })}
-              />
-              {passwordShown ? (
-                <VisibilityOutlined
-                  onClick={() => setPasswordShown((passwordShown)=> !passwordShown)}
-                  className='loginScreen__visibilityIcon'
+          <div className="loginScreen__form">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className='loginScreen__inputContainer'>
+                <TextField 
+                  label="Username or email address" 
+                  name="email" 
+                  type="email" 
+                  slotProps={{
+                    style: { color: "rgba(0,0,0,.30)" },
+                    htmlInput: { style: { fontWeight: "400" } }
+                  }}
+                  className='loginScreen__input'
+                  {...register("Username or email", { required: true })}
                 />
-              ) : (
-                <VisibilityOffOutlined
-                  onClick={() => setPasswordShown((passwordShown)=> !passwordShown)}
-                  className='loginScreen__visibilityIcon'
+                {errors.email && 
+                  <div className="loginScreen__error">
+                    <Close fontSize="small" />
+                    <span>Enter an email/username</span>
+                    <DangerousSharp
+                      fontSize="small"
+                      className="loginScreen__reportIcon"
+                    />
+                  </div>
+                }
+              </div>
+
+              <div className='loginScreen__inputContainer'>
+                <TextField 
+                  label="Password" 
+                  name="password" 
+                  type={passwordShown ? "text" : "password"}
+                  slotProps={{
+                    style: { color: "rgba(0,0,0,.30)" },
+                    htmlInput: { style: { fontWeight: "400" } }
+                  }}
+                  className='loginScreen__input'
+                  {...register("Password", { required: true })}
                 />
-              )}
-
-              {errors.password && 
-                <div className="loginScreen__error">
-                  <Icon fontSize="small" />
-                  <span>Enter a password</span>
-                  <DangerousSharp
-                    fontSize="small"
-                    className="loginScreen__reportIcon"
+                {passwordShown ? (
+                  <VisibilityOutlined
+                    onClick={() => setPasswordShown((passwordShown)=> !passwordShown)}
+                    className='loginScreen__visibilityIcon'
                   />
-                </div>
-              }
-            </div>
+                ) : (
+                  <VisibilityOffOutlined
+                    onClick={() => setPasswordShown((passwordShown)=> !passwordShown)}
+                    className='loginScreen__visibilityIcon'
+                  />
+                )}
 
-            <div className='loginScreen__resetLink'>
-              <Link >Forgot your username?</Link>
-              <Link >Forgot your password?</Link>
-            </div>
+                {errors.password && 
+                  <div className="loginScreen__error">
+                    <Icon fontSize="small" />
+                    <span>Enter a password</span>
+                    <DangerousSharp
+                      fontSize="small"
+                      className="loginScreen__reportIcon"
+                    />
+                  </div>
+                }
+              </div>
 
-            <FormSubmit name="Sign in" type="submit" variant='contained'>Sign in</FormSubmit>
-          </form>
+              <div className='loginScreen__resetLink'>
+                <Link >Forgot your username?</Link>
+                <Link >Forgot your password?</Link>
+              </div>
+
+              <FormSubmit name="Sign in" type="submit" variant='contained'>Sign in</FormSubmit>
+            </form>
+          </div>
           <div className='loginScreen__rewards'>
               <h4>JOIN STARBUCK® REWARDS</h4>
               <p>As a member, start earning free food and drinks, unlock our best offers and celebrate your birthday with a treat from us. Best of all, it's free to join.</p>
