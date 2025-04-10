@@ -1,3 +1,9 @@
+.title {
+    text-align: center;
+    font-size: 48px;
+    color: #32462f;
+}
+
 /* Box */
 .box {
     margin-bottom: 20px;
@@ -72,6 +78,14 @@
     color: #fff;
 }
 
+.btn-green-outline {
+    border-color: #203a32;
+    color: #203a32;
+}
+
+.btn-green-outline:hover {
+    background-color: #203a321b
+}
 .btn-dark {
     background-color: #000;
     color: #fff;
@@ -83,19 +97,21 @@
 
 /* Backgrounds */
 .bg-box-a {
-    background-color: #006241;
+    background-color: #ffffff;
     color: #fff;
+    gap: 40px;
 }
 .bg-box-b {
     background-color: #32462f;
     color: #fff;
 }
 .bg-box-c {
-    background-color: #440010cb;
+    background-color: #ffffffcb;
     color: #fff;
+    gap: 40px;
 }
 .bg-box-d {
-    background-color: #5f4633;
+    background-color: #32462f;
     color: #fff;
 }
 .bg-box-e {
@@ -147,4 +163,43 @@
 }
 .py-lg {
     padding: 40px 0;
+}
+
+/* custom*/
+.box-a-inner {
+    background-color: #d2d2ae;
+    text-align: center;
+    padding-bottom: 40px;
+    text-align: center;
+}
+
+.text-drink-header-a {
+    padding: 0px 60px 0 60px;
+    font-family: "Helvetica";
+    font-weight: bold;
+    color: #1e3932;
+}
+
+.text-drink-description-a {
+    padding: 0px 60px 0 60px;
+    color: #1e3932;
+}
+
+.box-c-inner {
+    background-color: #5f4633;
+    text-align: center;
+    padding-bottom: 40px;
+    text-align: center;
+}
+
+.text-drink-header-c {
+    padding: 0px 60px 0 60px;
+    font-family: "Helvetica";
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.text-drink-description-c {
+    padding: 0px 60px 0 60px;
+    color: #ffffff;
 }
