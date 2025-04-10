@@ -5,15 +5,15 @@ function Featured() {
         <>
             <h1 className="title"> The Spring edit</h1>
             {/* <!-- Box A --> */}
-            <section className="box box-a bg-box-a grid-col-2">
-                <div className="box-inner box-a-inner">
+            <section className="box featured-box-a bg-featured-box-a grid-col-2">
+                <div className="featured-box-inner featured-box-a-inner">
                     <img src="/drink1.jpg" alt="" />
                     <h2 className="text-md text-drink-header-a">Iced Lavender Cream Oatmilk Matcha</h2>
                     <p className="text-sm text-drink-description-a" >A smooth combination of matcha green tea and oatmilk, finished with lavender cream cold foam with subtle floral notes. Includes dairy.</p>
                     <a href="#" className="btn btn-green-outline btn-order">Order now</a>
                 </div>
 
-                <div className="box-inner box-a-inner">
+                <div className="featured-box-inner featured-box-a-inner">
                     <img src="/drink2.jpg" alt="" />
                     <h2 className="text-md text-drink-header-a">Iced Lavender Oatmilk Latte</h2>
                     <p className="text-sm text-drink-description-a">Starbucks® Blonde Espresso and oatmilk combine with subtle floral accents, served over ice. Exclusive only in rush hour, weekdays & special occasions.</p>
@@ -23,7 +23,7 @@ function Featured() {
             </section>
 
             {/* <!-- Box B --> */}
-            <section className="box box-b bg-box-b grid-col-2">
+            <section className="box featured-box-b bg-featured-box-b grid-col-2">
                 <img src="/drink3.jpg" alt="" />
                 <div className="box-text">
                     <h2 className="text-md">New Iced Cherry Chai</h2>
@@ -35,15 +35,15 @@ function Featured() {
             </section>
 
             {/* <!-- Box C --> */}
-            <section className="box box-c bg-box-c grid-col-2">
-                <div className="box-inner box-c-inner">
+            <section className="box featured-box-c bg-featured-box-c grid-col-2">
+                <div className="featured-box-inner featured-box-c-inner">
                     <img src="/drink4.jpg" alt="" />
                     <h2 className="text-md text-drink-header-c">Cortado</h2>
                     <p className="text-sm text-drink-description-c" >Three ristretto shots of Starbucks® Blonde Espresso combined with steamed whole milk and served in an 8 fl oz short cup.</p>
                     <a href="#" className="btn btn-light-outline btn-order">Order now</a>
                 </div>
 
-                <div className="box-inner box-c-inner">
+                <div className="featured-box-inner featured-box-c-inner">
                     <img src="/drink5.jpg" alt="" />
                     <h2 className="text-md text-drink-header-c">Brown Sugar Oatmilk Cortado</h2>
                     <p className="text-sm text-drink-description-c">Three ristretto shots of Starbucks® Blonde Espresso, brown sugar syrup, cinnamon and steamed oatmilk in an 8 fl oz short cup.</p>
@@ -52,7 +52,7 @@ function Featured() {
             </section>
 
             {/* <!-- Box D --> */}
-            <section className="box box-d bg-box-d grid-col-2 grid-reversed">
+            <section className="box featured-box-d bg-featured-box-d grid-col-2 grid-reversed">
                 <img src="/drink6.jpg" alt="" />
                 <div className="box-text">
                     <h2 className="text-md">Blackberry Sage Refreshers</h2>
