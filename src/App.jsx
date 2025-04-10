@@ -4,6 +4,7 @@ import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
 import MenuScreen from './screens/MenuScreen';
+import FeaturedScreen from './screens/FeaturedScreen';
 import {selectUser} from './features/UserSlice';
 import {auth} from './firebase';
 import {login, logout} from './features/UserSlice'; 
@@ -47,12 +48,13 @@ function App() {
             path="account/create"
             element={user ? <Navigate to="/menu" replace /> : <SignupScreen />}
           />
-          {/* You can also nest the menu route if it should have the same layout */}
           <Route
             path="menu"
-            element={
-              user ? <MenuScreen /> : <Navigate to="/account/signin" replace />
-            }
+            element={user ? <MenuScreen /> : <Navigate to="/account/signin" replace />}
+          />
+          <Route 
+            path="menu/featured"
+            element={<FeaturedScreen/>}
           />
         </Route>
       </Routes>
