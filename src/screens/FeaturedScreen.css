@@ -96,25 +96,25 @@
 }
 
 /* Backgrounds */
-.bg-box-a {
+.bg-featured-box-a {
     background-color: #ffffff;
     color: #fff;
     gap: 40px;
 }
-.bg-box-b {
+.bg-featured-box-b {
     background-color: #32462f;
     color: #fff;
 }
-.bg-box-c {
+.bg-featured-box-c {
     background-color: #ffffffcb;
     color: #fff;
     gap: 40px;
 }
-.bg-box-d {
+.bg-featured-box-d {
     background-color: #32462f;
     color: #fff;
 }
-.bg-box-e {
+.bg-featured-box-e {
     background-color: #006241;
     color: #fff;
 }
@@ -166,7 +166,7 @@
 }
 
 /* custom*/
-.box-a-inner {
+.featured-box-a-inner {
     background-color: #d2d2ae;
     text-align: center;
     padding-bottom: 40px;
@@ -185,7 +185,7 @@
     color: #1e3932;
 }
 
-.box-c-inner {
+.featured-box-c-inner {
     background-color: #5f4633;
     text-align: center;
     padding-bottom: 40px;
