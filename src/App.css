@@ -45,4 +45,78 @@ h5 {
     font-weight: normal;
     line-height: 1.5;
     margin: 10px 0;
-  }
+}
+.text-center {
+    text-align: center;
+}
+
+.text-xl {
+    font-size: 40px;
+}
+
+.text-lg {
+    font-size: 32px;
+}
+
+.text-md {
+    font-size: 28px;
+}
+
+.text-sm {
+    font-size: 24px;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .grid-col-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-reversed :first-child {
+        order: 0;
+    }
+
+    .navbar-brand img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .navbar .navbar-nav-left,
+    .navbar .navbar-nav-right {
+        display: none;
+    }
+}
+
+@media (max-width: 960px) {
+    .text-xl {
+        font-size: 32px;
+    }
+
+    .text-lg {
+        font-size: 24px;
+    }
+
+    .text-md {
+        font-size: 18px;
+    }
+
+    .text-sm {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .box {
+        max-width: 1440px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .divider {
+        max-width: 90%;
+    }
+}
+

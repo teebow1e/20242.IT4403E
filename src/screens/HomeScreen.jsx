@@ -32,7 +32,7 @@ function HomeScreen () {
                 <img src="/HomeScreen3.jpg" alt="" />
                 <div className="box-text">
                     <h2 className="text-xl">Our smoothest, brightest coffee yet</h2>
-                    <p className="text-md">
+                    <p className="text-sm">
                     Discover the people and places behind the new Starbucks® Sunsera Blend™ as it makes its way from farm to cup.
                     </p>
                     <a href="#" className="btn btn-light-outline">See the journey</a>

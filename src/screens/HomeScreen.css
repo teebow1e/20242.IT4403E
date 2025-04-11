@@ -7,13 +7,14 @@
 .box-inner {
     max-width: 800px;
     margin: 0 auto;
+    height: 100%;
 }
 
 .box-text {
     max-width: 600px;
     text-align: center;
     justify-self: center;
-    padding: 20px 0;
+    padding: 40px;
     margin: 0 auto;
 }
 
@@ -104,47 +105,3 @@
 }
 
 
-/* Text Styling */
-.text-center {
-    text-align: center;
-}
-
-.text-xl {
-    font-size: 44px;
-    text-transform: uppercase;
-    letter-spacing: 6px;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.text-lg {
-    font-size: 36px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-}
-
-.text-md {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-.text-sm {
-    font-size: 18px;
-    margin-bottom: 20px;
-}
-
-.text-esm {
-    font-size: 14px;
-    font-style: italic;
-}
-
-/* Padding */
-.py-sm {
-    padding: 10px 0;
-}
-.py-md {
-    padding: 20px 0;
-}
-.py-lg {
-    padding: 40px 0;
-}
