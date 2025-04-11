@@ -16,7 +16,7 @@ function Featured() {
                 <div className="featured-box-inner featured-box-a-inner">
                     <img src="/drink2.jpg" alt="" />
                     <h2 className="text-md text-drink-header-a">Iced Lavender Oatmilk Latte</h2>
-                    <p className="text-sm text-drink-description-a">Starbucks® Blonde Espresso and oatmilk combine with subtle floral accents, served over ice. Exclusive only in rush hour, weekdays & special occasions.</p>
+                    <p className="text-sm text-drink-description-a">Starbucks® Blonde Espresso and oatmilk combine with subtle floral accents, served over ice.</p>
                     <a href="#" className="btn btn-green-outline btn-order">Order now</a>
                 </div>
 

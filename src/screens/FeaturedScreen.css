@@ -1,81 +1,9 @@
+/* css inherit from homescreen.css */
+
 .title {
     text-align: center;
     font-size: 48px;
     color: #32462f;
-}
-
-/* Box */
-.box {
-    margin-bottom: 20px;
-    margin-top: 20px;
-}
-
-.box-inner {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.box-text {
-    max-width: 600px;
-    text-align: center;
-    justify-self: center;
-    padding: 20px 0;
-    margin: 0 auto;
-}
-
-.box-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.box-text .btn {
-    margin-top: 20px;
-}
-
-.box-f .box-text {
-    max-width: 600px;
-}
-
-/* Grid Styles */
-.grid-col-2 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    align-items: center;
-    justify-content: space-between;
-}
-
-.grid-reversed :first-child {
-    order: 2;
-}
-
-/* Buttons */
-.btn {
-    cursor: pointer;
-    display: inline-block;
-    background: none;
-    border: 1px #000 solid;
-    border-radius: 50px;
-    padding: 7px 16px;
-    line-height: 1.2;
-    text-align: center;
-    text-decoration: none;
-}
-
-.btn-dark-outline {
-    border-color: #000;
-    color: #000;
-}
-
-.btn-dark-outline:hover,
-.btn-light-outline:hover {
-    background-color: rgba(0, 0, 0, 0.06);
-}
-
-.btn-light-outline {
-    border-color: #fff;
-    color: #fff;
 }
 
 .btn-green-outline {
@@ -85,14 +13,6 @@
 
 .btn-green-outline:hover {
     background-color: #203a321b
-}
-.btn-dark {
-    background-color: #000;
-    color: #fff;
-}
-
-.btn-dark:hover {
-    background-color: #333;
 }
 
 /* Backgrounds */
@@ -119,53 +39,11 @@
     color: #fff;
 }
 
-
-/* Text Styling */
-.text-center {
-    text-align: center;
-}
-
-.text-xl {
-    font-size: 44px;
-    text-transform: uppercase;
-    letter-spacing: 6px;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.text-lg {
-    font-size: 36px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-}
-
-.text-md {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-.text-sm {
-    font-size: 18px;
-    margin-bottom: 20px;
-}
-
-.text-esm {
-    font-size: 14px;
-    font-style: italic;
-}
-
-/* Padding */
-.py-sm {
-    padding: 10px 0;
-}
-.py-md {
-    padding: 20px 0;
-}
-.py-lg {
-    padding: 40px 0;
-}
-
 /* custom*/
+
+.featured-box-inner {
+    height: 100%;
+}
 .featured-box-a-inner {
     background-color: #d2d2ae;
     text-align: center;
@@ -174,14 +52,14 @@
 }
 
 .text-drink-header-a {
-    padding: 0px 60px 0 60px;
+    padding: 0px 80px 0 80px;
     font-family: "Helvetica";
     font-weight: bold;
     color: #1e3932;
 }
 
 .text-drink-description-a {
-    padding: 0px 60px 0 60px;
+    padding: 0px 80px 0 80px;
     color: #1e3932;
 }
 
@@ -193,13 +71,13 @@
 }
 
 .text-drink-header-c {
-    padding: 0px 60px 0 60px;
+    padding: 0px 80px 0 80px;
     font-family: "Helvetica";
     font-weight: bold;
     color: #ffffff;
 }
 
 .text-drink-description-c {
-    padding: 0px 60px 0 60px;
+    padding: 0px 80px 0 80px;
     color: #ffffff;
 }
