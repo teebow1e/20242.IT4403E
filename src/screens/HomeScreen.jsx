@@ -1,3 +1,4 @@
+import "./Box.css"
 import './HomeScreen.css'
 
 function HomeScreen () {

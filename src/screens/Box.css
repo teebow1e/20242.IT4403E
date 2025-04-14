@@ -1,0 +1,42 @@
+/* Box */
+.box {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.box-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.box-text {
+    max-width: 600px;
+    text-align: center;
+    justify-self: center;
+    padding: 40px;
+    margin: 0 auto;
+}
+
+.box-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.box-text .btn {
+    margin-top: 20px;
+}
+
+/* Grid Styles */
+.grid-col-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    justify-content: space-between;
+}
+
+.grid-reversed :first-child {
+    order: 2;
+}
