@@ -1,4 +1,4 @@
-.signupScreen {
+/* .signupScreen {
     align-items: center;
 }
 .signupScreen__nav {
@@ -18,9 +18,6 @@
 }
 
 .signupScreen__info {
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
     display: grid;
     place-items: center;
     width: 100%;
@@ -65,4 +62,4 @@
 
 .signupScreen__rewards > p > a:hover {
     text-decoration: none;
-}
+} */
