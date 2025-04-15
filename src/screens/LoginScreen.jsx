@@ -18,13 +18,23 @@ function LoginScreen() {
 
   // Firebase Auth
   const onSubmit = ({email, password}) => {
-    signInWithEmailAndPassword(auth, email, password).then((userAuth) => {
-      dispatch(login({
-        email: userAuth.user.email,
-        uid: userAuth.user.uid,
-        displayName: userAuth.user.displayName
-      }))
-    }).catch((error) => alert(error.message));
+    try {
+      signInWithEmailAndPassword(auth, email, password).then((userAuth) =>{
+        dispatch(login({
+          email: userAuth.user.email,
+          uid: userAuth.user.uid,
+          displayName: userAuth.user.displayName
+        }));
+      })
+      .catch((e) => {
+        if (e.code == "auth/invalid-credential"){
+          alert("Wrong email or password!");
+        }
+      })
+    } catch(e) {
+      console.log("Something wrong!");
+      alert("Wrong email or password!");
+    }
   }
   return (
     <div>
@@ -85,7 +95,7 @@ function LoginScreen() {
 
                 {errors.password && 
                   <div className="loginScreen__error">
-                    <Icon fontSize="small" />
+                    <Close fontSize="small" />
                     <span>Enter a password</span>
                     <DangerousSharp
                       fontSize="small"

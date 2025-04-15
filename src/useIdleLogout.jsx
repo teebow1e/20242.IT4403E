@@ -3,7 +3,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "./firebase";
 import { useNavigate } from "react-router-dom";
 
-const IDLE_TIMEOUT = 15 * 60 * 1000; // 15 mins 
+const IDLE_TIMEOUT = 5 * 1000; //  5 secs 
 
 function useIdleLogout(){
     const navigate = useNavigate();
@@ -16,7 +16,7 @@ function useIdleLogout(){
             timer = setTimeout(() => {
                 signOut(auth).then(() => {
                 alert("You were inactive. Logged out for security.");
-                navigate("/account/login");
+                navigate("/account/signin");
                 });
             }, IDLE_TIMEOUT);
         };

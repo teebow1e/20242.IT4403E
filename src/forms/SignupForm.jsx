@@ -16,21 +16,37 @@ function SignupForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // auth.onAuthStateChanged((user) => {
+  //   if (user === null) {
+  //     console.log('User is currently signed out!');
+  //   } else {
+  //     console.log('User is signed in!');
+  //   }
+  // });
+
   const onSubmit = ({fName, lName, email, password}) => {
-    console.log("please sign up this user!")
-    console.log(fName, lName, email, password);
-    createUserWithEmailAndPassword(auth, email, password).then((userAuth) => {
-      userAuth.user.updateProfile({
-        displayName: fName
-      }).then(() => {
-        dispatch(login({
-          email: userAuth.user.email,
-          uid: userAuth.user.uid,
-          displayName: fName
-        }))
-      })
-      navigate("/menu");
-    }).catch((error) => alert(error.message));
+    try{
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userAuth) => { 
+          dispatch(login({
+            email: userAuth.user.email,
+            uid: userAuth.user.uid,
+            displayName: fName + " " + lName,
+          }));
+          navigate("/");
+        })
+        .catch((e) => {
+          if (e.code === 'auth/email-already-in-use') {
+            alert('Email already in use!');
+          } else if (e.code === 'auth/invalid-email') {
+            alert('Invalid email!');
+          } else if (e.code === 'auth/weak-password') {
+            alert('Weak password!');
+          } 
+        });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -142,7 +158,7 @@ function SignupForm() {
   
                 {errors.password && 
                   <div className="signupForm__error">
-                    <Icon fontSize="small" />
+                    <Close fontSize="small" />
                     <span>Enter a password</span>
                     <DangerousSharp
                       fontSize="small"
