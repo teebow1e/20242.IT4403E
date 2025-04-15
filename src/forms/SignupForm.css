@@ -64,16 +64,16 @@
 
 .signupForm__reportIcon {
     position: absolute;
-    right: 0;
-    top: 0;
-    transform: translateY(100%);
+    right: 4%;
+    top: 0%;
+    transform: translateY(90%);
 }
 
 .signupForm__visibilityIcon {
     cursor: pointer;
     color: gray;
     position: absolute;
-    right: 5%;
+    right: 11%;
     transform: translateY(70%);
 }
 

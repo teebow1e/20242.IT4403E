@@ -38,7 +38,7 @@ function App() {
     <Router>
       <Routes>
         {/* Nesting routes inside Layout so they share Header, Footer, and Outlet */}
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Layout menuPage={false}/>}>
           <Route index element={<HomeScreen />} />
           <Route
             path="account/signin"
@@ -49,14 +49,18 @@ function App() {
             element={user ? <Navigate to="/menu" replace /> : <SignupScreen />}
           />
           <Route
-            path="menu"
-            element={user ? <MenuScreen /> : <Navigate to="/account/signin" replace />}
-          />
-          <Route 
-            path="menu/featured"
-            element={<FeaturedScreen/>}
-          />
+            path="account/logout"
+            element={<Navigate to="/" replace />}
+          /> 
         </Route>
+
+        {user ? (
+          <Route path="/menu" element={<Layout menuPage={true} />}>
+            <Route index element={<MenuScreen />} />
+          </Route>
+        ) : (
+          <Route path="/menu" element={<Navigate to="/account/signin" replace />} />
+        )}
       </Routes>
     </Router>
   );
