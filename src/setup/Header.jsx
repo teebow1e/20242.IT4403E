@@ -1,8 +1,11 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../features/userSlice';
 
-function Header() {
+function Header({menuPage}) {
+  const user = useSelector(selectUser);
   useEffect(() => {
     const btn = document.getElementById('menu-btn');
     const nav = document.getElementById('menu');
@@ -22,7 +25,7 @@ function Header() {
 
   return (
     <header>
-      <nav className="navbar">
+      <nav className={`navbar ${menuPage && 'navbar-menu'}`}>
         <div className="navbar-container">
           <div className="navbar-brand">
             <Link to="/">
@@ -36,14 +39,25 @@ function Header() {
             <li><Link to="#">Gift Cards</Link></li>
           </ul>
 
-          <ul className="navbar-nav-right">
-            <li>
-              <Link to="/account/signin" className="btn ">Sign in</Link>
-            </li>
-            <li>
-              <Link to="/account/create" className="btn btn-dark">Join now</Link>
-            </li>
-          </ul>
+          {!user ? (
+            <ul className="navbar-nav-right">
+              <li>
+                <Link to="/account/signin" className="btn ">Sign in</Link>
+              </li>
+              <li>
+                <Link to="/account/create" className="btn btn-dark">Join now</Link>
+              </li>
+            </ul>
+          ) : (
+            <ul className="navbar-nav-right">
+              <li>
+                {menuPage 
+                ? <Link to="/" className="btn btn-dark">Logout</Link>
+                : <Link to="/menu" className="btn btn-dark">Order Now</Link>
+                }  
+              </li>
+            </ul>
+          )}
 
           {/* Hamburger Menu */}
           <button type="button" className="hamburger" id="menu-btn">
