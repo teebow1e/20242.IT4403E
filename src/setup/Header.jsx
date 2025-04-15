@@ -1,8 +1,17 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../features/UserSlice';
+import { auth } from '../firebase';
 
-function Header() {
+function Header({ menuPage }) {
+  const user = useSelector(selectUser);
+
+  const handleLogout = () => {
+    auth.signOut();
+  }
+
   useEffect(() => {
     const btn = document.getElementById('menu-btn');
     const nav = document.getElementById('menu');
@@ -37,12 +46,32 @@ function Header() {
           </ul>
 
           <ul className="navbar-nav-right">
-            <li>
-              <Link to="/account/signin" className="btn ">Sign in</Link>
-            </li>
-            <li>
-              <Link to="/account/create" className="btn btn-dark">Join now</Link>
-            </li>
+            {!user ? (
+              <>
+                <li>
+                  <Link to="/account/signin" className="btn btn-dark-outline">Sign in</Link>
+                </li>
+                <li>
+                  <Link to="/account/create" className="btn btn-dark">Join now</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                {!menuPage ? (
+                  <>
+                    <li>
+                      <Link to="/menu" className="btn btn-dark-outline">Order Now</Link>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      <Link to="/" className="btn btn-dark" onClick={handleLogout}>Logout</Link>
+                    </li>
+                  </>
+                )}
+              </>
+            )}
           </ul>
 
           {/* Hamburger Menu */}
