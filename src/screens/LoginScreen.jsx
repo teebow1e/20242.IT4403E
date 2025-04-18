@@ -32,24 +32,25 @@ function LoginScreen() {
         }
       })
     } catch(e) {
-      console.log("Something wrong!");
+      console.log("Something wrong!", e);
       alert("Wrong email or password!");
     }
   }
   return (
     <div>
-      <div className="loginScreen">
-        <div className="loginScreen__info">
+      <div className="">
+        <div className="grid place-items-center w-full h-full text-sm mt-8 mb-8">
+            {/* grid place-items-center w-full h-full text-sm mt-8 mb-8 */}
           <h1>Sign in or create an account</h1>
         </div>
         <div className="loginScreen__main">
           <div className="loginScreen__form">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className='loginScreen__inputContainer'>
-                <TextField 
-                  label="Email address" 
-                  name="email" 
-                  type="email" 
+                <TextField
+                  label="Email address"
+                  name="email"
+                  type="email"
                   slotProps={{
                     style: { color: "rgba(0,0,0,.30)" },
                     htmlInput: { style: { fontWeight: "400" } }
@@ -57,7 +58,7 @@ function LoginScreen() {
                   className='loginScreen__input'
                   {...register("email", { required: true })}
                 />
-                {errors.email && 
+                {errors.email &&
                   <div className="loginScreen__error">
                     <Close fontSize="small" />
                     <span>Enter an email/username.</span>
@@ -70,9 +71,9 @@ function LoginScreen() {
               </div>
 
               <div className='loginScreen__inputContainer'>
-                <TextField 
-                  label="Password" 
-                  name="password" 
+                <TextField
+                  label="Password"
+                  name="password"
                   type={passwordShown ? "text" : "password"}
                   slotProps={{
                     style: { color: "rgba(0,0,0,.30)" },
@@ -93,7 +94,7 @@ function LoginScreen() {
                   />
                 )}
 
-                {errors.password && 
+                {errors.password &&
                   <div className="loginScreen__error">
                     <Close fontSize="small" />
                     <span>Enter a password</span>

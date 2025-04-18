@@ -70,7 +70,7 @@
 }
 
 .loginScreen__resetLink {
-    margin-top: 20px; 
+    margin-top: 20px;
 }
 
 .loginScreen__resetLink > a {
@@ -129,7 +129,7 @@
     color: black;
     margin-bottom: 10px;
     line-height: 1.6;
-} 
+}
 
 .loginScreen__rewards > h {
     font-size: 12px;
