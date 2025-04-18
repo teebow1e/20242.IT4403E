@@ -1,19 +1,14 @@
-@import "tailwindcss/preflight";
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
 
 /* Note: import font like this is idiotic */
 /* @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"); */
 
-:root {
-    --color-primary: #006241;
-    --color-secondary: #d50032;
-    --color-extra: #d4e9e2;
-}
-
-html, body {
-    font-family: "Open Sans", sans-serif;
+html,
+body {
     line-height: 2;
-    color: #000;
+    font-family: "Open Sans", sans-serif;
 }
 
 a {
@@ -44,24 +39,9 @@ h5 {
     line-height: 1.5;
     margin: 10px 0;
 }
+
 .text-center {
     text-align: center;
-}
-
-.text-xl {
-    font-size: 40px;
-}
-
-.text-lg {
-    font-size: 32px;
-}
-
-.text-md {
-    font-size: 28px;
-}
-
-.text-sm {
-    font-size: 24px;
 }
 
 @media (max-width: 768px) {
@@ -85,24 +65,6 @@ h5 {
     .navbar .navbar-nav-left,
     .navbar .navbar-nav-right {
         display: none;
-    }
-}
-
-@media (max-width: 960px) {
-    .text-xl {
-        font-size: 32px;
-    }
-
-    .text-lg {
-        font-size: 24px;
-    }
-
-    .text-md {
-        font-size: 18px;
-    }
-
-    .text-sm {
-        font-size: 14px;
     }
 }
 
