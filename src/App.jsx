@@ -7,10 +7,10 @@ import MenuScreen from './screens/MenuScreen';
 import FeaturedScreen from './screens/FeaturedScreen';
 import {selectUser} from './features/UserSlice';
 import {auth} from './firebase';
-import {login, logout} from './features/UserSlice'; 
+import {login, logout} from './features/UserSlice';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import './App.css';
+import './index.css';
 
 
 function App() {
@@ -51,7 +51,7 @@ function App() {
           <Route
             path="account/logout"
             element={<Navigate to="/" replace />}
-          /> 
+          />
         </Route>
 
         {user ? (
