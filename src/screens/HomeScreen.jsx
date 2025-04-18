@@ -5,8 +5,8 @@ function HomeScreen () {
     return (
         <>
             {/* <!-- Box A --> */}
-            <section className="box box-a bg-box-a text-center py-md">
-                <div className="box-inner">
+            <section className="box mb-[20px] mt-[20px] bg-[#006241] text-[white] text-center">
+                <div className="max-w-[800px] mx-auto h-full">
                     <h2 className="text-[40px]">Jingle all the way to free favorites</h2>
                     <p className="my-[5px] leading-[1.7] text-[28px]">
                     Join Starbucks ® Rewards for delicious deals & exclusive offers.
@@ -17,21 +17,21 @@ function HomeScreen () {
             </section>
 
             {/* <!-- Box B --> */}
-            <section className="box box-b bg-box-b grid-col-2">
-                <img className="max-w-full" src="/HomeScreen1.jpg" alt="" />
-                <div className="box-text">
+            <section className="box my-[20px] bg-[#32462f] text-[white] grid grid-cols-2 items-center justify-between">
+                <img className="w-full h-full object-cover block" src="/HomeScreen1.jpg" alt="" />
+                <div className="max-w-[600px] text-center justify-self-center p-[40px] mx-auto">
                     <h2 className="text-[40px]">The Spring Edit</h2>
                     <p className="my-[5px] leading-[1.7] text-[28px]">
                     Fresh flavors, familiar joy.
                     </p>
-                    <a href="#" className="text-white hover:underline btn btn-light-outline">View the menu</a>
+                    <a href="#" className="inline-block cursor-pointer border border-white text-white rounded-full px-[16px] py-[7px] leading-[1.2] text-center mt-[20px] hover:underline">View the menu</a>
                 </div>
             </section>
 
             {/* <!-- Box C --> */}
-            <section className="box box-c bg-box-c grid-col-2 grid-reversed">
+            <section className="box mb-5 mt-5 bg-[#440010cb] text-[white] grid grid-cols-2 order-2">
                 <img className="max-w-full" src="/HomeScreen3.jpg" alt="" />
-                <div className="box-text">
+                <div className="max-w-[600px] text-center justify-self-center p-[40px] mx-auto">
                     <h2 className="text-[40px]">Our smoothest, brightest coffee yet</h2>
                     <p className="my-[5px] leading-[1.7] text-[24px]">
                     Discover the people and places behind the new Starbucks® Sunsera Blend™ as it makes its way from farm to cup.
