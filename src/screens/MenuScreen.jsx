@@ -1,7 +1,6 @@
 import React from 'react';
 import useIdleLogout from "../useIdleLogout";
 
-
 function MenuScreen() {
   useIdleLogout();
   return (
