@@ -8,7 +8,6 @@ import FormSubmit from '../forms/FormSubmit';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
-import './SignupForm.css'
 
 function SignupForm() {
     const { register, handleSubmit, formState: { errors } } = useForm();
