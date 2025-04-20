@@ -3,7 +3,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "./firebase";
 import { useNavigate } from "react-router-dom";
 
-const IDLE_TIMEOUT = 5 * 1000; //  5 secs
+const IDLE_TIMEOUT = 50000 * 1000; //  50000 secs
 
 function useIdleLogout(){
     const navigate = useNavigate();

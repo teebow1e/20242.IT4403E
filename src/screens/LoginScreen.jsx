@@ -40,7 +40,7 @@ function LoginScreen() {
       <div>
         <div className="grid place-items-center w-full h-full text-sm mt-8 mb-8">
             {/* grid place-items-center w-full h-full text-sm mt-8 mb-8 */}
-          <h1>Sign in or create an account</h1>
+          <h1 class="text-[32px] font-bold text-black text-center">Sign in or create an account</h1>
         </div>
         <div className="grid place-items-center flex-1">
           <div className="flex flex-col loginScreen-boxshad rounded-xl p-12 max-w-full h-full">

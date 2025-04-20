@@ -52,6 +52,10 @@ function App() {
             path="account/logout"
             element={<Navigate to="/" replace />}
           />
+          <Route 
+            path="menu/featured"
+            element={<FeaturedScreen/>}
+          />
         </Route>
 
         {user ? (
