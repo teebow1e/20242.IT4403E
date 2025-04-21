@@ -1,0 +1,37 @@
+[
+    {
+      "brewedCoffee": [
+        {
+          "type": "Blonde Roast – Sunsera",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/Veranda_Blend_Hot.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Featured Medium Roast – Pike Place® Roast",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/PikePlaceRoast.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Featured Dark Roast",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190617_FeaturedDarkRoast.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Dark Roast – Caffè Verona®",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/Veranda_Blend_Hot.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Decaf Pike Place® Roast",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/Veranda_Blend_Hot.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Caffè Misto",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/CaffeMisto.jpg?impolicy=1by1_tight_288"
+        }
+      ],
+      "americano": [
+        {
+          "type": "Caffè Americano",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/CaffeAmericano.jpg?impolicy=1by1_tight_288"
+        }
+      ]
+    }
+  ]
+  

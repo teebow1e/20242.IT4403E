@@ -13,6 +13,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import './index.css';
 
 
+
+
+import HotCoffee from './screens/menu/HotCoffee/HotCoffee';
+
 function App() {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
@@ -55,6 +59,10 @@ function App() {
           <Route 
             path="menu/featured"
             element={<FeaturedScreen/>}
+          />
+          <Route 
+            path="menu/drinks/hot-coffees"
+            element={<HotCoffee/>}
           />
         </Route>
 
