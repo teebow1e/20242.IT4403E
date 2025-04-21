@@ -28,7 +28,7 @@ function MenuScreen() {
               {drinks.map(({ path, type, image }, idx) => (
                 <MenuItem
                   key={`drink-${idx}`}
-                  path={path}
+                  path={`/menu${path}`}
                   type={type}
                   image={image}
                 />
@@ -45,7 +45,7 @@ function MenuScreen() {
               {food.map(({ path, type, image }, idx) => (
                 <MenuItem
                   key={`food-${idx}`}
-                  path={path}
+                  path={`/menu${path}`}
                   type={type}
                   image={image}
                 />
@@ -62,13 +62,32 @@ function MenuScreen() {
               {atHomeCoffee.map(({ path, type, image }, idx) => (
                 <MenuItem
                   key={`coffee-${idx}`}
-                  path={path}
+                  path={`/menu${path}`}
                   type={type}
                   image={image}
                 />
               ))}
             </div>
           </section>
+
+          {/* Merchandise */}
+          {merchandise && (
+            <section className="mb-[60px]">
+              <h2 className="text-[19px] sm:text-[24px] font-extrabold text-black/90 mb-[20px]">
+                Merchandise
+              </h2>
+              <div className="border-t border-black/10 flex flex-wrap gap-x-[100px] gap-y-[40px] pt-[20px] pr-[20px]">
+                {merchandise.map(({ path, type, image }, idx) => (
+                  <MenuItem
+                    key={`merch-${idx}`}
+                    path={`/menu${path}`}
+                    type={type}
+                    image={image}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </div>
     </div>
