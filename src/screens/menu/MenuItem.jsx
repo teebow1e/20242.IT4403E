@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-function MenuItem({ type, image }) {
+function MenuItem({ path, type, image }) {
   return (
-    <Link className="flex items-center gap-[10px] w-[240px] md:w-[260px]">
+    <Link to={path} className="flex items-center gap-[10px] w-[240px] md:w-[260px]">
       <img
         src={image}
         alt={type}
