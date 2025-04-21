@@ -64,26 +64,6 @@ function MenuList() {
           )}
         </div>
       </div>
-
-      {/* Merchandise */}
-      <div className="flex flex-col">
-        <h4 className="text-[18px] font-semibold text-black/90 mb-[20px]">
-          Merchandise
-        </h4>
-        <div className="flex flex-col gap-[12px]">
-          {menuList.map((category) =>
-            category.merchandise.map((item, idx) => (
-              <Link
-                key={`merch-${idx}`}
-                to={item.path}
-                className="text-[15px] font-semibold leading-[1.5] text-black/60 max-w-[150px]"
-              >
-                {item.type}
-              </Link>
-            ))
-          )}
-        </div>
-      </div>
     </div>
   )
 }

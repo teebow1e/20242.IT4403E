@@ -6,7 +6,7 @@ function MenuHeader() {
   const linkBase = 'text-[13px] font-semibold text-black/90 pb-[5px]'
 
   return (
-    <div className="bg-[#f7f7f7] border border-[#edebe9] border-b border-[#dbd9d7] w-full pl-[131px] pt-[15px] pb-[10px] z-[2] block max-[425px]:hidden">
+    <div className="bg-[#f7f7f7] border border-[#dedede] border-b border-[#dedede] w-full pl-[131px] pt-[15px] pb-[10px] z-[2] block max-[425px]:hidden">
       <div className="flex gap-[25px]">
         <Link
           onClick={() => setIndex(0)}

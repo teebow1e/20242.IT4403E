@@ -1,14 +1,16 @@
-import React from "react";
-import MenuHeader from "./menu/MenuHeader";
-import MenuList from "./menu/MenuList";
-import MenuItem from "./menu/MenuItem";
-import menuList from "./menu/menulist.json";
+import React from 'react'
+import MenuHeader from './menu/MenuHeader'
+import MenuList from './menu/MenuList'
+import MenuItem from './menu/MenuItem'
+import menuList from './menu/menulist.json'
 
 function MenuScreen() {
+  const { drinks, food, atHomeCoffee, merchandise } = menuList[0]
+
   return (
     <div className="flex flex-col mt-[30px] sm:mt-0">
       <MenuHeader />
-      <div className="flex gap-[100px] pl-[20px] mt-[30px] sm:pl-[131px] sm:mt-[101px]">
+      <div className="flex gap-[100px] pl-[20px] mt-[30px] sm:pl-[130px] sm:mt-[40px]">
         <div className="hidden md:block">
           <MenuList />
         </div>
@@ -18,56 +20,59 @@ function MenuScreen() {
           </h1>
 
           {/* Drinks */}
-          <div className="mb-[60px]">
+          <section className="mb-[60px]">
             <h2 className="text-[19px] sm:text-[24px] font-extrabold text-black/90 mb-[20px]">
               Drinks
             </h2>
             <div className="border-t border-black/10 flex flex-wrap gap-x-[100px] gap-y-[40px] pt-[20px] pr-[20px]">
-              {menuList[0].drinks.map(({ type, image }, idx) => (
-                <MenuItem key={`drink-${idx}`} type={type} image={image} />
+              {drinks.map(({ path, type, image }, idx) => (
+                <MenuItem
+                  key={`drink-${idx}`}
+                  path={path}
+                  type={type}
+                  image={image}
+                />
               ))}
             </div>
-          </div>
+          </section>
 
           {/* Food */}
-          <div className="mb-[60px]">
+          <section className="mb-[60px]">
             <h2 className="text-[19px] sm:text-[24px] font-extrabold text-black/90 mb-[20px]">
               Food
             </h2>
             <div className="border-t border-black/10 flex flex-wrap gap-x-[100px] gap-y-[40px] pt-[20px] pr-[20px]">
-              {menuList[0].food.map(({ type, image }, idx) => (
-                <MenuItem key={`food-${idx}`} type={type} image={image} />
+              {food.map(({ path, type, image }, idx) => (
+                <MenuItem
+                  key={`food-${idx}`}
+                  path={path}
+                  type={type}
+                  image={image}
+                />
               ))}
             </div>
-          </div>
+          </section>
 
           {/* At Home Coffee */}
-          <div className="mb-[60px]">
+          <section className="mb-[60px]">
             <h2 className="text-[19px] sm:text-[24px] font-extrabold text-black/90 mb-[20px]">
               At Home Coffee
             </h2>
             <div className="border-t border-black/10 flex flex-wrap gap-x-[100px] gap-y-[40px] pt-[20px] pr-[20px]">
-              {menuList[0].atHomeCoffee.map(({ type, image }, idx) => (
-                <MenuItem key={`coffee-${idx}`} type={type} image={image} />
+              {atHomeCoffee.map(({ path, type, image }, idx) => (
+                <MenuItem
+                  key={`coffee-${idx}`}
+                  path={path}
+                  type={type}
+                  image={image}
+                />
               ))}
             </div>
-          </div>
-
-          {/* Merchandise */}
-          <div className="mb-[60px]">
-            <h2 className="text-[19px] sm:text-[24px] font-extrabold text-black/90 mb-[20px]">
-              Merchandise
-            </h2>
-            <div className="border-t border-black/10 flex flex-wrap gap-x-[100px] gap-y-[40px] pt-[20px] pr-[20px]">
-              {menuList[0].merchandise.map(({ type, image }, idx) => (
-                <MenuItem key={`merch-${idx}`} type={type} image={image} />
-              ))}
-            </div>
-          </div>
+          </section>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default MenuScreen;
+export default MenuScreen

@@ -4,88 +4,81 @@
       {
         "path": "/drinks/hot-coffees",
         "type": "Hot Coffees",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        "image": "https://globalassets.starbucks.com/digitalassets/products/bev/CaffeLatte.jpg?impolicy=1by1_tight_288"
       },
       {
         "path": "/drinks/hot-teas",
         "type": "Hot Teas",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        "image": "https://globalassets.starbucks.com/digitalassets/products/bev/HoneyCitrusMintTea.jpg?impolicy=1by1_tight_288"
       },
       {
-        "path": "/drinks/hot-drinks",
-        "type": "Hot Drinks",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        "path": "/drinks/refreshers",
+        "type": "Refreshers",
+        "image": "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20211210_StrawberryAcaiLemonadeRefreshers.jpg?impolicy=1by1_tight_288"
       },
       {
         "path": "/drinks/frappuccino-blended-beverages",
         "type": "Frappuccino® Blended Beverages",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        "image": "https://globalassets.starbucks.com/digitalassets/products/bev/CaramelRibbonCrunchCremeFrappuccino.jpg?impolicy=1by1_tight_288"
       },
       {
         "path": "/drinks/cold-coffees",
         "type": "Cold Coffees",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        "image": "https://globalassets.starbucks.com/digitalassets/products/bev/VanillaSweetCreamColdBrew.jpg?impolicy=1by1_tight_288"
       },
       {
-        "path": "/drinks/iced-teas",
-        "type": "Iced Teas",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        "path": "/drinks/iced-energy",
+        "type": "Iced Energy",
+        "image": "https://globalassets.starbucks.com/digitalassets/products/bev/MelonBurstEnergyDrink.jpg?impolicy=1by1_tight_288"
       },
       {
-        "path": "/drinks/cold-drinks",
-        "type": "Cold Drinks",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        "path": "/drinks/cold-teas",
+        "type": "Cold Teas",
+        "image": "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20181127_IcedMatchaGreenTeaLatte.jpg?impolicy=1by1_tight_288"
       }
     ],
     "food": [
       {
-        "path": "/food/hot-breakfast",
-        "type": "Hot Breakfast",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        "path": "/food/breakfast",
+        "type": "Breakfast",
+        "image": "https://globalassets.starbucks.com/digitalassets/products/food/EggPestoMozzarellaSandwich.jpg?impolicy=1by1_tight_288"
       },
       {
         "path": "/food/bakery",
         "type": "Bakery",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20210915_Croissant-onGreen.jpg?impolicy=1by1_tight_288"
       },
       {
         "path": "/food/lunch",
         "type": "Lunch",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20220207_GrilledCheeseOnSourdough_US.jpg?impolicy=1by1_tight_288"
       },
       {
-        "path": "/food/snacks-and-sweets",
-        "type": "Snacks & Sweets",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        "path": "/food/snacks",
+        "type": "Snacks",
+        "image": "https://globalassets.starbucks.com/digitalassets/products/food/Madeleines.jpg?impolicy=1by1_tight_288"
       },
       {
-        "path": "/food/oatmeal-and-yogurt",
-        "type": "Oatmeal & Yogurt",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        "path": "/food/treats",
+        "type": "Treats",
+        "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20181129_BirthdayCakePop.jpg?impolicy=1by1_tight_288"
       }
     ],
     "atHomeCoffee": [
       {
         "path": "/at-home-coffee/whole-bean",
         "type": "Whole Bean",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-      },
-      {
-        "path": "/at-home-coffee/verismo-pods",
-        "type": "Verismo® Pods",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/PikePlaceRoast2022.jpg?impolicy=1by1_tight_288"
       },
       {
         "path": "/at-home-coffee/via-instant",
         "type": "VIA® Instant",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-      }
-    ],
-    "merchandise": [
+        "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/SBX20190715_ViaInstantPikePlaceRoast.jpg?impolicy=1by1_tight_288"
+      },
       {
-        "path": "/merchandise/drinkware",
-        "type": "Drinkware",
-        "image": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        "path": "/at-home-coffee/shopping-bag",
+        "type": "Shopping Bag",
+        "image": "https://globalassets.starbucks.com/digitalassets/products/merch/SBX20210405_SirenShopperBag.jpg?impolicy=1by1_tight_288"
       }
     ]
   }
