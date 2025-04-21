@@ -1,34 +1,41 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 function MenuHeader() {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(0)
+  const linkBase = 'text-[13px] font-semibold text-black/90 pb-[5px]'
 
   return (
-    <div className="bg-[#f7f7f7] border border-[#edebe9] border-b-[#dbd9d7]  w-full pl-[131px] pt-[15px] pb-[10px] z-[2] max-md:relative max-[425px]:hidden">
+    <div className="bg-[#f7f7f7] border border-[#edebe9] border-b border-[#dbd9d7] w-full pl-[131px] pt-[15px] pb-[10px] z-[2] block max-[425px]:hidden">
       <div className="flex gap-[25px]">
         <Link
-          className={`text-black/90 font-semibold text-[13px] pb-[5px] ${index === 0 ? 'border-b border-black' : ''}`}
           onClick={() => setIndex(0)}
+          className={`${linkBase} ${index === 0 ? 'border-b border-black' : ''}`}
         >
           All products
         </Link>
         <Link
           to="/menu/featured"
-          className={`text-black/90 font-semibold text-[13px] pb-[5px] ${index === 1 ? 'border-b border-black' : ''}`}
           onClick={() => setIndex(1)}
+          className={`${linkBase} ${index === 1 ? 'border-b border-black' : ''}`}
         >
           Featured
         </Link>
-        <Link className="text-black/90 font-semibold text-[13px] pb-[5px]">
+        <Link
+          onClick={() => setIndex(2)}
+          className={`${linkBase} ${index === 2 ? 'border-b border-black' : ''}`}
+        >
           Previous Orders
         </Link>
-        <Link className="text-black/90 font-semibold text-[13px] pb-[5px]">
+        <Link
+          onClick={() => setIndex(3)}
+          className={`${linkBase} ${index === 3 ? 'border-b border-black' : ''}`}
+        >
           Favorite Products
         </Link>
       </div>
     </div>
-  );
+  )
 }
 
-export default MenuHeader;
+export default MenuHeader
