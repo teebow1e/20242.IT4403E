@@ -15,7 +15,7 @@ import './index.css';
 
 
 
-import HotCoffee from './screens/menu/HotCoffee/HotCoffee';
+import HotCoffee from './screens/menu/hotcoffee/HotCoffee';
 
 function App() {
   const user = useSelector(selectUser);
