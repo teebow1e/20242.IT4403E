@@ -1,0 +1,47 @@
+[
+    {
+      "lemonadeRefreshers": [
+        {
+          "type": "Strawberry Açaí Lemonade Refresher",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20211210_StrawberryAcaiLemonadeRefreshers.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Mango Dragonfruit Lemonade Refresher",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20211210_MangoDragonfruitLemonadeRefreshers.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Blackberry Sage Lemonade Refresher",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/BlackberrySageLemonadeRefresher.jpg?impolicy=1by1_tight_288"
+        }
+      ],
+      "coconutmilkRefreshers": [
+        {
+          "type": "Pink Drink",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/PinkDrink.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Dragon Drink®",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/DragonDrink.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Midnight Drink",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/MidnightDrink.jpg?impolicy=1by1_tight_288"
+        }
+      ],
+      "refreshers": [
+        {
+          "type": "Strawberry Açaí Refresher",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/StrawberryAcai.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Mango Dragonfruit Refresher",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20221206_MangoDragonfruitRefreshers.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Blackberry Sage Refresher",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/BlackberrySageRefresher.jpg?impolicy=1by1_tight_288"
+        }
+      ]
+    }
+  ]
+  
