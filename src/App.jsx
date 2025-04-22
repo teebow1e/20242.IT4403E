@@ -13,9 +13,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import './index.css';
 
 
-
-
 import HotCoffee from './screens/menu/hotcoffee/HotCoffee';
+import HotTea from './screens/menu/hottea/HotTea';
+import Refreshers from './screens/menu/refresher/Refreshers';  
+import Frappuccino from './screens/menu/frappuccino/Frappuccino';
+import ColdCoffee from './screens/menu/coldcoffee/ColdCoffee';
+import IcedEnergy from './screens/menu/icedenergy/IcedEnergy'; 
 
 function App() {
   const user = useSelector(selectUser);
@@ -64,6 +67,26 @@ function App() {
             path="menu/drinks/hot-coffees"
             element={<HotCoffee/>}
           />
+          <Route 
+            path="menu/drinks/hot-teas"
+            element={<HotTea/>}
+          />
+          <Route 
+            path="menu/drinks/refreshers"
+            element={<Refreshers/>}
+          />
+          <Route
+            path="menu/drinks/frappuccino-blended-beverages"
+            element={<Frappuccino/>}
+          />
+          <Route
+            path="menu/drinks/cold-coffees"
+            element={<ColdCoffee/>}
+          />
+          <Route
+            path="menu/drinks/iced-energy"
+            element={<IcedEnergy/>} 
+          />  
         </Route>
 
         {user ? (

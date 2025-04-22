@@ -1,0 +1,19 @@
+[
+    {
+      "icedEnergy": [
+        {
+          "type": "Melon Burst Iced Energy",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/MelonBurstEnergyDrink.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Tropical Citrus Iced Energy",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/TropicalCitrusEnergyDrink.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Frozen Tropical Citrus Iced Energy with Strawberry Puree",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/bev/FrozenTropicalCitrusStrawberryEnergyDrink.jpg?impolicy=1by1_tight_288"
+        }
+      ]
+    }
+  ]
+  
