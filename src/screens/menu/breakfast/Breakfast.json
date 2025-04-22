@@ -1,0 +1,48 @@
+[
+    {
+      "breakfastSandwiches": [
+        {
+          "type": "Egg, Pesto & Mozzarella Sandwich",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/EggPestoMozzarellaSandwich.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Bacon, Gouda & Egg Sandwich",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20210915_BaconGoudaEggSandwich.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Double‑Smoked Bacon, Cheddar & Egg Sandwich",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20210915_BaconCheddarEggSandwich.jpg?impolicy=1by1_tight_288"
+        }
+      ],
+      "breakfastWraps": [
+        {
+          "type": "Bacon, Sausage & Egg Wrap",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20191018_BaconSausageCageFreeEggWrap.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Spinach, Feta & Egg White Wrap",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/SpinachFetaEggWhiteWrap.jpg?impolicy=1by1_tight_288"
+        }
+      ],
+      "eggBitesAndBakes": [
+        {
+          "type": "Bacon & Gruyère Egg Bites",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/BaconGruyereEggBites.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Egg White & Roasted Red Pepper Egg Bites",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/EggWhiteRoastedRedPepperEggBites.jpg?impolicy=1by1_tight_288"
+        }
+      ],
+      "oatmealAndYogurt": [
+        {
+          "type": "Rolled & Steel‑Cut Oatmeal",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20230321_Oatmeal_onGreen.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Berry Trio Parfait",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/BerryTrioParfait.jpg?impolicy=1by1_tight_288"
+        }
+      ]
+    }
+  ]

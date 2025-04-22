@@ -19,6 +19,15 @@ import Refreshers from './screens/menu/refresher/Refreshers';
 import Frappuccino from './screens/menu/frappuccino/Frappuccino';
 import ColdCoffee from './screens/menu/coldcoffee/ColdCoffee';
 import IcedEnergy from './screens/menu/icedenergy/IcedEnergy'; 
+import ColdTea from './screens/menu/coldtea/ColdTea';
+import BreakFast from './screens/menu/breakfast/Breakfast';
+import Bakery from './screens/menu/bakery/Bakery';
+import Snacks from './screens/menu/snacks/Snacks';
+import Treats from './screens/menu/treats/Treats';
+import Lunch from './screens/menu/lunch/Lunch';
+import WholeBean from './screens/menu/wholebean/WholeBean';
+import ViaInstant from './screens/menu/viainstant/ViaInstant';
+import Bag from './screens/menu/bag/Bag';
 
 function App() {
   const user = useSelector(selectUser);
@@ -87,6 +96,42 @@ function App() {
             path="menu/drinks/iced-energy"
             element={<IcedEnergy/>} 
           />  
+          <Route
+            path="menu/drinks/cold-teas"
+            element={<ColdTea/>}
+          />
+          <Route
+            path="menu/food/breakfast"
+            element={<BreakFast/>}
+          />
+          <Route
+            path="menu/food/bakery"
+            element={<Bakery/>}
+          />
+          <Route
+            path="menu/food/snacks"
+            element={<Snacks/>}
+          />
+          <Route
+            path="menu/food/treats"
+            element={<Treats/>}
+          />
+          <Route
+            path="menu/food/lunch"
+            element={<Lunch/>}
+          />
+          <Route
+            path="menu/at-home-coffee/whole-bean"
+            element={<WholeBean/>}
+          />
+          <Route
+            path="menu/at-home-coffee/via-instant"
+            element={<ViaInstant/>}
+          />
+          <Route
+            path="menu/at-home-coffee/shopping-bag"
+            element={<Bag/>}
+          />
         </Route>
 
         {user ? (

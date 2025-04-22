@@ -1,0 +1,49 @@
+[
+    {
+      "proteinAndSnackBars": [
+        {
+          "type": "Perfect Bar – Dark Chocolate Chip Peanut Butter",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20180710_PerfectBar_DarkChocolateChipPeanutButter.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Perfect Bar® Peanut Butter",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20180201_PerfectBar_PeanutButter.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "KIND – Almond Coconut Cashew Chai",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20160316_62551_AlmondCoconutCashewChai_MOP_1800.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "KIND® Salted Caramel & Dark Chocolate Nut Bar",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20191031_KIND_SaltedCaramelDarkChocolate.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "That's It® – Apple + Mango Bar",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20151016_Thats_It_Apple_Mango.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "That's It® – Apple + Blueberry Bar",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20190628_ThatsIt_AppleBlueberryBar.jpg?impolicy=1by1_tight_288"
+        }
+      ],
+      "saltySnacks": [
+        {
+          "type": "Siete Sea Salt Kettle Cooked Potato Chips",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/SieteSeaSaltPotatoChips.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Siete Lime Grain Free Tortilla Chips",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/SieteLimeTortillaChips.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Starbucks Butter Popcorn",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20210825_ButteredGourmetPopcorn.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Country Archer – Hickory Smoked Turkey Jerky",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20190715_CountryArcherTurkeyJerkyHickorySmoke.jpg?impolicy=1by1_tight_288"
+        }
+      ]
+    }
+  ]
+  

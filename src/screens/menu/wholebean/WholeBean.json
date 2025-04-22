@@ -1,0 +1,33 @@
+[
+    {
+      "starbucksReserve": [
+        {
+          "type": "Sun‑Dried Ethiopia Oromia West Arsi Packaged Coffee Whole Bean",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/SunDriedEthiopiaOromiaWestArsi-US-WBReserve.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Mexico Tenejapa San Cristobal Packaged Coffee Whole Bean",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/MexicoTenejapaSanCristobal-US-WBReserve.jpg?impolicy=1by1_tight_288"
+        }
+      ],
+      "blondeRoast": [
+        {
+          "type": "Starbucks® Sunsera Blend Whole Bean",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/SunseraBlendUS.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Starbucks® Green Apron Blend™",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/SBX20230124_GreenApronBlend2023.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Veranda Blend®",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/SBX20220803_VerandaBlend2022.jpg?impolicy=1by1_tight_288"
+        },
+        {
+          "type": "Starbucks® Blonde Espresso Roast",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/BlondeEspressoRoast.jpg?impolicy=1by1_tight_288"
+        }
+      ]
+    }
+  ]
+  
