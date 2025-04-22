@@ -1,0 +1,23 @@
+[
+    {
+      "flavored": [
+        {
+          "type": "Starbucks VIA® Instant Sweetened Iced Coffee",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/SBX20190715_ViaInstantSweetenedIcedCoffee.jpg?impolicy=1by1_tight_288"
+        }
+      ],
+      "blondeRoast": [
+        {
+          "type": "Starbucks VIA® Instant Veranda Blend®",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/SBX20190715_ViaInstantBlondeVerandaBlend.jpg?impolicy=1by1_tight_288"
+        }
+      ],
+      "mediumRoast": [
+        {
+          "type": "Starbucks VIA® Instant Pike Place Roast",
+          "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/SBX20190715_ViaInstantPikePlaceRoast.jpg?impolicy=1by1_tight_288"
+        }
+      ]
+    }
+  ]
+  
