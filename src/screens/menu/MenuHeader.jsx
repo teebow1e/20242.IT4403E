@@ -8,7 +8,8 @@ function MenuHeader() {
   return (
     <div className="bg-[#f7f7f7] border border-[#dedede] border-b border-[#dedede] w-full pl-[131px] pt-[15px] pb-[10px] z-[2] block max-[425px]:hidden">
       <div className="flex gap-[25px]">
-        <Link
+        <Link 
+          to="/menu"
           onClick={() => setIndex(0)}
           className={`${linkBase} ${index === 0 ? 'border-b border-black' : ''}`}
         >
