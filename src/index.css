@@ -1,7 +1,26 @@
 @import "tailwindcss";
 
-/* Note: import font like this is idiotic */
-/* @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"); */
+
+@font-face {
+    font-family: 'Sodo Sans';
+    src: url('/fonts/SodoSans-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+@font-face {
+    font-family: 'Sodo Sans';
+    src: url('/fonts/SodoSans-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Sodo Sans';
+    src: url('/fonts/SodoSans-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
 
 html,
 body {
