@@ -5,13 +5,11 @@ import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
 import MenuScreen from './screens/MenuScreen';
 import FeaturedScreen from './screens/FeaturedScreen';
-import {selectUser} from './features/UserSlice';
 import {auth} from './firebase';
-import {login, logout} from './features/UserSlice';
+import {login, logout, selectUser} from './features/UserSlice';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './index.css';
-
 
 import HotCoffee from './screens/menu/hotcoffee/HotCoffee';
 import HotTea from './screens/menu/hottea/HotTea';

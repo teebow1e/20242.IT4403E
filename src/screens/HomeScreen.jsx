@@ -1,84 +1,112 @@
-import "./Box.css"
-
-function HomeScreen () {
+function HomeScreen() {
     return (
-        <>
-            {/* <!-- Box A --> */}
-            <section className="box mb-[20px] mt-[20px] bg-[#006241] text-[white] text-center">
-                <div className="max-w-[800px] mx-auto h-full">
-                    <h2 className="text-[40px]">Jingle all the way to free favorites</h2>
-                    <p className="my-[5px] leading-[1.7] text-[28px]">
-                    Join Starbucks ® Rewards for delicious deals & exclusive offers.
-                    <br></br>
-                    <a href="#" className="text-black hover:underline">Learn more</a>
-                    </p>
-                </div>
-            </section>
-
-            {/* <!-- Box B --> */}
-            <section className="box my-[20px] bg-[#32462f] text-[white] grid grid-cols-2 items-center justify-between">
-                <img className="w-full h-full object-cover block" src="/HomeScreen1.jpg" alt="" />
-                <div className="max-w-[600px] text-center justify-self-center p-[40px] mx-auto">
-                    <h2 className="text-[40px]">The Spring Edit</h2>
-                    <p className="my-[5px] leading-[1.7] text-[28px]">
-                    Fresh flavors, familiar joy.
-                    </p>
-                    <a href="#" className="inline-block cursor-pointer border border-white text-white rounded-full px-[16px] py-[7px] leading-[1.2] text-center mt-[20px] hover:underline">View the menu</a>
-                </div>
-            </section>
-
-            {/* <!-- Box C --> */}
-            <section className="box bg-[#440010cb] text-white grid grid-cols-2 items-center justify-between">
-                <img className="max-w-full order-2" src="/HomeScreen3.jpg" alt="" />
-                <div className="max-w-[600px] text-center justify-self-center p-[40px] mx-auto">
-                    <h2 className="text-[40px]">Our smoothest, brightest coffee yet</h2>
-                    <p className="my-[5px] leading-[1.7] text-[24px]">
-                    Discover the people and places behind the new Starbucks® Sunsera Blend™ as it makes its way from farm to cup.
-                    </p>
-                    <a href="#" className="inline-block cursor-pointer border border-white text-white rounded-full px-[16px] py-[7px] leading-[1.2] text-center mt-[20px] hover:underline">See the journey</a>
-                </div>
-            </section>
-
-            {/* <!-- Box D --> */}
-            <section className="box bg-[#5f4633] text-white grid grid-cols-2 items-center justify-between">
-                <img className="max-w-full" src="/HomeScreen2.jpg" alt="" />
-                <div className="max-w-[600px] text-center justify-self-center p-[40px] mx-auto">
-                    <h2 className="text-[32px]">It’s a great day for free coffee</h2>
-                    <p className="my-[5px] leading-[1.7] text-[24px]">
-                    Start your Starbucks® Rewards journey with a coffee on us. Join now and enjoy a free handcrafted drink with a qualifying purchase during your first week.*
-                    </p>
-                    <a href="#" className="inline-block cursor-pointer border border-white text-white rounded-full px-[16px] py-[7px] leading-[1.2] text-center mt-[20px] hover:underline">Order Now</a>
-                </div>
-            </section>
-
-            {/* <!-- Box E --> */}
-            <section className="box bg-[#006241] text-white grid grid-cols-2 items-center justify-between">
-                <img className="max-w-full order-2" src="/HomeScreen5.jpg" alt="" />
-                <div className="max-w-[600px] text-center justify-self-center p-[40px] mx-auto">
-                    <h2 className="text-[40px]">More reasons to stay awhile</h2>
-                    <p className="my-[5px] leading-[1.7] text-[24px]">
-                    Mugs, glasses and the condiment bar are back—and get free refills of hot or iced brewed coffee or tea.**
-                    </p>
-                    <a href="#" className="inline-block cursor-pointer border border-white text-white rounded-full px-[16px] py-[7px] leading-[1.2] text-center mt-[20px] hover:underline">Learn More</a>
-                </div>
-            </section>
-
-
-            {/* <!-- Section E --> */}
-            <section className="box">
-                <div className="max-w-[600px] text-center mx-auto p-[40px]">
-                    <p className="my-[5px] leading-[1.7] text-[16px]">
-                    *Valid for new Starbucks Rewards members for 7 days from sign up. Coupon will be available in the offers tab of your Starbucks app following sign up and may take up to 48 hours to arrive. Good at participating U.S. stores for a handcrafted menu-sized beverage with qualifying purchase ($8 max value). Qualifying purchase excludes alcohol, Starbucks Card and Card reloads. Limit one. Cannot be combined with other offers or discounts. Excludes delivery services. Sign up before 3/30/2025.
-                    </p>
-                    <br></br>
-                    <p className="my-[5px] leading-[1.7] text-[16px]">
-                    **Free refills of hot and iced brewed coffee or tea during same store visit. Excludes Cold Brew, Nitro Cold Brew, Iced Tea Lemonade, and flavored Iced Tea and Starbucks Refreshers® base. At participating stores. Want a free starbuck ? Ask FieryPhoenix !
-                    </p>
-                </div>
-            </section>
-
-        </>
-    )
-}
-
-export default HomeScreen
+      <>
+        {/* Box A */}
+        <section className="max-w-[1440px] mx-auto px-4 my-5 bg-[#006241] text-white text-center">
+          <div className="max-w-[800px] mx-auto">
+            <h2 className="font-sodo font-bold text-[40px]">
+              Jingle all the way to free favorites
+            </h2>
+            <p className="font-sodo my-1 text-[24px] leading-[1.7]">
+              Join Starbucks ® Rewards for delicious deals & exclusive offers.
+              <br />
+              <a href="#" className=" text-black hover:underline">
+                Learn more
+              </a>
+            </p>
+          </div>
+        </section>
+  
+        {/* Box B */}
+        <section className="max-w-[1440px] mx-auto my-5 grid grid-cols-1 md:grid-cols-2 items-center bg-[#32462f] text-white">
+          <img
+            className="w-full h-full object-cover"
+            src="/HomeScreen1.jpg"
+            alt="Spring beverages"
+          />
+          <div className="mx-auto max-w-[600px] p-10 text-center">
+            <h2 className="font-sodo font-bold text-[40px]">The Spring Edit</h2>
+            <p className="my-1 text-[28px] leading-[1.7]">Fresh flavors, familiar joy.</p>
+            <a
+              href="#"
+              className="inline-block rounded-full border border-white px-4 py-2 mt-5 text-center hover:opacity-80"
+            >
+              View the menu
+            </a>
+          </div>
+          
+        </section>
+  
+        {/* Box C */}
+        <section className="max-w-[1440px] mx-auto my-5 grid grid-cols-1 md:grid-cols-2 items-center bg-[#440010cb] text-white">
+          <img
+            className="w-full md:order-2"
+            src="/HomeScreen3.jpg"
+            alt="Sunsera Blend"
+          />
+          <div className="mx-auto max-w-[600px] p-10 text-center">
+            <h2 className="font-sodo font-bold text-[36px]">
+              Our smoothest, brightest coffee yet
+            </h2>
+            <p className="my-1 text-[24px] leading-[1.7]">
+              Discover the people and places behind the new Starbucks® Sunsera Blend™ as it makes its way from farm to cup.
+            </p>
+            <a
+              href="#"
+              className="inline-block rounded-full border border-white px-4 py-2 mt-5 text-center hover:opacity-80"
+            >
+              See the journey
+            </a>
+          </div>
+        </section>
+  
+        {/* Box D */}
+        <section className="max-w-[1440px] mx-auto my-5 grid grid-cols-1 md:grid-cols-2 items-center bg-[#5f4633] text-white">
+          <img
+            className="w-full"
+            src="/HomeScreen2.jpg"
+            alt="Free coffee"
+          />
+          <div className="mx-auto max-w-[600px] p-10 text-center">
+            <h2 className="font-sodo font-bold text-[32px]">
+              It’s a great day for free coffee
+            </h2>
+            <p className="my-1 text-[24px] leading-[1.7]">
+              Start your Starbucks® Rewards journey with a coffee on us. Join now and enjoy a free handcrafted drink with a qualifying purchase during your first week.*
+            </p>
+            <a
+              href="#"
+              className="inline-block rounded-full border border-white px-4 py-2 mt-5 text-center hover:opacity-80"
+            >
+              Order Now
+            </a>
+          </div>
+        </section>
+  
+        {/* Box E */}
+        <section className="max-w-[1440px] mx-auto my-5 grid grid-cols-1 md:grid-cols-2 items-center bg-[#006241] text-white">
+          <img
+            className="w-full md:order-2"
+            src="/HomeScreen5.jpg"
+            alt="Mugs & glasses"
+          />
+          <div className="mx-auto max-w-[600px] p-10 text-center">
+            <h2 className="font-sodo font-bold text-[36px]">
+              More reasons to stay awhile
+            </h2>
+            <p className="my-1 text-[24px] leading-[1.7]">
+              Mugs, glasses and the condiment bar are back—and get free refills of hot or iced brewed coffee or tea.**
+            </p>
+            <a
+              href="#"
+              className="inline-block rounded-full border border-white px-4 py-2 mt-5 text-center hover:opacity-80"
+            >
+              Learn More
+            </a>
+          </div>
+        </section>
+      </>
+    );
+  }
+  
+export default HomeScreen;
