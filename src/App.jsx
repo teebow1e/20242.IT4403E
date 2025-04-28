@@ -15,10 +15,10 @@ import './index.css';
 
 import HotCoffee from './screens/menu/hotcoffee/HotCoffee';
 import HotTea from './screens/menu/hottea/HotTea';
-import Refreshers from './screens/menu/refresher/Refreshers';  
+import Refreshers from './screens/menu/refresher/Refreshers';
 import Frappuccino from './screens/menu/frappuccino/Frappuccino';
 import ColdCoffee from './screens/menu/coldcoffee/ColdCoffee';
-import IcedEnergy from './screens/menu/icedenergy/IcedEnergy'; 
+import IcedEnergy from './screens/menu/icedenergy/IcedEnergy';
 import ColdTea from './screens/menu/coldtea/ColdTea';
 import BreakFast from './screens/menu/breakfast/Breakfast';
 import Bakery from './screens/menu/bakery/Bakery';
@@ -68,19 +68,19 @@ function App() {
             path="account/logout"
             element={<Navigate to="/" replace />}
           />
-          <Route 
+          <Route
             path="menu/featured"
             element={<FeaturedScreen/>}
           />
-          <Route 
+          <Route
             path="menu/drinks/hot-coffees"
             element={<HotCoffee/>}
           />
-          <Route 
+          <Route
             path="menu/drinks/hot-teas"
             element={<HotTea/>}
           />
-          <Route 
+          <Route
             path="menu/drinks/refreshers"
             element={<Refreshers/>}
           />
@@ -94,8 +94,8 @@ function App() {
           />
           <Route
             path="menu/drinks/iced-energy"
-            element={<IcedEnergy/>} 
-          />  
+            element={<IcedEnergy/>}
+          />
           <Route
             path="menu/drinks/cold-teas"
             element={<ColdTea/>}

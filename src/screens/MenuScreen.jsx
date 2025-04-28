@@ -2,7 +2,7 @@ import React from 'react'
 import MenuHeader from './menu/MenuHeader'
 import MenuList from './menu/MenuList'
 import MenuItem from './menu/MenuItem'
-import menuList from './menu/menulist.json'
+import menuList from './menu/menuList.json'
 
 function MenuScreen() {
   const { drinks, food, atHomeCoffee, merchandise } = menuList[0]

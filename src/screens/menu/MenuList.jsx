@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import menuList from './menulist.json'
+import menuList from './menuList.json'
 
 function MenuList() {
   const { drinks, food, atHomeCoffee, merchandise } = menuList[0]
