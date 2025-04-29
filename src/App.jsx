@@ -2,11 +2,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Layout from './Layout';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
+import ForgotPasswordScreen from './screens/ForgotPassScreen';
 import SignupScreen from './screens/SignupScreen';
 import MenuScreen from './screens/MenuScreen';
 import FeaturedScreen from './screens/FeaturedScreen';
-import {auth} from './firebase';
-import {login, logout, selectUser} from './features/UserSlice';
+import { auth } from './firebase';
+import { login, logout, selectUser } from './features/UserSlice';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './index.css';
@@ -28,120 +29,124 @@ import ViaInstant from './screens/menu/viainstant/ViaInstant';
 import Bag from './screens/menu/bag/Bag';
 
 function App() {
-  const user = useSelector(selectUser);
-  const dispatch = useDispatch();
+    const user = useSelector(selectUser);
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    auth.onAuthStateChanged((userAuth) => {
-      if (userAuth) {
-        // User is signed in
-        dispatch(login({
-          email: userAuth.email,
-          uid: userAuth.uid,
-          displayName: userAuth.displayName
-        }));
-      } else {
-        // User is signed out
-        dispatch(logout());
-      }
-    }
+    useEffect(() => {
+        auth.onAuthStateChanged((userAuth) => {
+            if (userAuth) {
+                // User is signed in
+                dispatch(login({
+                    email: userAuth.email,
+                    uid: userAuth.uid,
+                    displayName: userAuth.displayName
+                }));
+            } else {
+                // User is signed out
+                dispatch(logout());
+            }
+        }
+        );
+    }, [dispatch]);
+
+    return (
+        <Router>
+            <Routes>
+                {/* Nesting routes inside Layout so they share Header, Footer, and Outlet */}
+                <Route path="/" element={<Layout menuPage={false} />}>
+                    <Route index element={<HomeScreen />} />
+                    <Route
+                        path="account/signin"
+                        element={user ? <Navigate to="/menu" replace /> : <LoginScreen />}
+                    />
+                    <Route
+                        path="account/create"
+                        element={user ? <Navigate to="/menu" replace /> : <SignupScreen />}
+                    />
+                    <Route
+                        path="account/forgot-password"
+                        element={user ? <Navigate to="/menu" replace /> : <ForgotPasswordScreen />}
+                    />
+                    <Route
+                        path="account/logout"
+                        element={<Navigate to="/" replace />}
+                    />
+                    <Route
+                        path="menu/featured"
+                        element={<FeaturedScreen />}
+                    />
+                    <Route
+                        path="menu/drinks/hot-coffees"
+                        element={<HotCoffee />}
+                    />
+                    <Route
+                        path="menu/drinks/hot-teas"
+                        element={<HotTea />}
+                    />
+                    <Route
+                        path="menu/drinks/refreshers"
+                        element={<Refreshers />}
+                    />
+                    <Route
+                        path="menu/drinks/frappuccino-blended-beverages"
+                        element={<Frappuccino />}
+                    />
+                    <Route
+                        path="menu/drinks/cold-coffees"
+                        element={<ColdCoffee />}
+                    />
+                    <Route
+                        path="menu/drinks/iced-energy"
+                        element={<IcedEnergy />}
+                    />
+                    <Route
+                        path="menu/drinks/cold-teas"
+                        element={<ColdTea />}
+                    />
+                    <Route
+                        path="menu/food/breakfast"
+                        element={<BreakFast />}
+                    />
+                    <Route
+                        path="menu/food/bakery"
+                        element={<Bakery />}
+                    />
+                    <Route
+                        path="menu/food/snacks"
+                        element={<Snacks />}
+                    />
+                    <Route
+                        path="menu/food/treats"
+                        element={<Treats />}
+                    />
+                    <Route
+                        path="menu/food/lunch"
+                        element={<Lunch />}
+                    />
+                    <Route
+                        path="menu/at-home-coffee/whole-bean"
+                        element={<WholeBean />}
+                    />
+                    <Route
+                        path="menu/at-home-coffee/via-instant"
+                        element={<ViaInstant />}
+                    />
+                    <Route
+                        path="menu/at-home-coffee/shopping-bag"
+                        element={<Bag />}
+                    />
+                </Route>
+
+                {user ? (
+                    <Route path="/menu" element={<Layout menuPage={true} />}>
+                        <Route index element={<MenuScreen />} />
+                    </Route>
+                ) : (
+                    <Route path="/menu" element={<Navigate to="/account/signin" replace />} />
+                )}
+            </Routes>
+        </Router>
     );
-  }, [dispatch]);
-
-  return (
-    <Router>
-      <Routes>
-        {/* Nesting routes inside Layout so they share Header, Footer, and Outlet */}
-        <Route path="/" element={<Layout menuPage={false}/>}>
-          <Route index element={<HomeScreen />} />
-          <Route
-            path="account/signin"
-            element={user ? <Navigate to="/menu" replace /> : <LoginScreen />}
-          />
-          <Route
-            path="account/create"
-            element={user ? <Navigate to="/menu" replace /> : <SignupScreen />}
-          />
-          <Route
-            path="account/logout"
-            element={<Navigate to="/" replace />}
-          />
-          <Route
-            path="menu/featured"
-            element={<FeaturedScreen/>}
-          />
-          <Route
-            path="menu/drinks/hot-coffees"
-            element={<HotCoffee/>}
-          />
-          <Route
-            path="menu/drinks/hot-teas"
-            element={<HotTea/>}
-          />
-          <Route
-            path="menu/drinks/refreshers"
-            element={<Refreshers/>}
-          />
-          <Route
-            path="menu/drinks/frappuccino-blended-beverages"
-            element={<Frappuccino/>}
-          />
-          <Route
-            path="menu/drinks/cold-coffees"
-            element={<ColdCoffee/>}
-          />
-          <Route
-            path="menu/drinks/iced-energy"
-            element={<IcedEnergy/>}
-          />
-          <Route
-            path="menu/drinks/cold-teas"
-            element={<ColdTea/>}
-          />
-          <Route
-            path="menu/food/breakfast"
-            element={<BreakFast/>}
-          />
-          <Route
-            path="menu/food/bakery"
-            element={<Bakery/>}
-          />
-          <Route
-            path="menu/food/snacks"
-            element={<Snacks/>}
-          />
-          <Route
-            path="menu/food/treats"
-            element={<Treats/>}
-          />
-          <Route
-            path="menu/food/lunch"
-            element={<Lunch/>}
-          />
-          <Route
-            path="menu/at-home-coffee/whole-bean"
-            element={<WholeBean/>}
-          />
-          <Route
-            path="menu/at-home-coffee/via-instant"
-            element={<ViaInstant/>}
-          />
-          <Route
-            path="menu/at-home-coffee/shopping-bag"
-            element={<Bag/>}
-          />
-        </Route>
-
-        {user ? (
-          <Route path="/menu" element={<Layout menuPage={true} />}>
-            <Route index element={<MenuScreen />} />
-          </Route>
-        ) : (
-          <Route path="/menu" element={<Navigate to="/account/signin" replace />} />
-        )}
-      </Routes>
-    </Router>
-  );
 }
 
 export default App;
