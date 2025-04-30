@@ -6,6 +6,7 @@ import ForgotPasswordScreen from './screens/ForgotPassScreen';
 import SignupScreen from './screens/SignupScreen';
 import MenuScreen from './screens/MenuScreen';
 import FeaturedScreen from './screens/FeaturedScreen';
+import ProtectedRoute from './ProtectedRoute';
 import { auth } from './firebase';
 import { login, logout, selectUser } from './features/UserSlice';
 import { useEffect } from 'react';
@@ -71,79 +72,83 @@ function App() {
                         path="account/logout"
                         element={<Navigate to="/" replace />}
                     />
+                </Route>
+
+                {/* Menu routes */}
+                <Route 
+                    path="/menu" 
+                    element={
+                      <ProtectedRoute>
+                          <Layout menuPage={true}/>
+                      </ProtectedRoute> 
+                    }
+                >   
+                    <Route index element={<MenuScreen />} />
                     <Route
-                        path="menu/featured"
+                        path="featured"
                         element={<FeaturedScreen />}
                     />
                     <Route
-                        path="menu/drinks/hot-coffees"
+                        path="drinks/hot-coffees"
                         element={<HotCoffee />}
                     />
                     <Route
-                        path="menu/drinks/hot-teas"
+                        path="drinks/hot-teas"
                         element={<HotTea />}
                     />
                     <Route
-                        path="menu/drinks/refreshers"
+                        path="drinks/refreshers"
                         element={<Refreshers />}
                     />
                     <Route
-                        path="menu/drinks/frappuccino-blended-beverages"
+                        path="drinks/frappuccino-blended-beverages"
                         element={<Frappuccino />}
                     />
                     <Route
-                        path="menu/drinks/cold-coffees"
+                        path="drinks/cold-coffees"
                         element={<ColdCoffee />}
                     />
                     <Route
-                        path="menu/drinks/iced-energy"
+                        path="drinks/iced-energy"
                         element={<IcedEnergy />}
                     />
                     <Route
-                        path="menu/drinks/cold-teas"
+                        path="drinks/cold-teas"
                         element={<ColdTea />}
                     />
                     <Route
-                        path="menu/food/breakfast"
+                        path="food/breakfast"
                         element={<BreakFast />}
                     />
                     <Route
-                        path="menu/food/bakery"
+                        path="food/bakery"
                         element={<Bakery />}
                     />
                     <Route
-                        path="menu/food/snacks"
+                        path="food/snacks"
                         element={<Snacks />}
                     />
                     <Route
-                        path="menu/food/treats"
+                        path="food/treats"
                         element={<Treats />}
                     />
                     <Route
-                        path="menu/food/lunch"
+                        path="food/lunch"
                         element={<Lunch />}
                     />
                     <Route
-                        path="menu/at-home-coffee/whole-bean"
+                        path="at-home-coffee/whole-bean"
                         element={<WholeBean />}
                     />
                     <Route
-                        path="menu/at-home-coffee/via-instant"
+                        path="at-home-coffee/via-instant"
                         element={<ViaInstant />}
                     />
                     <Route
-                        path="menu/at-home-coffee/shopping-bag"
+                        path="at-home-coffee/shopping-bag"
                         element={<Bag />}
                     />
                 </Route>
-
-                {user ? (
-                    <Route path="/menu" element={<Layout menuPage={true} />}>
-                        <Route index element={<MenuScreen />} />
-                    </Route>
-                ) : (
-                    <Route path="/menu" element={<Navigate to="/account/signin" replace />} />
-                )}
             </Routes>
         </Router>
     );
