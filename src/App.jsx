@@ -6,6 +6,9 @@ import ForgotPasswordScreen from './screens/ForgotPassScreen';
 import SignupScreen from './screens/SignupScreen';
 import MenuScreen from './screens/MenuScreen';
 import FeaturedScreen from './screens/FeaturedScreen';
+import CartScreen from './screens/CartScreen';
+import CheckoutScreen from './screens/CheckoutScreen';
+import OrderConfirmationScreen from './screens/OrderConfirmationScreen';
 import { auth } from './firebase';
 import { login, logout, selectUser } from './features/UserSlice';
 import { useEffect } from 'react';
@@ -48,6 +51,11 @@ function App() {
         }
         );
     }, [dispatch]);
+
+    // Auth Guard - requires authentication for certain routes
+    const ProtectedRoute = ({ children }) => {
+        return user ? children : <Navigate to="/account/signin" replace />;
+    };
 
     return (
         <Router>
@@ -135,6 +143,23 @@ function App() {
                         path="menu/at-home-coffee/shopping-bag"
                         element={<Bag />}
                     />
+
+                    {/* Cart and checkout routes - protected by auth */}
+                    <Route path="cart" element={
+                        <ProtectedRoute>
+                            <CartScreen />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="checkout" element={
+                        <ProtectedRoute>
+                            <CheckoutScreen />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="order-confirmation" element={
+                        <ProtectedRoute>
+                            <OrderConfirmationScreen />
+                        </ProtectedRoute>
+                    } />
                 </Route>
 
                 {user ? (
