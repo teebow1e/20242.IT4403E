@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../features/UserSlice';
 import { auth } from '../firebase';
+import CartIcon from '../components/CartIcon';
 
 function Header({ menuPage }) {
   const user = useSelector(selectUser);
@@ -44,6 +45,12 @@ function Header({ menuPage }) {
           </ul>
 
           <ul className="flex items-center">
+            {user && (
+              <li className="mx-4">
+                <CartIcon />
+              </li>
+            )}
+
             {!user ? (
               <>
                 <li className="mx-4 font-bold">
@@ -89,8 +96,17 @@ function Header({ menuPage }) {
           <li><Link to="#" className="no-underline text-xl hover:text-green-700">Gift Cards</Link></li>
         </ul>
         <div className="mt-5 flex gap-3">
-          <Link to="/account/signin" className="cursor-pointer inline-block border border-black rounded-full px-4 py-2 leading-tight text-center no-underline text-black hover:bg-black/5">Sign in</Link>
-          <Link to="/account/create" className="cursor-pointer inline-block border border-black rounded-full px-4 py-2 leading-tight text-center no-underline bg-black text-white hover:bg-gray-800">Join now</Link>
+          {user ? (
+            <>
+              <Link to="/cart" className="cursor-pointer inline-block border border-black rounded-full px-4 py-2 leading-tight text-center no-underline text-black hover:bg-black/5">Cart</Link>
+              <Link to="/" onClick={handleLogout} className="cursor-pointer inline-block border border-black rounded-full px-4 py-2 leading-tight text-center no-underline bg-black text-white hover:bg-gray-800">Logout</Link>
+            </>
+          ) : (
+            <>
+              <Link to="/account/signin" className="cursor-pointer inline-block border border-black rounded-full px-4 py-2 leading-tight text-center no-underline text-black hover:bg-black/5">Sign in</Link>
+              <Link to="/account/create" className="cursor-pointer inline-block border border-black rounded-full px-4 py-2 leading-tight text-center no-underline bg-black text-white hover:bg-gray-800">Join now</Link>
+            </>
+          )}
         </div>
       </div>
     </header>
