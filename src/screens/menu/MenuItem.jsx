@@ -8,19 +8,13 @@ function MenuItem({ path, type, image, category }) {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleClick = (e) => {
-    if (path) {
-      // If it has a path, let the Link component handle it
-      return;
-    }
+    if (path) return;           // let <Link> handle navigation
 
-    // Otherwise, open the modal
-    e.preventDefault();
+    e.preventDefault();         // open modal for items without a path
     setShowModal(true);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-  };
+  const closeModal = () => setShowModal(false);
 
   const Container = path ? Link : 'div';
   const toProps = path ? { to: path } : {};
@@ -38,10 +32,14 @@ function MenuItem({ path, type, image, category }) {
           <img
             src={image}
             alt={type}
-            className={`rounded-full object-cover w-[120px] h-[120px] transition-transform duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+            className={`rounded-full object-cover w-[120px] h-[120px] transition-transform duration-500 ${
+              isHovered ? 'scale-105' : 'scale-100'
+            }`}
           />
         </div>
-        <h3 className="text-center text-base font-medium text-gray-800 group-hover:text-starbucks-green transition-colors duration-300">
+
+        {/* replaced custom color class with explicit Starbucks green hex */}
+        <h3 className="text-center text-base font-medium text-gray-800 group-hover:text-[#006241] transition-colors duration-300">
           {type}
         </h3>
       </Container>
