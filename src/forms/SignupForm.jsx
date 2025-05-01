@@ -6,45 +6,67 @@ import { useNavigate } from 'react-router-dom';
 import { Close, DangerousSharp, VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
 import FormSubmit from '../forms/FormSubmit';
 import { auth } from '../firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { login } from '../features/UserSlice';
 
 function SignupForm() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, watch } = useForm();
     const [passwordShown, setPasswordShown] = useState(false);
+    const [submitError, setSubmitError] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    // auth.onAuthStateChanged((user) => {
-    //   if (user === null) {
-    //     console.log('User is currently signed out!');
-    //   } else {
-    //     console.log('User is signed in!');
-    //   }
-    // });
+    const passwordPattern = {
+        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,25}$/,
+        message: "Password must be 8-25 characters with at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character"
+    };
 
-    const onSubmit = ({ fName, lName, email, password }) => {
+    const clearSubmitError = () => {
+        if (submitError) {
+            setSubmitError(null);
+        }
+    };
+
+    const onSubmit = async ({ fName, lName, email, password }) => {
+        setIsSubmitting(true);
+        setSubmitError(null);
+
         try {
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userAuth) => {
-                    dispatch(login({
-                        email: userAuth.user.email,
-                        uid: userAuth.user.uid,
-                        displayName: fName + " " + lName,
-                    }));
-                    navigate("/");
-                })
-                .catch((e) => {
-                    if (e.code === 'auth/email-already-in-use') {
-                        alert('Email already in use!');
-                    } else if (e.code === 'auth/invalid-email') {
-                        alert('Invalid email!');
-                    } else if (e.code === 'auth/weak-password') {
-                        alert('Weak password!');
-                    }
-                });
-        } catch (e) {
-            console.error(e);
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+            await updateProfile(userCredential.user, {
+                displayName: `${fName} ${lName}`
+            });
+
+            dispatch(login({
+                email: userCredential.user.email,
+                uid: userCredential.user.uid,
+                displayName: `${fName} ${lName}`,
+            }));
+
+            navigate("/");
+        } catch (error) {
+            console.error("Signup error:", error);
+
+            switch (error.code) {
+                case 'auth/email-already-in-use':
+                    setSubmitError('This email is already in use. Please use a different email or sign in.');
+                    break;
+                case 'auth/invalid-email':
+                    setSubmitError('Please enter a valid email address.');
+                    break;
+                case 'auth/weak-password':
+                    setSubmitError('Password is too weak. Please follow the password requirements.');
+                    break;
+                case 'auth/network-request-failed':
+                    setSubmitError('Network error. Please check your internet connection and try again.');
+                    break;
+                default:
+                    setSubmitError('An error occurred during signup. Please try again.');
+            }
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -54,6 +76,8 @@ function SignupForm() {
                 <div className="p-12"> {/*sm:p-0 sm:px-5*/}
                     <form onSubmit={handleSubmit(onSubmit)} className='relative w-full'>
                         <h4 className='text-gray-800 text-[19px] mb-2'>Personal Information</h4>
+
+                        {/* First Name Field */}
                         <div className="relative flex flex-col mb-2.5">
                             <TextField
                                 label="First name"
@@ -64,13 +88,16 @@ function SignupForm() {
                                     htmlInput: { style: { fontWeight: "400" } }
                                 }}
                                 className='w-full'
-                                // error={!!errors.fName}
-                                {...register("fName", { required: true })}
+                                error={!!errors.fName}
+                                {...register("fName", {
+                                    required: "Enter your first name.",
+                                    onChange: clearSubmitError
+                                })}
                             />
                             {errors.fName &&
                                 <div className="mt-1.5 flex items-center gap-1.5 text-xs">
-                                    <Close fontSize="small" />
-                                    <span>Enter your first name.</span>
+                                    <Close fontSize="small" className="text-red-500" />
+                                    <span>{errors.fName.message}</span>
                                     <DangerousSharp
                                         fontSize="small"
                                         className="absolute right-[4%] top-0 translate-y-[90%] text-red-500"
@@ -79,6 +106,7 @@ function SignupForm() {
                             }
                         </div>
 
+                        {/* Last Name Field */}
                         <div className="relative flex flex-col mb-2.5">
                             <TextField
                                 label="Last name"
@@ -89,13 +117,16 @@ function SignupForm() {
                                     htmlInput: { style: { fontWeight: "400" } }
                                 }}
                                 className='w-full'
-                                // error={!!errors.lName}
-                                {...register("lName", { required: true })}
+                                error={!!errors.lName}
+                                {...register("lName", {
+                                    required: "Enter your last name.",
+                                    onChange: clearSubmitError
+                                })}
                             />
                             {errors.lName &&
                                 <div className="mt-1.5 flex items-center gap-1.5 text-xs">
-                                    <Close fontSize="small" />
-                                    <span>Enter your last name.</span>
+                                    <Close fontSize="small" className="text-red-500" />
+                                    <span>{errors.lName.message}</span>
                                     <DangerousSharp
                                         fontSize="small"
                                         className="absolute right-[4%] top-0 translate-y-[90%] text-red-500"
@@ -106,6 +137,7 @@ function SignupForm() {
 
                         <h4 className='text-gray-800 text-lg mb-2 mt-4'>Account Security</h4>
 
+                        {/* Email Field */}
                         <div className="relative flex flex-col mb-2.5">
                             <TextField
                                 label="Email Address"
@@ -116,13 +148,20 @@ function SignupForm() {
                                     htmlInput: { style: { fontWeight: "400" } }
                                 }}
                                 className='w-full'
-                                // error={!!errors.email}
-                                {...register("email", { required: true })}
+                                error={!!errors.email}
+                                {...register("email", {
+                                    required: "Enter an email address.",
+                                    pattern: {
+                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                        message: "Enter a valid email address."
+                                    },
+                                    onChange: clearSubmitError
+                                })}
                             />
                             {errors.email &&
                                 <div className="mt-1.5 flex items-center gap-1.5 text-xs">
                                     <Close fontSize="small" className='text-red-500' />
-                                    <span>Enter an email.</span>
+                                    <span>{errors.email.message}</span>
                                     <DangerousSharp
                                         fontSize="small"
                                         className="absolute right-[4%] top-0 translate-y-[90%] text-red-500"
@@ -131,42 +170,49 @@ function SignupForm() {
                             }
                         </div>
 
+                        {/* Password Field */}
                         <div className='relative flex flex-col mb-2.5'>
-                            <TextField
-                                label="Password"
-                                name="password"
-                                type={passwordShown ? "text" : "password"}
-                                slotProps={{
-                                    style: { color: "rgba(0,0,0,.30)" },
-                                    htmlInput: { style: { fontWeight: "400" } }
-                                }}
-                                className='w-full'
-                                {...register("password", { required: true })}
-                            />
-                            {passwordShown ? (
-                                <VisibilityOutlined
-                                    onClick={() => setPasswordShown((passwordShown) => !passwordShown)}
-                                    className='cursor-pointer text-gray-500 absolute right-[11%] translate-y-[70%]'
+                            <div className="relative">
+                                <TextField
+                                    label="Password"
+                                    name="password"
+                                    type={passwordShown ? "text" : "password"}
+                                    slotProps={{
+                                        style: { color: "rgba(0,0,0,.30)" },
+                                        htmlInput: { style: { fontWeight: "400" } }
+                                    }}
+                                    className='w-full'
+                                    error={!!errors.password}
+                                    {...register("password", {
+                                        required: "Enter a password.",
+                                        pattern: passwordPattern,
+                                        onChange: clearSubmitError
+                                    })}
                                 />
-                            ) : (
-                                <VisibilityOffOutlined
+                                {/* Always position the eye icon in the same place */}
+                                <div
                                     onClick={() => setPasswordShown((passwordShown) => !passwordShown)}
-                                    className='cursor-pointer text-gray-500 absolute right-[11%] translate-y-[70%]'
-                                />
-                            )}
+                                    className='cursor-pointer text-gray-500 absolute right-4 top-1/2 transform -translate-y-1/2 z-10'
+                                >
+                                    {passwordShown ? <VisibilityOutlined /> : <VisibilityOffOutlined />}
+                                </div>
+                            </div>
 
                             {errors.password &&
                                 <div className="mt-1.5 flex items-center gap-1.5 text-xs">
                                     <Close fontSize="small" className='text-red-500' />
-                                    <span>Enter a password</span>
-                                    <DangerousSharp
-                                        fontSize="small"
-                                        className="absolute right-[4%] top-0 translate-y-[90%] text-red-500"
-                                    />
+                                    <span>{errors.password.message}</span>
                                 </div>
                             }
-                            <h5>Create a password 8 to 25 characters long that includes at least 1 uppercase and 1 lowercase letter, 1 number and 1 special character like an exclamation point or asterisk.</h5>
+                            <h5 className="text-gray-500 text-xs mt-2">Create a password 8 to 25 characters long that includes at least 1 uppercase and 1 lowercase letter, 1 number and 1 special character like an exclamation point or asterisk.</h5>
                         </div>
+
+                        {/* Submit Error Display */}
+                        {submitError && (
+                            <div className="mt-4 mb-4 p-3 bg-red-50 text-red-800 rounded-md text-sm">
+                                {submitError}
+                            </div>
+                        )}
 
                         <h4 className='text-gray-600 text-sm my-6'>
                             Collect more Stars & Earn Rewards
@@ -175,7 +221,13 @@ function SignupForm() {
                             Email is a great way to know about offers and what's new from Starbucks.
                         </span>
                         <div className="flex justify-end w-full mt-4">
-                            <FormSubmit name='Create account' type='submit'>Sign up</FormSubmit>
+                            <FormSubmit
+                                name={isSubmitting ? 'Creating account...' : 'Create account'}
+                                type='submit'
+                                disabled={isSubmitting}
+                            >
+                                Sign up
+                            </FormSubmit>
                         </div>
                     </form>
                 </div>
