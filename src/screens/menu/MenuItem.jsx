@@ -5,6 +5,7 @@ import ProductDetail from '../../components/ProductDetail';
 
 function MenuItem({ path, type, image, category }) {
   const [showModal, setShowModal] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleClick = (e) => {
     if (path) {
@@ -28,17 +29,21 @@ function MenuItem({ path, type, image, category }) {
     <>
       <Container
         {...toProps}
-        className="flex items-center gap-[10px] w-[240px] md:w-[260px] cursor-pointer"
+        className="flex flex-col items-center transition-transform duration-300 cursor-pointer hover:opacity-90 group"
         onClick={handleClick}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <img
-          src={image}
-          alt={type}
-          className="rounded-full object-contain w-[80px] md:w-[120px]"
-        />
-        <h4 className="text-[16px] md:text-[18px] leading-[1.5] font-semibold text-black/90">
+        <div className="relative mb-3 overflow-hidden rounded-full">
+          <img
+            src={image}
+            alt={type}
+            className={`rounded-full object-cover w-[120px] h-[120px] transition-transform duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+          />
+        </div>
+        <h3 className="text-center text-base font-medium text-gray-800 group-hover:text-starbucks-green transition-colors duration-300">
           {type}
-        </h4>
+        </h3>
       </Container>
 
       {showModal && (
