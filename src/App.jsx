@@ -52,12 +52,7 @@ function App() {
         }
         );
     }, [dispatch]);
-
-    // Auth Guard - requires authentication for certain routes
-    const ProtectedRoute = ({ children }) => {
-        return user ? children : <Navigate to="/account/signin" replace />;
-    };
-
+    
     return (
         <Router>
             <Routes>
@@ -80,6 +75,23 @@ function App() {
                         path="account/logout"
                         element={<Navigate to="/" replace />}
                     />
+
+                    {/* Cart and checkout routes - protected by auth */}
+                    <Route path="cart" element={
+                        <ProtectedRoute>
+                            <CartScreen />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="checkout" element={
+                        <ProtectedRoute>
+                            <CheckoutScreen />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="order-confirmation" element={
+                        <ProtectedRoute>
+                            <OrderConfirmationScreen />
+                        </ProtectedRoute>
+                    } />
                 </Route>
 
                 {/* Menu routes */}
@@ -157,22 +169,7 @@ function App() {
                         element={<Bag />}
                     />
 
-                    {/* Cart and checkout routes - protected by auth */}
-                    <Route path="cart" element={
-                        <ProtectedRoute>
-                            <CartScreen />
-                        </ProtectedRoute>
-                    } />
-                    <Route path="checkout" element={
-                        <ProtectedRoute>
-                            <CheckoutScreen />
-                        </ProtectedRoute>
-                    } />
-                    <Route path="order-confirmation" element={
-                        <ProtectedRoute>
-                            <OrderConfirmationScreen />
-                        </ProtectedRoute>
-                    } />
+                    
                 </Route>
             </Routes>
         </Router>
