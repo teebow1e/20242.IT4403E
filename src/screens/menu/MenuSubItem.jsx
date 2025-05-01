@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import MenuHeader from './MenuHeader'
-import MenuList   from './MenuList'
+import MenuList from './MenuList'
+import AddToCartButton from '../../components/AddToCartButton'
 
 export default function SectionedMenu({
   data,            // e.g. hotCoffeeData[0]
@@ -46,6 +47,7 @@ export default function SectionedMenu({
                         <h4 className="text-[16px] md:text-[18px] leading-[1.5] font-semibold text-black/90">
                           {item.type}
                         </h4>
+                        <AddToCartButton item={item} category={key} />
                       </Container>
                     )
                   })}
