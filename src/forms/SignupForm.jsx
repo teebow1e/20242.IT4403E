@@ -72,7 +72,7 @@ function SignupForm() {
 
     return (
         <div>
-            <div className='flex flex-col signupForm-boxshad rounded-xl max-w-[500px] !h-full sm:shadow-none sm:h-[500px]'>
+            <div className='flex flex-col bg-white shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-xl max-w-[500px] !h-full'>
                 <div className="p-12"> {/*sm:p-0 sm:px-5*/}
                     <form onSubmit={handleSubmit(onSubmit)} className='relative w-full'>
                         <h4 className='text-gray-800 text-[19px] mb-2'>Personal Information</h4>
