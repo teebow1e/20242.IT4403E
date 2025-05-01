@@ -80,7 +80,7 @@ function Header({ menuPage }) {
           </ul>
 
           {/* Hamburger Menu */}
-          <button type="button" className="relative w-6 h-6 z-10 transition-all hidden md:block cursor-pointer bg-transparent border-none" id="menu-btn">
+          <button type="button" className="relative w-6 h-6 z-10 transition-all block md:hidden cursor-pointer bg-transparent border-none" id="menu-btn">
             <span className="absolute top-0 left-0 w-6 h-0.5 bg-black transform rotate-0 transition-all duration-500 hamburger-top"></span>
             <span className="absolute top-0 left-0 w-6 h-0.5 bg-black transform translate-y-2 transition-all duration-500 hamburger-middle"></span>
             <span className="absolute top-0 left-0 w-6 h-0.5 bg-black transform translate-y-4 transition-all duration-500 hamburger-bottom"></span>

@@ -16,7 +16,7 @@ function FooterLink({ href, children }) {
 
 function Footer() {
     return (
-        <footer className="mx-[50px]">
+<footer className="mx-[20px] sm:mx-[50px]">
             <div className='border-t border-black/10'></div>
             <div className="footer-max-w-[1440px] w-full mx-auto my-10 px-5 flex flex-col items-start">
                 <div className="flex items-center gap-5 my-5 flex-wrap">

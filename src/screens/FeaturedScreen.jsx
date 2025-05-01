@@ -4,8 +4,8 @@ function Featured() {
             <h1 className="text-center text-5xl text-[#32462f]">The Spring edit</h1>
 
             {/* Box A */}
-            <section className="my-5 grid grid-cols-2 bg-white text-white gap-10 items-center justify-between">
-                <div className="bg-[#d2d2ae] text-center pb-10 max-w-[800px] mx-auto h-full">
+            <section className="my-5 grid grid-cols-1 sm:grid-cols-2 bg-white text-white gap-10 items-center justify-between">
+                                <div className="bg-[#d2d2ae] text-center pb-10 max-w-[800px] mx-auto h-full">
                     <img className="max-w-full" src="/drink1.jpg" alt="" />
                     <h2 className="text-[28px] px-20 font-bold font-helvetica text-[#1e3932]">Iced Lavender Cream Oatmilk Matcha</h2>
                     <p className="my-[5px] leading-[1.7] text-[18px] px-20 text-[#1e3932]">A smooth combination of matcha green tea and oatmilk, finished with lavender cream cold foam with subtle floral notes. Includes dairy.</p>
