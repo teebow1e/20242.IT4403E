@@ -6,11 +6,11 @@ import App from './App.jsx'
 // import * as serviceWorker from './serviceWorker.js'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  // <StrictMode>
     <Provider store={store}>
       <App />
-    </Provider>
-  </StrictMode>,
+    </Provider>,
+  {/* </StrictMode>, */}
 )
 
 // If you want your app to work offline and load faster, you can change
