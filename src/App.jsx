@@ -10,6 +10,7 @@ import ProtectedRoute from './ProtectedRoute';
 import CartScreen from './screens/CartScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
 import OrderConfirmationScreen from './screens/OrderConfirmationScreen';
+import WaiterScreen from './screens/WaiterScreen';
 import { auth } from './firebase';
 import { login, logout, selectUser } from './features/UserSlice';
 import { useEffect } from 'react';
@@ -56,9 +57,15 @@ function App() {
     return (
         <Router>
             <Routes>
+                {/* Waiter routes */}
+                <Route path="waiter" element={
+                    <WaiterScreen />
+                } />
+
                 {/* Nesting routes inside Layout so they share Header, Footer, and Outlet */}
                 <Route path="/" element={<Layout menuPage={false} />}>
                     <Route index element={<HomeScreen />} />
+                    {/* User Authentication routes */}
                     <Route
                         path="account/signin"
                         element={user ? <Navigate to="/menu" replace /> : <LoginScreen />}
