@@ -1,0 +1,215 @@
+{
+    "products": {
+        "SB001": {
+            "type_id": "shoppingBag",
+            "name": "Small Shopping Bag",
+            "price": 2.99,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/merch/SBX20210405_SirenShopperBag.jpg"
+        },
+        
+        "BK001": {
+            "type_id": "croissantsAndDanishes",
+            "name": "Vanilla Bean Custard Danish",
+            "price": 3.49,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/VanillaBeanCustardDanish.jpg"
+        },
+        "BK002": {
+            "type_id": "croissantsAndDanishes",
+            "name": "Baked Apple Croissant",
+            "price": 2.89,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/AppleCroissant.jpg"
+        },
+        "BK003": {
+            "type_id": "croissantsAndDanishes",
+            "name": "Ham & Swiss Croissant",
+            "price": 3.69,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/HamAndSwissCroissant.jpg"
+        },
+        "BK004": {
+            "type_id": "croissantsAndDanishes",
+            "name": "Butter Croissant",
+            "price": 2.79,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20210915_Croissant-onGreen.jpg"
+        },
+        "BK005": {
+            "type_id": "croissantsAndDanishes",
+            "name": "Chocolate Croissant",
+            "price": 3.19,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20220607_ChocolateCroissant-onGreen.jpg"
+        },
+        "BK006": {
+            "type_id": "croissantsAndDanishes",
+            "name": "Cheese Danish",
+            "price": 3.29,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20220125_CheeseDanish-onGreen.jpg"
+        },
+        "BK007": {
+            "type_id": "croissantsAndDanishes",
+            "name": "Turkey Sage Danish",
+            "price": 3.79,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/TurkeySageDanish.jpg"
+        },
+        "BK008": {
+            "type_id": "loavesAndCakes",
+            "name": "Banana, Walnut & Pecan Loaf",
+            "price": 3.69,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20190729_BananaNutBread_US.jpg"
+        },
+        "BK009": {
+            "type_id": "loavesAndCakes",
+            "name": "Iced Lemon Loaf",
+            "price": 3.49,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20190729_LemonLoaf.jpg"
+        },
+        "BK010": {
+            "type_id": "loavesAndCakes",
+            "name": "Pumpkin & Pepita Loaf",
+            "price": 3.59,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20190729_PumpkinBread.jpg"
+        },
+        "BK011": {
+            "type_id": "loavesAndCakes",
+            "name": "Cinnamon Coffee Cake",
+            "price": 3.99,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20180511_ClassicCoffeeCake.jpg"
+        },
+        "BK012": {
+            "type_id": "muffinsSconesAndDoughnuts",
+            "name": "Blueberry Streusel Muffin",
+            "price": 3.59,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/BlueberryStreuselMuffinUS.jpg"
+        },
+        "BK013": {
+            "type_id": "muffinsSconesAndDoughnuts",
+            "name": "Petite Vanilla Bean Scone",
+            "price": 2.69,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20230406_PetiteVanillaScone.jpg"
+        },
+        "BF001": {
+            "type_id": "breakfastSandwiches",
+            "name": "Egg, Pesto & Mozzarella Sandwich",
+            "price": 4.79,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/EggPestoMozzarellaSandwich.jpg?impolicy=1by1_tight_288"
+        },
+        "BF002": {
+            "type_id": "breakfastSandwiches",
+            "name": "Bacon, Gouda & Egg Sandwich",
+            "price": 4.99,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20210915_BaconGoudaEggSandwich.jpg?impolicy=1by1_tight_288"
+        },
+        "BF003": {
+            "type_id": "breakfastSandwiches",
+            "name": "Double‑Smoked Bacon, Cheddar & Egg Sandwich",
+            "price": 5.49,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20210915_BaconCheddarEggSandwich.jpg?impolicy=1by1_tight_288"
+        },
+        "BF004": {
+            "type_id": "breakfastWraps",
+            "name": "Bacon, Sausage & Egg Wrap",
+            "price": 4.99,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20191018_BaconSausageCageFreeEggWrap.jpg?impolicy=1by1_tight_288"
+        },
+        "BF005": {
+            "type_id": "breakfastWraps",
+            "name": "Spinach, Feta & Egg White Wrap",
+            "price": 4.79,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/SpinachFetaEggWhiteWrap.jpg?impolicy=1by1_tight_288"
+        },
+        "BF006": {
+            "type_id": "eggBitesAndBakes",
+            "name": "Bacon & Gruyère Egg Bites",
+            "price": 4.89,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/BaconGruyereEggBites.jpg?impolicy=1by1_tight_288"
+        },
+        "BF007": {
+            "type_id": "eggBitesAndBakes",
+            "name": "Egg White & Roasted Red Pepper Egg Bites",
+            "price": 4.79,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/EggWhiteRoastedRedPepperEggBites.jpg?impolicy=1by1_tight_288"
+        },
+        "BF008": {
+            "type_id": "oatmealAndYogurt",
+            "name": "Rolled & Steel‑Cut Oatmeal",
+            "price": 3.79,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20230321_Oatmeal_onGreen.jpg?impolicy=1by1_tight_288"
+        },
+        "BF009": {
+            "type_id": "oatmealAndYogurt",
+            "name": "Berry Trio Parfait",
+            "price": 4.29,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/food/BerryTrioParfait.jpg?impolicy=1by1_tight_288"
+        },
+        "CC001": {
+            "type_id": "nitroColdBrew",
+            "name": "Nitro Cold Brew",
+            "price": 4.29,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/bev/NitroColdBrew.jpg?impolicy=1by1_tight_288"
+        },
+        "CC002": {
+            "type_id": "nitroColdBrew",
+            "name": "Vanilla Sweet Cream Nitro Cold Brew",
+            "price": 4.59,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/bev/VanillaSweetCreamNitroColdBrew.jpg?impolicy=1by1_tight_288"
+        },
+        "CC003": {
+            "type_id": "icedCoffee",
+            "name": "Iced Coffee",
+            "price": 3.29,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/bev/IcedCoffee.jpg?impolicy=1by1_tight_288"
+        },
+        "CC004": {
+            "type_id": "icedCoffee",
+            "name": "Iced Coffee Clover Vertica™",
+            "price": 3.49,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190607_IcedCoffee.jpg?impolicy=1by1_tight_288"
+        },
+        "CC005": {
+            "type_id": "icedShakenEspresso",
+            "name": "Iced Shaken Espresso",
+            "price": 4.19,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/bev/IcedShakenEspresso.jpg?impolicy=1by1_tight_288"
+        },
+        "CC006": {
+            "type_id": "icedShakenEspresso",
+            "name": "Iced Brown Sugar Oatmilk Shaken Espresso",
+            "price": 4.69,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/bev/IcedBrownSugarOatmilkShakenEspresso.jpg?impolicy=1by1_tight_288"
+        },
+        "CC007": {
+            "type_id": "icedShakenEspresso",
+            "name": "Iced Hazelnut Oatmilk Shaken Espresso",
+            "price": 4.69,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/bev/IcedHazelnutOatmilkShakenEspresso.jpg?impolicy=1by1_tight_288"
+        },
+        "CC008": {
+            "type_id": "icedShakenEspresso",
+            "name": "Iced Espresso",
+            "price": 3.49,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190607_IcedEspresso.jpg?impolicy=1by1_tight_288"
+        },
+        "CC009": {
+            "type_id": "icedMocha",
+            "name": "Iced Caffè Mocha",
+            "price": 4.59,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/bev/IcedCaffeMocha%E2%80%8B.jpg?impolicy=1by1_tight_288"
+        },
+        "CC010": {
+            "type_id": "icedMocha",
+            "name": "Iced White Chocolate Mocha",
+            "price": 4.89,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/bev/IcedWhiteChocolateMocha.jpg?impolicy=1by1_tight_288"
+        },
+        "CC011": {
+            "type_id": "icedMacchiato",
+            "name": "Iced Caramel Macchiato",
+            "price": 4.79,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/bev/IcedCaramelMacchiato.jpg?impolicy=1by1_tight_288"
+        },
+        "CC012": {
+            "type_id": "icedFlatWhite",
+            "name": "Iced Flat White",
+            "price": 4.59,
+            "image": "https://globalassets.starbucks.com/digitalassets/products/bev/SBX20190607_IcedFlatWhite.jpg?impolicy=1by1_tight_288"
+        }
+    }
+}
