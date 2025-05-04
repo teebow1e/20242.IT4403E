@@ -281,6 +281,7 @@ function CheckoutScreen() {
                                     value={formData.paymentMethod}
                                     onChange={handleChange}
                                 >
+                                    <FormControlLabel value="cash" control={<Radio />} label="Cash" />
                                     <FormControlLabel value="creditCard" control={<Radio />} label="Credit Card" />
                                     <FormControlLabel value="paypal" control={<Radio />} label="PayPal" />
                                     <FormControlLabel value="starbucksCard" control={<Radio />} label="Starbucks Card" />
