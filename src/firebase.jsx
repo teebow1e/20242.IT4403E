@@ -8,6 +8,7 @@ const firebaseConfig = {
     projectId: "it4403e",
     databaseURL: 'https://it4403e-default-rtdb.asia-southeast1.firebasedatabase.app/',
     storageBucket: "it4403e.firebasestorage.app",
+    databaseURL: "https://it4403e-default-rtdb.asia-southeast1.firebasedatabase.app/",
     messagingSenderId: "16977471090",
     appId: "1:16977471090:web:a6aaf08fccedf46cf644eb",
     measurementId: "G-730QK8HM9C"

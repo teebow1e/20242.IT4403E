@@ -36,11 +36,8 @@ function CartScreen() {
   };
 
   const handleCheckout = () => {
-    // In a real application, this would navigate to a checkout page
-    // For now, we'll just show an alert and clear the cart
-    alert('Your order has been placed successfully!');
-    dispatch(clearCart());
-    navigate('/menu');
+    // Navigate to checkout page instead of showing alert
+    navigate('/checkout');
   };
 
   return (
