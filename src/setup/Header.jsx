@@ -46,7 +46,7 @@ function Header({ menuPage }) {
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="mr-4">
-              <img src="/logo.svg" alt="Starbucks" className="h-12 w-12" />
+              <img src="/logo.svg" alt="Starbucks" className="h-16 w-16" />
             </Link>
 
             {/* Desktop Navigation */}

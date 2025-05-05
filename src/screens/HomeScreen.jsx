@@ -10,7 +10,7 @@ function HomeScreen() {
             <p className="font-sodo my-1 text-[24px] leading-[1.7]">
               Join Starbucks ® Rewards for delicious deals & exclusive offers.
               <br />
-              <a href="#" className=" text-black hover:underline">
+              <a href="#" className=" text-white hover:underline">
                 Learn more
               </a>
             </p>
