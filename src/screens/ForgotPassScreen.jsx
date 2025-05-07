@@ -38,10 +38,10 @@ function ForgotPassScreen() {
         <h1 className="text-[32px] font-bold text-black text-center">Reset your password</h1>
       </div>
 
-      <div className="grid place-items-center flex-1">
+      <div className="grid place-items-center w-full h-full text-sm mt-8 mb-36 px-4">
         {!resetSent ? (
-          <div className="flex flex-col loginScreen-boxshad rounded-xl p-12 max-w-full h-full">
-            <form onSubmit={handleSubmit(onSubmit)} className='min-w-[500px] min-h-[150px] flex flex-col lg:min-w-[400px] md:min-w-[300px]'>
+          <div className="max-w-[500px] w-full bg-white shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-xl">
+            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col p-12'>
               <p className="mb-6 text-gray-600">Enter the email address associated with your Starbucks account, and we'll send you a link to reset your password.</p>
 
               <div className='relative flex flex-col mb-5'>
@@ -117,19 +117,6 @@ function ForgotPassScreen() {
             </div>
           </div>
         )}
-
-        <div className='grid place-items-center text-center p-5 px-10 text-[#00653e] max-w-[50%] lg:max-w-[70%] md:max-w-[90%]'>
-          <h4 className="text-xs font-normal mb-3">JOIN STARBUCKS® REWARDS</h4>
-          <p className="text-xs text-black mb-3 leading-relaxed">
-            As a member, start earning free food and drinks, unlock our best offers and celebrate your birthday with a treat from us. Best of all, it's free to join.
-          </p>
-        </div>
-
-        <div className='w-full flex justify-center items-center mb-8 mx-auto max-w-[300px]'>
-          <Link to="/account/create" className="inline-block bg-transparent border border-solid rounded-full no-underline text-[#00653e] font-semibold text-sm py-1 px-4 leading-relaxed hover:bg-[rgba(0,86,62,0.06)]">
-            Join now
-          </Link>
-        </div>
       </div>
     </div>
   );

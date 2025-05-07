@@ -4,15 +4,14 @@ import store from './store'
 import { Provider } from 'react-redux'
 import App from './App.jsx'
 // import * as serviceWorker from './serviceWorker.js'
-
-import PlayGround from './database/PlayGround.jsx'
+// import PlayGround from './database/PlayGround.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
       <App />
     </Provider>
-    <PlayGround />
+    {/* <PlayGround /> */}
   </StrictMode>,
 )
 

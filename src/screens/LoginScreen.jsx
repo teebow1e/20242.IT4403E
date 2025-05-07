@@ -39,11 +39,11 @@ function LoginScreen() {
         <div>
             <div>
                 <div className="grid place-items-center w-full h-full text-sm mt-8 mb-8">
-                    <h1 className="text-[32px] font-bold text-black text-center">Sign in or create an account</h1>
+                    <h1 className="text-[32px] font-bold text-black text-center">Sign in</h1>
                 </div>
-                <div className="grid place-items-center flex-1">
-                    <div className="flex flex-col bg-white shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-xl p-6 max-w-full">
-                        <form onSubmit={handleSubmit(onSubmit)} className='min-w-[500px] min-h-[150px] flex flex-col lg:min-w-[400px] md:min-w-[300px]  p-8 rounded-lg'>
+                <div className="flex-1 w-full grid place-items-center px-4">
+                    <div className="flex flex-col bg-white shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-xl max-w-[500px] w-full">
+                        <form onSubmit={handleSubmit(onSubmit)} className='p-12'>
                             <div className='relative flex flex-col mb-5'>
                                 <TextField
                                     label="Email address"
@@ -83,12 +83,12 @@ function LoginScreen() {
                                 {passwordShown ? (
                                     <VisibilityOutlined
                                         onClick={() => setPasswordShown((passwordShown) => !passwordShown)}
-                                        className='cursor-pointer text-gray-500 absolute right-[11%] translate-y-[70%]'
+                                        className='cursor-pointer text-gray-500 absolute right-[5%] translate-y-[70%]'
                                     />
                                 ) : (
                                     <VisibilityOffOutlined
                                         onClick={() => setPasswordShown((passwordShown) => !passwordShown)}
-                                        className='cursor-pointer text-gray-500 absolute right-[11%] translate-y-[70%]'
+                                        className='cursor-pointer text-gray-500 absolute right-[5%] translate-y-[70%]'
                                     />
                                 )}
 
@@ -105,11 +105,12 @@ function LoginScreen() {
                             </div>
 
                             <div className='mt-5'>
-                                <Link className="block mb-4 text-[#00653e] font-extrabold text-sm hover:no-underline">Forgot your username?</Link>
                                 <Link to="/account/forgot-password" className="block mb-4 text-[#00653e] font-extrabold text-sm hover:no-underline">Forgot your password?</Link>
                             </div>
 
-                            <FormSubmit name="Sign in" type="submit" variant='contained'>Sign in</FormSubmit>
+                            <div className="flex justify-end w-full mt-4">
+                                <FormSubmit name="Sign in" type="submit" variant='contained'>Sign in</FormSubmit>
+                            </div>
                         </form>
                     </div>
                     <div className='grid place-items-center text-center p-5 px-10 text-[#00653e] max-w-[50%] lg:max-w-[70%] md:max-w-[90%]'>
