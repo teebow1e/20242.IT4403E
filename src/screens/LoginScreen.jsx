@@ -9,6 +9,7 @@ import { auth } from '../firebase';
 import { login } from '../features/UserSlice';
 import { useDispatch } from 'react-redux';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import RecaptchaAppCheck from '../RecaptchaAppCheck';
 
 function LoginScreen() {
     const { handleSubmit, register, formState: { errors } } = useForm();
@@ -36,7 +37,8 @@ function LoginScreen() {
         }
     }
     return (
-        <div>
+        <>
+            <RecaptchaAppCheck />
             <div>
                 <div className="grid place-items-center w-full h-full text-sm mt-8 mb-8">
                     <h1 className="text-[32px] font-bold text-black text-center">Sign in</h1>
@@ -121,7 +123,7 @@ function LoginScreen() {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 
