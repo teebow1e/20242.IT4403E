@@ -5,7 +5,7 @@ import Footer from './setup/Footer';
 const Layout = (prop) => (
   <>
     <Header menuPage={prop.menuPage}/>
-    <Outlet />
+    <Outlet /> {/* This is where HomeScreen will render */}
     <Footer />
   </>
 );

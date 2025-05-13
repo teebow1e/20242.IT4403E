@@ -1,10 +1,23 @@
 @import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-.header-box-shadow {
-    box-shadow: 0 1px 3px rgb(0 0 0 / 10%), 0 2px 2px rgb(0 0 0 / 6%),
-        0 0 2px rgb(0 0 0 / 7%);
+@font-face {
+    font-family: 'Sodo Sans';
+    src: url('/fonts/SodoSans-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+  }
+
+@font-face {
+    font-family: 'Sodo Sans';
+    src: url('/fonts/SodoSans-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Sodo Sans';
+    src: url('/fonts/SodoSans-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
 }
