@@ -10,6 +10,7 @@ import ProtectedRoute from './ProtectedRoute';
 import CartScreen from './screens/CartScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
 import OrderConfirmationScreen from './screens/OrderConfirmationScreen';
+import VerifyEmailScreen from './screens/VerifyEmailScreen';
 import { auth } from './firebase';
 import { login, logout, selectUser } from './features/UserSlice';
 import { useEffect } from 'react';
@@ -75,8 +76,13 @@ function App() {
                         path="account/logout"
                         element={<Navigate to="/" replace />}
                     />
+                    <Route 
+                        path="/account/verify-email" 
+                        element={<VerifyEmailScreen />} 
+                    />
 
                     {/* Cart and checkout routes - protected by auth */}
+                    
                     <Route path="cart" element={
                         <ProtectedRoute>
                             <CartScreen />
@@ -92,6 +98,7 @@ function App() {
                             <OrderConfirmationScreen />
                         </ProtectedRoute>
                     } />
+                    
                 </Route>
 
                 {/* Menu routes */}

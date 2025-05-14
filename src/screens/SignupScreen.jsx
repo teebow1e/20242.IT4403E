@@ -5,14 +5,15 @@ import { TextField } from '@mui/material';
 import { Close, DangerousSharp, VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { auth } from '../firebase';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 import { login } from '../features/UserSlice';
 
 function SignupScreen() {
-  const { register, handleSubmit, formState: { errors }, watch } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const [passwordShown, setPasswordShown] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [verificationSent, setVerificationSent] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -30,13 +31,21 @@ function SignupScreen() {
     setSubmitError(null);
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
       await updateProfile(userCredential.user, { displayName: `${fName} ${lName}` });
-      dispatch(login({
-        email: userCredential.user.email,
-        uid: userCredential.user.uid,
-        displayName: `${fName} ${lName}`
-      }));
-      navigate("/");
+      
+      // Send verification email
+      await sendEmailVerification(userCredential.user, {
+        url: window.location.origin + '/account/verify-email',
+        handleCodeInApp: true,
+      });
+
+      await auth.signOut();
+      alert(`A verification link has been sent to ${email}. Please check your email to verify your account before signing in.`);
+
+      // Show verification screen instead of navigating
+      setVerificationSent(true);
+
     } catch (error) {
       console.error("Signup error:", error);
       switch (error.code) {
@@ -59,6 +68,35 @@ function SignupScreen() {
       setIsSubmitting(false);
     }
   };
+
+  if (verificationSent) {
+    return (
+      <div className="max-w-[500px] mx-auto mt-8 p-6">
+        <div className="text-center mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-[#00653e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
+          </svg>
+        </div>
+
+        <h2 className="text-2xl font-bold text-center mb-4">Verify your email</h2>
+        
+        <p className="text-gray-600 text-center mb-6">
+          We've sent a verification link to your email address. Please check your inbox and verify your email to complete signup.
+        </p>
+
+        <p className="text-gray-600 text-center mb-8 text-sm">
+          If you don't see the email, check your spam folder. The link will expire in 24 hours.
+        </p>
+
+        <button
+          onClick={() => navigate('/account/signin')}
+          className="mx-auto block px-6 py-2 bg-transparent border border-[#00653e] rounded-full text-[#00653e] font-semibold hover:bg-[rgba(0,86,62,0.06)]"
+        >
+          Go to Sign In
+        </button>
+      </div>
+    );
+  }
 
   return (
     <>
