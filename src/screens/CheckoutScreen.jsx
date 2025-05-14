@@ -82,6 +82,8 @@ function CheckoutScreen() {
         return Object.keys(newErrors).length === 0;
     };
 
+    const RECAPTCHA_KEY = "6LfMnjErAAAAAFV-3CfhiMTlFeqDqEKTs8VUKaw4";
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -90,6 +92,22 @@ function CheckoutScreen() {
         }
 
         setIsSubmitting(true);
+
+        try {
+            await new Promise(resolve => window.grecaptcha.ready(resolve));
+
+            const recaptchaToken = await window.grecaptcha.execute(
+                RECAPTCHA_KEY,
+                { action: "checkout" }
+            );
+            console.log("reCAPTCHA token:", recaptchaToken);
+        } catch (err) {
+            console.error("reCAPTCHA error:", err);
+            alert("Unable to verify you’re not a bot. Please try again.");
+            setIsSubmitting(false);
+            return;
+        }
+
 
         const orderData = {
             customer: {
