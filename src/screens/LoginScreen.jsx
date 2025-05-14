@@ -18,21 +18,25 @@ function LoginScreen() {
     // Firebase Auth
     const onSubmit = async ({ email, password }) => {
         try {
-            const userAuth = await signInWithEmailAndPassword(auth, email, password).then((userAuth) => {
-                dispatch(login({
-                    email: userAuth.user.email,
-                    uid: userAuth.user.uid,
-                    displayName: userAuth.user.displayName
-                }));
-            })
-                .catch((e) => {
-                    if (e.code == "auth/invalid-credential") {
-                        alert("Wrong email or password!");
-                    }
-                })
+            const userAuth = await signInWithEmailAndPassword(auth, email, password);
+            
+            // Check if email is verified
+            if (!userAuth.user.emailVerified) {
+                await auth.signOut();
+                alert("Please verify your email before logging in. Check your inbox for the verification link.");
+                return;
+            }
+
+            dispatch(login({
+                email: userAuth.user.email,
+                uid: userAuth.user.uid,
+                displayName: userAuth.user.displayName
+            }));
         } catch (e) {
             console.log("Something wrong!", e);
-            alert("Wrong email or password!");
+            if (e.code === "auth/invalid-credential") {
+                alert("Wrong email or password!");
+            }
         }
     }
     return (

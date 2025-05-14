@@ -101,6 +101,23 @@ function CheckoutScreen() {
                 { action: "checkout" }
             );
             console.log("reCAPTCHA token:", recaptchaToken);
+
+            const verificationResponse = await fetch('/api/verify-recaptcha', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token: recaptchaToken })
+            });
+
+            const { score } = await verificationResponse.json();
+            console.log("reCAPTCHA score:", score);
+
+            if (score < 0.5) {
+                alert("Sorry, we cannot process your request at this time. Please try again later.");
+                setIsSubmitting(false);
+                return;
+            }
         } catch (err) {
             console.error("reCAPTCHA error:", err);
             alert("Unable to verify you’re not a bot. Please try again.");
