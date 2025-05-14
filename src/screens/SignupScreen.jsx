@@ -6,7 +6,21 @@ import { Close, DangerousSharp, VisibilityOffOutlined, VisibilityOutlined } from
 import { useDispatch } from 'react-redux';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
-import { login } from '../features/UserSlice';
+import { rateLimiter } from '../utils/RateLimiter';
+
+const getClientIdentifier = async () => {
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        return data.ip;
+    } catch (error) {
+        const fingerprint = navigator.userAgent + 
+                          window.screen.width + 
+                          window.screen.height + 
+                          new Date().getTimezoneOffset();
+        return fingerprint;
+    }
+};
 
 function SignupScreen() {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -27,6 +41,13 @@ function SignupScreen() {
   };
 
   const onSubmit = async ({ fName, lName, email, password }) => {
+    const clientId = await getClientIdentifier(); 
+
+    if (rateLimiter.isRateLimited(clientId)) {
+        setSubmitError('Too many requests. Please try again later.');
+        return;
+    }
+
     setIsSubmitting(true);
     setSubmitError(null);
     try {
