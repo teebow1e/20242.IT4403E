@@ -1,11 +1,72 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, Link, Navigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectUser } from '../features/UserSlice';
+import { selectLastOrderReceipt, clearLastOrderReceipt } from '../features/ReceiptSlice';
+import OrderService from '../services/OrderService';
 
 function OrderConfirmationScreen() {
   const location = useLocation();
-  const { orderId, orderDetails } = location.state || {};
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const lastReceipt = useSelector(selectLastOrderReceipt);
 
-  // If no order details are passed, redirect to home
+  const [loading, setLoading] = useState(false);
+  const [fetchedOrder, setFetchedOrder] = useState(null);
+
+  // Try to get data from router state first (immediate render)
+  let routerState = location.state || {};
+  let orderId = routerState.orderId;
+  let orderDetails = routerState.orderDetails;
+
+  // If not in router state, try from Redux
+  if (!orderId && lastReceipt && lastReceipt.timestamp > Date.now() - 3600000) {
+    orderId = lastReceipt.orderId;
+    orderDetails = lastReceipt.orderDetails;
+
+    // Clear after reading to prevent reuse
+    dispatch(clearLastOrderReceipt());
+  }
+
+  // If still no data, fetch from server as last resort
+  useEffect(() => {
+    if (!orderId && !orderDetails && user) {
+      setLoading(true);
+
+      // Get the latest order for this user
+      OrderService.getLatestUserOrder(user.uid)
+        .then(response => {
+          setLoading(false);
+          if (response.success) {
+            setFetchedOrder(response.order);
+          }
+        })
+        .catch(() => {
+          setLoading(false);
+        });
+    }
+  }, [orderId, orderDetails, user]);
+
+  // Use fetched order if we got it from the server
+  if (fetchedOrder) {
+    orderId = fetchedOrder.orderId;
+    orderDetails = {
+      customer: fetchedOrder.customer,
+      items: fetchedOrder.items,
+      totalAmount: fetchedOrder.totalAmount
+    };
+  }
+
+  // Show loading indicator while fetching from server
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-8 text-center">
+        <p>Loading your receipt...</p>
+      </div>
+    );
+  }
+
+  // If no data available at all, redirect
   if (!orderId || !orderDetails) {
     return <Navigate to="/" replace />;
   }
