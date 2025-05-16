@@ -275,46 +275,54 @@ function CheckoutScreen() {
                                 </RadioGroup>
                             </FormControl>
 
-                            {formData.deliveryMethod === 'delivery' && (
-                                <div className="mt-4 space-y-4">
-                                    <TextField
-                                        label="Address"
-                                        name="address"
-                                        value={formData.address}
-                                        onChange={handleChange}
-                                        error={!!errors.address}
-                                        helperText={errors.address}
-                                        fullWidth
-                                    />
+{formData.deliveryMethod === 'delivery' && (
+                                <div className="mt-4">
+                                    <div className="mb-4">
+                                        <TextField
+                                            label="Address"
+                                            name="address"
+                                            value={formData.address}
+                                            onChange={handleChange}
+                                            error={!!errors.address}
+                                            helperText={errors.address}
+                                            fullWidth
+                                        />
+                                    </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        <TextField
-                                            label="City"
-                                            name="city"
-                                            value={formData.city}
-                                            onChange={handleChange}
-                                            error={!!errors.city}
-                                            helperText={errors.city}
-                                            fullWidth
-                                        />
-                                        <TextField
-                                            label="State"
-                                            name="state"
-                                            value={formData.state}
-                                            onChange={handleChange}
-                                            error={!!errors.state}
-                                            helperText={errors.state}
-                                            fullWidth
-                                        />
-                                        <TextField
-                                            label="ZIP Code"
-                                            name="zip"
-                                            value={formData.zip}
-                                            onChange={handleChange}
-                                            error={!!errors.zip}
-                                            helperText={errors.zip}
-                                            fullWidth
-                                        />
+                                        <div>
+                                            <TextField
+                                                label="City"
+                                                name="city"
+                                                value={formData.city}
+                                                onChange={handleChange}
+                                                error={!!errors.city}
+                                                helperText={errors.city}
+                                                fullWidth
+                                            />
+                                        </div>
+                                        <div>
+                                            <TextField
+                                                label="State"
+                                                name="state"
+                                                value={formData.state}
+                                                onChange={handleChange}
+                                                error={!!errors.state}
+                                                helperText={errors.state}
+                                                fullWidth
+                                            />
+                                        </div>
+                                        <div>
+                                            <TextField
+                                                label="ZIP Code"
+                                                name="zip"
+                                                value={formData.zip}
+                                                onChange={handleChange}
+                                                error={!!errors.zip}
+                                                helperText={errors.zip}
+                                                fullWidth
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             )}
