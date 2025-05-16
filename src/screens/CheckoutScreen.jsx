@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { TextField, FormControl, FormControlLabel, Radio, RadioGroup, FormLabel } from '@mui/material';
 import { selectCartItems, selectCartTotalAmount, clearCart } from '../features/CartSlice';
+import { setLastOrderReceipt } from '../features/ReceiptSlice';
 import { selectUser } from '../features/UserSlice';
 import OrderService from '../services/OrderService';
 import FormSubmit from '../forms/FormSubmit';
@@ -32,6 +33,8 @@ function CheckoutScreen() {
 
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [orderCompleted, setOrderCompleted] = useState(false);
+    const [completedOrderData, setCompletedOrderData] = useState(null);
 
     useEffect(() => {
         if (user) {
@@ -47,6 +50,20 @@ function CheckoutScreen() {
             }));
         }
     }, [user]);
+
+    useEffect(() => {
+        if (cartItems.length === 0) {
+            navigate('/cart');
+        }
+    }, [cartItems.length, navigate]);
+
+    useEffect(() => {
+        if (orderCompleted && completedOrderData) {
+            navigate('/order-confirmation', {
+                state: completedOrderData
+            });
+        }
+    }, [orderCompleted, completedOrderData, navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -93,37 +110,37 @@ function CheckoutScreen() {
 
         setIsSubmitting(true);
 
-        try {
-            await new Promise(resolve => window.grecaptcha.ready(resolve));
+        // try {
+        //     await new Promise(resolve => window.grecaptcha.ready(resolve));
 
-            const recaptchaToken = await window.grecaptcha.execute(
-                RECAPTCHA_KEY,
-                { action: "checkout" }
-            );
-            console.log("reCAPTCHA token:", recaptchaToken);
+        //     const recaptchaToken = await window.grecaptcha.execute(
+        //         RECAPTCHA_KEY,
+        //         { action: "checkout" }
+        //     );
+        //     console.log("reCAPTCHA token:", recaptchaToken);
 
-            const verificationResponse = await fetch('/api/verify-recaptcha', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ token: recaptchaToken })
-            });
+        //     const verificationResponse = await fetch('/api/verify-recaptcha', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({ token: recaptchaToken })
+        //     });
 
-            const { score } = await verificationResponse.json();
-            console.log("reCAPTCHA score:", score);
+        //     const { score } = await verificationResponse.json();
+        //     console.log("reCAPTCHA score:", score);
 
-            if (score < 0.5) {
-                alert("Sorry, we cannot process your request at this time. Please try again later.");
-                setIsSubmitting(false);
-                return;
-            }
-        } catch (err) {
-            console.error("reCAPTCHA error:", err);
-            alert("Unable to verify you’re not a bot. Please try again.");
-            setIsSubmitting(false);
-            return;
-        }
+        //     if (score < 0.5) {
+        //         alert("Sorry, we cannot process your request at this time. Please try again later.");
+        //         setIsSubmitting(false);
+        //         return;
+        //     }
+        // } catch (err) {
+        //     console.error("reCAPTCHA error:", err);
+        //     alert("Unable to verify you’re not a bot. Please try again.");
+        //     setIsSubmitting(false);
+        //     return;
+        // }
 
 
         const orderData = {
@@ -159,14 +176,11 @@ function CheckoutScreen() {
                 // Clear the cart
                 dispatch(clearCart());
 
-                // Show success message and redirect
-                alert(`Order placed successfully! Your order ID is ${response.orderId}`);
-                navigate('/order-confirmation', {
-                    state: {
-                        orderId: response.orderId,
-                        orderDetails: orderData
-                    }
+                setCompletedOrderData({
+                    orderId: response.orderId,
+                    orderDetails: orderData
                 });
+                setOrderCompleted(true);
             } else {
                 alert(`Failed to place order: ${response.message}`);
             }
@@ -179,8 +193,7 @@ function CheckoutScreen() {
     };
 
     if (cartItems.length === 0) {
-        navigate('/cart');
-        return null;
+        return <div className="text-center py-8">Redirecting to cart...</div>;
     }
 
     return (
@@ -323,7 +336,7 @@ function CheckoutScreen() {
                                 </RadioGroup>
                             </FormControl>
 
-{formData.paymentMethod === 'creditCard' && (
+                            {formData.paymentMethod === 'creditCard' && (
                                 <div className="mt-4">
                                     <div className="mb-4">
                                         <TextField
