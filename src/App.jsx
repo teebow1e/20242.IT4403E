@@ -9,6 +9,7 @@ import FeaturedScreen from './screens/FeaturedScreen';
 import ProtectedRoute from './ProtectedRoute';
 import CartScreen from './screens/CartScreen';
 import CheckoutScreen from './screens/CheckoutScreen';
+import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import OrderConfirmationScreen from './screens/OrderConfirmationScreen';
 import VerifyEmailScreen from './screens/VerifyEmailScreen';
 import { auth } from './firebase';
@@ -53,7 +54,7 @@ function App() {
         }
         );
     }, [dispatch]);
-    
+
     return (
         <Router>
             <Routes>
@@ -76,13 +77,17 @@ function App() {
                         path="account/logout"
                         element={<Navigate to="/" replace />}
                     />
-                    <Route 
-                        path="/account/verify-email" 
-                        element={<VerifyEmailScreen />} 
+                    <Route
+                        path="/account/verify-email"
+                        element={<VerifyEmailScreen />}
+                    />
+                    <Route
+                        path="account/reset-password"
+                        element={<ResetPasswordScreen />}
                     />
 
                     {/* Cart and checkout routes - protected by auth */}
-                    
+
                     <Route path="cart" element={
                         <ProtectedRoute>
                             <CartScreen />
@@ -98,18 +103,18 @@ function App() {
                             <OrderConfirmationScreen />
                         </ProtectedRoute>
                     } />
-                    
+
                 </Route>
 
                 {/* Menu routes */}
-                <Route 
-                    path="/menu" 
+                <Route
+                    path="/menu"
                     element={
-                      <ProtectedRoute>
-                          <Layout menuPage={true}/>
-                      </ProtectedRoute> 
+                        <ProtectedRoute>
+                            <Layout menuPage={true} />
+                        </ProtectedRoute>
                     }
-                >   
+                >
                     <Route index element={<MenuScreen />} />
                     <Route
                         path="featured"
@@ -176,7 +181,7 @@ function App() {
                         element={<Bag />}
                     />
 
-                    
+
                 </Route>
             </Routes>
         </Router>

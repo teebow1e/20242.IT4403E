@@ -13,23 +13,27 @@ function ForgotPassScreen() {
   const [resetError, setResetError] = useState(null);
   const navigate = useNavigate();
 
-  const onSubmit = ({ email }) => {
+  const onSubmit = async ({ email }) => {
     setResetError(null);
 
-    sendPasswordResetEmail(auth, email)
-      .then(() => {
-        setResetSent(true);
-      })
-      .catch((error) => {
-        if (error.code === 'auth/user-not-found') {
-          setResetError("No account exists with this email address.");
-        } else if (error.code === 'auth/invalid-email') {
-          setResetError("Invalid email address format.");
-        } else {
-          setResetError("An error occurred. Please try again later.");
-        }
-        console.error("Password reset error:", error);
+    try {
+      // Use Firebase's sendPasswordResetEmail, but with our custom URL
+      await sendPasswordResetEmail(auth, email, {
+        url: window.location.origin + '/account/reset-password',
+        // url: 'http://192.168.194.130:5173/account/reset-password',
+        handleCodeInApp: true,
       });
+      setResetSent(true);
+    } catch (error) {
+      if (error.code === 'auth/user-not-found') {
+        setResetError("No account exists with this email address.");
+      } else if (error.code === 'auth/invalid-email') {
+        setResetError("Invalid email address format.");
+      } else {
+        setResetError("An error occurred. Please try again later.");
+      }
+      console.error("Password reset error:", error);
+    }
   };
 
   return (
