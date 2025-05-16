@@ -14,9 +14,9 @@ const getClientIdentifier = async () => {
         const data = await response.json();
         return data.ip;
     } catch (error) {
-        const fingerprint = navigator.userAgent + 
-                          window.screen.width + 
-                          window.screen.height + 
+        const fingerprint = navigator.userAgent +
+                          window.screen.width +
+                          window.screen.height +
                           new Date().getTimezoneOffset();
         return fingerprint;
     }
@@ -41,7 +41,7 @@ function SignupScreen() {
   };
 
   const onSubmit = async ({ fName, lName, email, password }) => {
-    const clientId = await getClientIdentifier(); 
+    const clientId = await getClientIdentifier();
 
     if (rateLimiter.isRateLimited(clientId)) {
         setSubmitError('Too many requests. Please try again later.');
@@ -50,25 +50,35 @@ function SignupScreen() {
 
     setIsSubmitting(true);
     setSubmitError(null);
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-      await updateProfile(userCredential.user, { displayName: `${fName} ${lName}` });
-      
-      // Send verification email
-      await sendEmailVerification(userCredential.user, {
+    try {
+      // Create the user account
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const currentUser = userCredential.user;
+
+      // IMMEDIATELY sign out to prevent auth state from triggering navigation
+      await auth.signOut();
+
+      // Now update profile details using the saved user reference
+      await updateProfile(currentUser, {
+        displayName: `${fName} ${lName}`
+      });
+
+      // Send verification email using the saved user reference
+      await sendEmailVerification(currentUser, {
         url: window.location.origin + '/account/verify-email',
         handleCodeInApp: true,
       });
 
-      await auth.signOut();
+      // Show alert before any state updates that might trigger re-renders
       alert(`A verification link has been sent to ${email}. Please check your email to verify your account before signing in.`);
 
-      // Show verification screen instead of navigating
+      // Finally update the component state
       setVerificationSent(true);
 
     } catch (error) {
       console.error("Signup error:", error);
+
       switch (error.code) {
         case 'auth/email-already-in-use':
           setSubmitError('This email is already in use. Please use a different email or sign in.');
@@ -100,7 +110,7 @@ function SignupScreen() {
         </div>
 
         <h2 className="text-2xl font-bold text-center mb-4">Verify your email</h2>
-        
+
         <p className="text-gray-600 text-center mb-6">
           We've sent a verification link to your email address. Please check your inbox and verify your email to complete signup.
         </p>

@@ -25,4 +25,3 @@ export const appCheck = initializeAppCheck(firebaseApp, {
     provider: new ReCaptchaV3Provider('6LfMnjErAAAAAFV-3CfhiMTlFeqDqEKTs8VUKaw4'),
     isTokenAutoRefreshEnabled: true,
 });
-
