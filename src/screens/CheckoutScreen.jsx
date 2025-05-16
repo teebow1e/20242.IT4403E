@@ -323,47 +323,55 @@ function CheckoutScreen() {
                                 </RadioGroup>
                             </FormControl>
 
-                            {formData.paymentMethod === 'creditCard' && (
-                                <div className="mt-4 space-y-4">
-                                    <TextField
-                                        label="Card Number"
-                                        name="cardNumber"
-                                        value={formData.cardNumber}
-                                        onChange={handleChange}
-                                        error={!!errors.cardNumber}
-                                        helperText={errors.cardNumber}
-                                        fullWidth
-                                    />
+{formData.paymentMethod === 'creditCard' && (
+                                <div className="mt-4">
+                                    <div className="mb-4">
+                                        <TextField
+                                            label="Card Number"
+                                            name="cardNumber"
+                                            value={formData.cardNumber}
+                                            onChange={handleChange}
+                                            error={!!errors.cardNumber}
+                                            helperText={errors.cardNumber}
+                                            fullWidth
+                                        />
+                                    </div>
 
-                                    <TextField
-                                        label="Name on Card"
-                                        name="cardName"
-                                        value={formData.cardName}
-                                        onChange={handleChange}
-                                        error={!!errors.cardName}
-                                        helperText={errors.cardName}
-                                        fullWidth
-                                    />
+                                    <div className="mb-4">
+                                        <TextField
+                                            label="Name on Card"
+                                            name="cardName"
+                                            value={formData.cardName}
+                                            onChange={handleChange}
+                                            error={!!errors.cardName}
+                                            helperText={errors.cardName}
+                                            fullWidth
+                                        />
+                                    </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <TextField
-                                            label="Expiry Date (MM/YY)"
-                                            name="cardExpiry"
-                                            value={formData.cardExpiry}
-                                            onChange={handleChange}
-                                            error={!!errors.cardExpiry}
-                                            helperText={errors.cardExpiry}
-                                            fullWidth
-                                        />
-                                        <TextField
-                                            label="CVV"
-                                            name="cardCvv"
-                                            value={formData.cardCvv}
-                                            onChange={handleChange}
-                                            error={!!errors.cardCvv}
-                                            helperText={errors.cardCvv}
-                                            fullWidth
-                                        />
+                                        <div>
+                                            <TextField
+                                                label="Expiry Date (MM/YY)"
+                                                name="cardExpiry"
+                                                value={formData.cardExpiry}
+                                                onChange={handleChange}
+                                                error={!!errors.cardExpiry}
+                                                helperText={errors.cardExpiry}
+                                                fullWidth
+                                            />
+                                        </div>
+                                        <div>
+                                            <TextField
+                                                label="CVV"
+                                                name="cardCvv"
+                                                value={formData.cardCvv}
+                                                onChange={handleChange}
+                                                error={!!errors.cardCvv}
+                                                helperText={errors.cardCvv}
+                                                fullWidth
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             )}
