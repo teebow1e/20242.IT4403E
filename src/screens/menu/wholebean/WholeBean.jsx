@@ -16,7 +16,7 @@ export default function StarbucksReserve() {
             const allProducts = snapshot.val() || {};
 
             const result = {
-                starbucksReserve: [],
+                meowbucksReserve: [],
                 blondeRoast: []
             };
 
@@ -30,8 +30,8 @@ export default function StarbucksReserve() {
                 };
 
                 switch (prod.type_id) {
-                    case 'starbucksReserve':
-                        result.starbucksReserve.push(item);
+                    case 'meowbucksReserve':
+                        result.meowbucksReserve.push(item);
                         break;
                     case 'blondeRoast':
                         result.blondeRoast.push(item);
