@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../features/UserSlice';
 import { auth } from '../firebase';
@@ -7,108 +7,301 @@ import CartIcon from '../components/CartIcon';
 
 function Header({ menuPage }) {
   const user = useSelector(selectUser);
+  const location = useLocation();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
     auth.signOut();
-  }
+  };
 
+  // Handle scroll event to create sticky header effect
   useEffect(() => {
-    const btn = document.getElementById('menu-btn');
-    const nav = document.getElementById('menu');
-
-    function navToggle() {
-      btn.classList.toggle('open');
-      nav.classList.toggle('translate-x-full');
-      document.body.classList.toggle('overflow-hidden');
-    }
-
-    btn.addEventListener('click', navToggle);
-    return () => {
-      btn.removeEventListener('click', navToggle);
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
     };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+    document.body.style.overflow = mobileMenuOpen ? 'auto' : 'hidden';
+  };
+
   return (
-    <header>
-      <nav className="w-full bg-white p-5 shadow-md">
-        <div className="flex justify-between items-center max-w-7xl mx-auto">
-          <div>
-            <Link to="/">
-              <img src="/logo.svg" alt="Starbucks" className="w-12 h-12" />
+    <header
+      className={`top-0 w-full z-50 transition-all duration-300 ${
+        'bg-white shadow-md'
+      }`}
+    >
+      <nav className="px-4 md:px-8 py-4">
+        <div className="flex items-center justify-between max-w-7xl mx-auto">
+          {/* Logo */}
+          <div className="flex items-center">
+            <Link to="/" className="mr-4">
+              <img src="/logo.svg" alt="Starbucks" className="h-16 w-16" />
             </Link>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex">
+              <ul className="flex items-center">
+                <li className="mr-6">
+                  <Link
+                    to="/menu"
+                    className={`text-sm font-bold uppercase tracking-wide ${
+                      location.pathname.includes('/menu')
+                        ? 'text-[#006241]'
+                        : 'text-[#212529] hover:text-[#006241]'
+                    }`}
+                  >
+                    Menu
+                  </Link>
+                </li>
+                <li className="mr-6">
+                  <Link
+                    to="#"
+                    className="text-sm font-bold uppercase tracking-wide text-[#212529] hover:text-[#006241]"
+                  >
+                    Rewards
+                  </Link>
+                </li>
+                <li className="mr-6">
+                  <Link
+                    to="#"
+                    className="text-sm font-bold uppercase tracking-wide text-[#212529] hover:text-[#006241]"
+                  >
+                    Gift Cards
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
 
-          <ul className="flex items-center uppercase flex-1 ml-5">
-            <li className="mx-4 font-bold"><Link to="/menu" className="no-underline hover:text-green-700">Menu</Link></li>
-            <li className="mx-4 font-bold"><Link to="#" className="no-underline hover:text-green-700">Rewards</Link></li>
-            <li className="mx-4 font-bold"><Link to="#" className="no-underline hover:text-green-700">Gift Cards</Link></li>
-          </ul>
+          {/* Right Side Actions */}
+          <div className="flex items-center">
+            {/* Store Locator */}
+            <Link
+              to="#"
+              className="hidden md:flex items-center mr-4 text-[#212529] hover:text-[#006241]"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              <span className="text-sm">Find a store</span>
+            </Link>
 
-          <ul className="flex items-center">
-            {user && (
-              <li className="mx-4">
-                <CartIcon />
-              </li>
-            )}
+            {/* User Actions */}
+            <div className="flex items-center">
+              {user && (
+                <div className="mr-4">
+                  <CartIcon />
+                </div>
+              )}
 
-            {!user ? (
-              <>
-                <li className="mx-4 font-bold">
-                  <Link to="/account/signin" className="cursor-pointer inline-block border border-black rounded-full px-4 py-2 leading-tight text-center no-underline text-black hover:bg-black/5">Sign in</Link>
-                </li>
-                <li className="mx-1 font-bold">
-                  <Link to="/account/create" className="cursor-pointer inline-block border border-black rounded-full px-4 py-2 leading-tight text-center no-underline bg-black text-white hover:bg-gray-800">Join now</Link>
-                </li>
-              </>
-            ) : (
-              <>
-                {!menuPage ? (
-                  <>
-                    <li className="mx-4 font-bold">
-                      <Link to="/menu" className="cursor-pointer inline-block border border-black rounded-full px-4 py-2 leading-tight text-center no-underline text-black hover:bg-black/5">Order Now</Link>
-                    </li>
-                  </>
-                ) : (
-                  <>
-                    <li className="mx-4 font-bold">
-                      <Link to="/" onClick={handleLogout} className="cursor-pointer inline-block border border-black rounded-full px-4 py-2 leading-tight text-center no-underline bg-black text-white hover:bg-gray-800">Logout</Link>
-                    </li>
-                  </>
-                )}
-              </>
-            )}
-          </ul>
+              {!user ? (
+                <div className="flex items-center">
+                  <Link
+                    to="/account/signin"
+                    className="mr-3 px-4 py-1.5 text-sm font-medium border border-black rounded-full hover:bg-gray-100 transition"
+                  >
+                    Sign in
+                  </Link>
+                  <Link
+                    to="/account/create"
+                    className="px-4 py-1.5 text-sm font-medium bg-black text-white rounded-full hover:bg-gray-800 transition"
+                  >
+                    Join now
+                  </Link>
+                </div>
+              ) : (
+                <div className="flex items-center">
+                  {!menuPage ? (
+                    <Link
+                      to="/menu"
+                      className="mr-3 px-4 py-1.5 text-sm font-medium bg-[#006241] text-white rounded-full hover:bg-[#1e3932] transition"
+                    >
+                      Order now
+                    </Link>
+                  ) : (
+                    <Link
+                      to="/"
+                      onClick={handleLogout}
+                      className="px-4 py-1.5 text-sm font-medium bg-black text-white rounded-full hover:bg-gray-800 transition"
+                    >
+                      Sign out
+                    </Link>
+                  )}
+                </div>
+              )}
+            </div>
 
-          {/* Hamburger Menu */}
-          <button type="button" className="relative w-6 h-6 z-10 transition-all block md:hidden cursor-pointer bg-transparent border-none" id="menu-btn">
-            <span className="absolute top-0 left-0 w-6 h-0.5 bg-black transform rotate-0 transition-all duration-500 hamburger-top"></span>
-            <span className="absolute top-0 left-0 w-6 h-0.5 bg-black transform translate-y-2 transition-all duration-500 hamburger-middle"></span>
-            <span className="absolute top-0 left-0 w-6 h-0.5 bg-black transform translate-y-4 transition-all duration-500 hamburger-bottom"></span>
-          </button>
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden ml-4 focus:outline-none"
+              onClick={toggleMobileMenu}
+              aria-label="Toggle menu"
+            >
+              <div
+                className={`w-6 h-5 flex flex-col justify-between relative ${
+                  mobileMenuOpen ? 'transform' : ''
+                }`}
+              >
+                <span
+                  className={`w-6 h-0.5 bg-black transition-transform duration-300 ${
+                    mobileMenuOpen ? 'rotate-45 translate-y-2' : ''
+                  }`}
+                ></span>
+                <span
+                  className={`w-6 h-0.5 bg-black transition-opacity duration-300 ${
+                    mobileMenuOpen ? 'opacity-0' : ''
+                  }`}
+                ></span>
+                <span
+                  className={`w-6 h-0.5 bg-black transition-transform duration-300 ${
+                    mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''
+                  }`}
+                ></span>
+              </div>
+            </button>
+          </div>
         </div>
       </nav>
 
       {/* Mobile Menu */}
-      <div className="fixed top-[85px] right-0 bg-white text-black w-[90%] h-full p-8 shadow-inner transition-all duration-300 translate-x-full" id="menu">
-        <ul className="leading-loose border-b border-gray-400 pb-3 mb-8">
-          <li><Link to="#" className="no-underline text-xl hover:text-green-700">Menu</Link></li>
-          <li><Link to="#" className="no-underline text-xl hover:text-green-700">Rewards</Link></li>
-          <li><Link to="#" className="no-underline text-xl hover:text-green-700">Gift Cards</Link></li>
-        </ul>
-        <div className="mt-5 flex gap-3">
-          {user ? (
-            <>
-              <Link to="/cart" className="cursor-pointer inline-block border border-black rounded-full px-4 py-2 leading-tight text-center no-underline text-black hover:bg-black/5">Cart</Link>
-              <Link to="/" onClick={handleLogout} className="cursor-pointer inline-block border border-black rounded-full px-4 py-2 leading-tight text-center no-underline bg-black text-white hover:bg-gray-800">Logout</Link>
-            </>
-          ) : (
-            <>
-              <Link to="/account/signin" className="cursor-pointer inline-block border border-black rounded-full px-4 py-2 leading-tight text-center no-underline text-black hover:bg-black/5">Sign in</Link>
-              <Link to="/account/create" className="cursor-pointer inline-block border border-black rounded-full px-4 py-2 leading-tight text-center no-underline bg-black text-white hover:bg-gray-800">Join now</Link>
-            </>
-          )}
+      <div
+        className={`fixed top-20 left-0 right-0 bottom-0 bg-white z-40 transform transition-transform duration-300 ease-in-out ${
+          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="p-6">
+          <ul className="mb-6 border-b border-gray-200 pb-6">
+            <li className="mb-4">
+              <Link
+                to="/menu"
+                className="text-xl font-medium"
+                onClick={toggleMobileMenu}
+              >
+                Menu
+              </Link>
+            </li>
+            <li className="mb-4">
+              <Link
+                to="#"
+                className="text-xl font-medium"
+                onClick={toggleMobileMenu}
+              >
+                Rewards
+              </Link>
+            </li>
+            <li className="mb-4">
+              <Link
+                to="#"
+                className="text-xl font-medium"
+                onClick={toggleMobileMenu}
+              >
+                Gift Cards
+              </Link>
+            </li>
+          </ul>
+
+          <div className="flex flex-col">
+            <Link
+              to="#"
+              className="flex items-center mb-6 text-[#212529]"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              <span>Find a store</span>
+            </Link>
+
+            <div className="flex mt-4 gap-3">
+              {!user ? (
+                <>
+                  <Link
+                    to="/account/signin"
+                    className="flex-1 px-4 py-2 text-center border border-black rounded-full hover:bg-gray-100 transition"
+                    onClick={toggleMobileMenu}
+                  >
+                    Sign in
+                  </Link>
+                  <Link
+                    to="/account/create"
+                    className="flex-1 px-4 py-2 text-center bg-black text-white rounded-full hover:bg-gray-800 transition"
+                    onClick={toggleMobileMenu}
+                  >
+                    Join now
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/cart"
+                    className="flex-1 px-4 py-2 text-center border border-black rounded-full hover:bg-gray-100 transition"
+                    onClick={toggleMobileMenu}
+                  >
+                    View cart
+                  </Link>
+                  <Link
+                    to="/"
+                    onClick={() => {
+                      handleLogout();
+                      toggleMobileMenu();
+                    }}
+                    className="flex-1 px-4 py-2 text-center bg-black text-white rounded-full hover:bg-gray-800 transition"
+                  >
+                    Sign out
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Space filler to compensate for fixed header */}
+      {/* <div className="h-20" /> */}
     </header>
   );
 }
