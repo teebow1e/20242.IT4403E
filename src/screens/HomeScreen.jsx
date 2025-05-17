@@ -10,13 +10,13 @@ function HomeScreen() {
             <p className="font-sodo my-1 text-[24px] leading-[1.7]">
               Join Starbucks ® Rewards for delicious deals & exclusive offers.
               <br />
-              <a href="#" className=" text-black hover:underline">
+              <a href="#" className=" text-white hover:underline">
                 Learn more
               </a>
             </p>
           </div>
         </section>
-  
+
         {/* Box B */}
         <section className="max-w-[1440px] mx-auto my-5 grid grid-cols-1 md:grid-cols-2 items-center bg-[#32462f] text-white">
           <img
@@ -34,9 +34,9 @@ function HomeScreen() {
               View the menu
             </a>
           </div>
-          
+
         </section>
-  
+
         {/* Box C */}
         <section className="max-w-[1440px] mx-auto my-5 grid grid-cols-1 md:grid-cols-2 items-center bg-[#440010cb] text-white">
           <img
@@ -59,7 +59,7 @@ function HomeScreen() {
             </a>
           </div>
         </section>
-  
+
         {/* Box D */}
         <section className="max-w-[1440px] mx-auto my-5 grid grid-cols-1 md:grid-cols-2 items-center bg-[#5f4633] text-white">
           <img
@@ -82,7 +82,7 @@ function HomeScreen() {
             </a>
           </div>
         </section>
-  
+
         {/* Box E */}
         <section className="max-w-[1440px] mx-auto my-5 grid grid-cols-1 md:grid-cols-2 items-center bg-[#006241] text-white">
           <img
@@ -108,5 +108,5 @@ function HomeScreen() {
       </>
     );
   }
-  
+
 export default HomeScreen;
