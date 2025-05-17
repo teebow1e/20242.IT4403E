@@ -164,6 +164,46 @@ export const OrderService = {
         }
     },
 
+    getUnfinishedOrders: async () => {
+        const ordersRef = ref(db, 'orders');
+        const ordersQuery = query(
+            ordersRef, 
+            orderByChild('finished'), 
+            equalTo(false)
+        );
+        const snapshot = await get(ordersQuery);
+
+        if (!snapshot.exists()) {
+            return {
+                success: false,
+                message: 'No unfinished orders found',
+                orders: []
+            }
+        }
+        
+        let orders = [];
+        snapshot.forEach(childSnapshot => {
+            const key = childSnapshot.key;
+            const data = childSnapshot.val();
+            orders.push({
+                orderId: key,
+                date: data.timestamp,
+                items: data.items,
+                totalAmount: data.totalAmount,
+                status: data.finished ? 'Completed' : 'Pending',
+                customer: data.customer
+            });
+        });
+
+        // Sort orders by date (most recent first)
+        orders.sort((a, b) => new Date(b.date) - new Date(a.date));
+        return {
+            success: true,
+            message: 'Unfinished orders fetched successfully',
+            orders: orders
+        };
+    },
+
     // src/services/OrderService.js
     // Add this to your existing OrderService
 

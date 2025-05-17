@@ -11,7 +11,7 @@ function OrderCard({ key, order, onCancel, onSuccess }) {
                 onClick={() => setExpanded(!expanded)}
             >
                 <h2 className="text-lg font-semibold">
-                #{order.id} - {order.user.displayName}
+                #{order.id} - {order.customer.firstName + ' ' + order.customer.lastName}
                 </h2>
                 <span className="text-gray-600">
                 {expanded ? '▲' : '▼'}
@@ -21,7 +21,7 @@ function OrderCard({ key, order, onCancel, onSuccess }) {
             {/* Expandable: items list */}
             {expanded && (
                 <div className="mt-4 border-t pt-4">
-                <p className="text-sm text-gray-500 mb-2">Time: {order.time}</p>
+                <p className="text-sm text-gray-500 mb-2">Time: {order.date}</p>
                 <div className="space-y-2">
                     {order.items.map((item, index) => (
                         <div
@@ -35,12 +35,12 @@ function OrderCard({ key, order, onCancel, onSuccess }) {
                             />
             
                             <div className="flex-1">
-                                <h3 className="text-lg font-semibold">{item.type}</h3>
+                                <h3 className="text-lg font-semibold">{item.name}</h3>
                                 <p className="text-gray-600 mb-2">Quantity: {item.quantity}</p>
                             </div>
             
                             <div className="text-right">
-                                <p className="font-bold">${item.totalPrice.toFixed(2)}</p>  
+                                <p className="font-bold">${(item.price * item.quantity).toFixed(2)}</p>  
                             </div>
                         </div>
                     ))}
