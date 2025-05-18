@@ -3,7 +3,6 @@ import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage
 import userReducer from './features/UserSlice'
 import cartReducer from './features/CartSlice'
-import ordersReducer from './features/OrdersSlice'
 import receiptReducer from './features/ReceiptSlice'
 
 const cartPersistConfig = {
@@ -19,7 +18,6 @@ const store = configureStore({
     user: userReducer,
     cart: persistedCartReducer,
     receipt: receiptReducer,
-    receivedOrders: ordersReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

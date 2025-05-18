@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function OrderCard({ key, order, onCancel, onSuccess }) {
+function OrderCard({ orderId, order, onCancel, onSuccess }) {
     const [expanded, setExpanded] = useState(false);
 
     return (
@@ -11,7 +11,7 @@ function OrderCard({ key, order, onCancel, onSuccess }) {
                 onClick={() => setExpanded(!expanded)}
             >
                 <h2 className="text-lg font-semibold">
-                #{order.id} - {order.customer.firstName + ' ' + order.customer.lastName}
+                #{orderId} - {order.customer.firstName + ' ' + order.customer.lastName}
                 </h2>
                 <span className="text-gray-600">
                 {expanded ? '▲' : '▼'}
