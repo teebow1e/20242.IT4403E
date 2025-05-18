@@ -27,7 +27,7 @@ export const OrderService = {
                 deliveryAddress: orderData.deliveryAddress || null,
                 totalAmount: orderData.totalAmount,
                 timestamp: timestamp,
-                finished: false // Default to NO as requested
+                finished: "Pending" // Default to NO as requested
             };
 
             console.log(orderToSave);
@@ -130,7 +130,7 @@ export const OrderService = {
                     date: data.timestamp,
                     items: data.items,
                     totalAmount: data.totalAmount,
-                    status: data.finished ? 'Completed' : 'Pending',
+                    finished: data.finished,
                     customer: data.customer,
                     deliveryAddress: data.deliveryAddress,
                     paymentMethod: data.paymentMethod
@@ -146,14 +146,14 @@ export const OrderService = {
     },
 
     // Mark an order as completed/fulfilled (for waiters)
-    updateOrderStatus: async (orderId, markAsCompleted = true) => {
+    updateOrderStatus: async (orderId, markAsCompleted) => {
         try {
             // Update just the 'finished' field
             await set(ref(db, `orders/${orderId}/finished`), markAsCompleted);
 
             return {
                 success: true,
-                message: markAsCompleted ? 'Order marked as completed' : 'Order marked as pending'
+                message: `Order marked as ${markAsCompleted}`
             };
         } catch (error) {
             console.error('Error updating order:', error);
@@ -169,7 +169,7 @@ export const OrderService = {
         const ordersQuery = query(
             ordersRef, 
             orderByChild('finished'), 
-            equalTo(false)
+            equalTo("Pending")
         );
         const snapshot = await get(ordersQuery);
 
@@ -186,17 +186,15 @@ export const OrderService = {
             const key = childSnapshot.key;
             const data = childSnapshot.val();
             orders.push({
-                orderId: key,
+                id: key,
                 date: data.timestamp,
                 items: data.items,
                 totalAmount: data.totalAmount,
-                status: data.finished ? 'Completed' : 'Pending',
+                finished: data.finished,
                 customer: data.customer
             });
         });
 
-        // Sort orders by date (most recent first)
-        orders.sort((a, b) => new Date(b.date) - new Date(a.date));
         return {
             success: true,
             message: 'Unfinished orders fetched successfully',
