@@ -34,6 +34,9 @@ import WholeBean from './screens/menu/wholebean/WholeBean';
 import ViaInstant from './screens/menu/viainstant/ViaInstant';
 import Bag from './screens/menu/bag/Bag';
 
+import { getDatabase, ref } from "firebase/database";
+import { onValue } from "firebase/database";
+
 function App() {
     const user = useSelector(selectUser);
     const dispatch = useDispatch();
@@ -41,12 +44,20 @@ function App() {
     useEffect(() => {
         auth.onAuthStateChanged((userAuth) => {
             if (userAuth) {
-                // User is signed in
-                dispatch(login({
-                    email: userAuth.email,
-                    uid: userAuth.uid,
-                    displayName: userAuth.displayName
-                }));
+                const db = getDatabase();
+                const uid = userAuth.uid;
+                const userRef = ref(db, `users/${uid}`);
+                onValue(userRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                    dispatch(login({
+                        email: userAuth.email,
+                        uid: userAuth.uid,
+                        displayName: userAuth.displayName,
+                        role: data.role,
+                    }));
+                }});
+
             } else {
                 // User is signed out
                 dispatch(logout());
@@ -60,7 +71,9 @@ function App() {
             <Routes>
                 {/* Waiter routes */}
                 <Route path="waiter" element={
-                    <WaiterScreen />
+                    <ProtectedRoute allowedRole={["waiter"]}>
+                        <WaiterScreen />
+                    </ProtectedRoute>
                 } />
 
                 {/* Nesting routes inside Layout so they share Header, Footer, and Outlet */}
@@ -91,17 +104,17 @@ function App() {
                     {/* Cart and checkout routes - protected by auth */}
                     
                     <Route path="cart" element={
-                        <ProtectedRoute>
+                        <ProtectedRoute allowedRole={["customer"]}>
                             <CartScreen />
                         </ProtectedRoute>
                     } />
                     <Route path="checkout" element={
-                        <ProtectedRoute>
+                        <ProtectedRoute allowedRole={["customer"]}>
                             <CheckoutScreen />
                         </ProtectedRoute>
                     } />
                     <Route path="order-confirmation" element={
-                        <ProtectedRoute>
+                        <ProtectedRoute allowedRole={["customer"]}>
                             <OrderConfirmationScreen />
                         </ProtectedRoute>
                     } />
