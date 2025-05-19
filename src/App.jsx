@@ -125,7 +125,7 @@ function App() {
                 <Route 
                     path="/menu" 
                     element={
-                      <ProtectedRoute>
+                      <ProtectedRoute allowedRole={["customer"]}>
                           <Layout menuPage={true}/>
                       </ProtectedRoute> 
                     }
