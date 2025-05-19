@@ -9,6 +9,9 @@ import OrderService from '../services/OrderService';
 import FormSubmit from '../forms/FormSubmit';
 
 function CheckoutScreen() {
+    const [otpToken, setOtpToken] = useState('');
+    const [otpRequired, setOtpRequired] = useState(false);
+
     const cartItems = useSelector(selectCartItems);
     const totalAmount = useSelector(selectCartTotalAmount);
     const user = useSelector(selectUser);
@@ -99,8 +102,6 @@ function CheckoutScreen() {
         return Object.keys(newErrors).length === 0;
     };
 
-    const RECAPTCHA_KEY = "6LfMnjErAAAAAFV-3CfhiMTlFeqDqEKTs8VUKaw4";
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -110,38 +111,32 @@ function CheckoutScreen() {
 
         setIsSubmitting(true);
 
-        // try {
-        //     await new Promise(resolve => window.grecaptcha.ready(resolve));
+        if (!otpToken) {
+            try {
+                // Generate and send OTP
+                const response = await fetch('http://localhost:5000/api/send-otp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: formData.email,
+                        phone: formData.phone
+                    })
+                });
 
-        //     const recaptchaToken = await window.grecaptcha.execute(
-        //         RECAPTCHA_KEY,
-        //         { action: "checkout" }
-        //     );
-        //     console.log("reCAPTCHA token:", recaptchaToken);
-
-        //     const verificationResponse = await fetch('/api/verify-recaptcha', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({ token: recaptchaToken })
-        //     });
-
-        //     const { score } = await verificationResponse.json();
-        //     console.log("reCAPTCHA score:", score);
-
-        //     if (score < 0.5) {
-        //         alert("Sorry, we cannot process your request at this time. Please try again later.");
-        //         setIsSubmitting(false);
-        //         return;
-        //     }
-        // } catch (err) {
-        //     console.error("reCAPTCHA error:", err);
-        //     alert("Unable to verify you’re not a bot. Please try again.");
-        //     setIsSubmitting(false);
-        //     return;
-        // }
-
+                if (response.ok) {
+                    setOtpRequired(true);
+                    setIsSubmitting(false);
+                    return;
+                }
+            } catch (error) {
+                console.error('Error sending OTP:', error);
+                alert('Failed to send verification code. Please try again.');
+                setIsSubmitting(false);
+                return;
+            }
+        }
 
         const orderData = {
             customer: {
@@ -170,6 +165,25 @@ function CheckoutScreen() {
         };
 
         try {
+            if (otpRequired) {
+                const verifyResponse = await fetch('http://localhost:5000/api/verify-otp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        otp: otpToken,
+                        email: formData.email
+                    })
+                });
+
+                if (!verifyResponse.ok) {
+                    alert('Invalid verification code. Please try again.');
+                    setIsSubmitting(false);
+                    return;
+                }
+            }
+
             const response = await OrderService.placeOrder(orderData);
 
             if (response.success) {
@@ -256,6 +270,7 @@ function CheckoutScreen() {
                                         error={!!errors.phone}
                                         helperText={errors.phone}
                                         fullWidth
+                                        required
                                     />
                                 </div>
                             </div>
@@ -397,6 +412,19 @@ function CheckoutScreen() {
                                 </div>
                             )}
                         </div>
+
+                        {otpRequired && (
+                            <div className="bg-white p-6 rounded-lg shadow-sm">
+                                <h2 className="text-xl font-bold mb-4">OTP Verification</h2>
+                                <TextField
+                                    label="6-digit OTP"
+                                    value={otpToken}
+                                    onChange={(e) => setOtpToken(e.target.value)}
+                                    fullWidth
+                                    required
+                                />
+                            </div>
+                        )}
 
                         <div className="flex justify-end">
                             <button
