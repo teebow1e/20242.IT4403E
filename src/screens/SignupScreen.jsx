@@ -53,6 +53,18 @@ function SignupScreen() {
     setSubmitError(null);
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      // Store user role in Realtime Database
+      const uid = userCredential.user.uid;
+      console.log("User UID:", uid);
+      const db = getDatabase();
+      try {
+        const userRef = ref(db, `users/${uid}`);
+        await set(userRef, {role: 'customer'});
+      } catch (error) {
+        console.error("Error writing to database:", error);
+        setSubmitError('Failed to save user role. Please try again.');
+        return;
+      }
 
       await updateProfile(userCredential.user, { displayName: `${fName} ${lName}` });
       
@@ -67,13 +79,7 @@ function SignupScreen() {
 
       // Show verification screen instead of navigating
       setVerificationSent(true);
-      
-      // Store user role in Realtime Database
-      const uid = userCredential.user.uid;
-      const db = getDatabase();
-      const userRef = ref(db, `users/${uid}`);
-      await set(userRef, {role: 'customer'});
-      
+        
     } catch (error) {
       console.error("Signup error:", error);
       switch (error.code) {
