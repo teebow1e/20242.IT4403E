@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 import { rateLimiter } from '../utils/RateLimiter';
+import { getDatabase, ref, set } from "firebase/database";
 
 const getClientIdentifier = async () => {
     try {
@@ -66,7 +67,13 @@ function SignupScreen() {
 
       // Show verification screen instead of navigating
       setVerificationSent(true);
-
+      
+      // Store user role in Realtime Database
+      const uid = userCredential.user.uid;
+      const db = getDatabase();
+      const userRef = ref(db, `users/${uid}`);
+      await set(userRef, {role: 'customer'});
+      
     } catch (error) {
       console.error("Signup error:", error);
       switch (error.code) {

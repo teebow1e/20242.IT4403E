@@ -9,6 +9,7 @@ import { auth } from '../firebase';
 import { login } from '../features/UserSlice';
 import { useDispatch } from 'react-redux';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { getDatabase, ref, get } from "firebase/database";
 
 function LoginScreen() {
     const { handleSubmit, register, formState: { errors } } = useForm();
@@ -27,10 +28,21 @@ function LoginScreen() {
                 return;
             }
 
+            // Fetch role from Realtime Database
+            const db = getDatabase();
+            const roleSnap = await get(ref(db, `users/${userAuth.user.uid}/role`));
+            const role = roleSnap.val();
+
+            if (!role) {
+                alert("Your account does not have a role assigned. Please contact support.");
+                return;
+            }
+
             dispatch(login({
                 email: userAuth.user.email,
                 uid: userAuth.user.uid,
-                displayName: userAuth.user.displayName
+                displayName: userAuth.user.displayName,
+                role: role,
             }));
         } catch (e) {
             console.log("Something wrong!", e);

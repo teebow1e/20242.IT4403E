@@ -5,7 +5,7 @@ function OrderCard({ orderId, order, onCancel, onSuccess }) {
 
     return (
         <div className="border rounded-xl shadow-md p-4 mb-4 bg-white w-3/5 mx-auto">
-            {/* Top section: order ID and buyer name */}
+            {/* Top section: order ID and customer name */}
             <div
                 className="flex justify-between items-center cursor-pointer"
                 onClick={() => setExpanded(!expanded)}

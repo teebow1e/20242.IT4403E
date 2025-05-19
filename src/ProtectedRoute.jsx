@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from './features/UserSlice';
 import { auth } from './firebase';
 
-function ProtectedRoute({ children }) {
+function ProtectedRoute({ children, allowedRole }) {
     const user = useSelector(selectUser);
 
     if (!user) {
@@ -14,6 +14,11 @@ function ProtectedRoute({ children }) {
         auth.signOut();
         return <Navigate to="/account/signin" replace />;
     }
+
+    if (allowedRole && !allowedRole.includes(user.role)) {
+        return <Navigate to="/account/signin" replace />;
+    }
+
     return children;
 }
 
