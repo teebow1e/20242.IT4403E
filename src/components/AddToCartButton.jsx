@@ -14,7 +14,7 @@ function AddToCartButton({ item, category }) {
       id,
       type: item.type,
       image: item.image,
-      price: 4.95, // Default price - this would normally come from the item data
+      price: item.price, // Default price - this would normally come from the item data
       category,
       customizations: {} // No customizations by default
     }));
