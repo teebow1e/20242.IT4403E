@@ -11,30 +11,30 @@ function Featured() {
       </section>
 
       {/* Box A */}
-        <section className="max-w-[1080px] mx-auto my-5 grid grid-cols-1 md:grid-cols-2 gap-8 bg-white">
+      <section className="max-w-[1080px] mx-auto my-5 grid grid-cols-1 md:grid-cols-2 gap-8 bg-white">
         {[{
-            img: '/drink1.jpg',
-            title: 'Iced Lavender Cream Oatmilk Matcha',
-            desc: 'A smooth combination of matcha green tea and oatmilk, finished with lavender cream cold foam with subtle floral notes. Includes dairy.',
-        },{
-            img: '/drink2.jpg',
-            title: 'Iced Lavender Oatmilk Latte',
-            desc: 'Starbucks® Blonde Espresso and oatmilk combine with subtle floral accents, served over ice.',
+          img: '/drink1.jpg',
+          title: 'Iced Lavender Cream Oatmilk Matcha',
+          desc: 'A smooth combination of matcha green tea and oatmilk, finished with lavender cream cold foam with subtle floral notes. Includes dairy.',
+        }, {
+          img: '/drink2.jpg',
+          title: 'Iced Lavender Oatmilk Latte',
+          desc: 'Meowbucks® Blonde Espresso and oatmilk combine with subtle floral accents, served over ice.',
         }].map((item, i) => (
-            <div
+          <div
             key={i}
             className="flex flex-col mx-auto max-w-[800px] text-center bg-[#d2d2ae] text-[#1e3932] justify-between h-full"
-            >
+          >
             <img
-                className="w-full h-auto object-cover mb-4"
-                src={item.img}
-                alt={item.title}
+              className="w-full h-auto object-cover mb-4"
+              src={item.img}
+              alt={item.title}
             />
             <h2 className="font-sodo font-bold text-[24px] mb-3">
-                {item.title}
+              {item.title}
             </h2>
             <p className="my-1 leading-[1.6] text-[16px] mb-5 px-10">
-                {item.desc}
+              {item.desc}
             </p>
             <a
               href="#"
@@ -42,9 +42,9 @@ function Featured() {
             >
               Order now
             </a>
-            </div>
+          </div>
         ))}
-        </section>
+      </section>
 
 
       {/* Box B */}
@@ -75,11 +75,11 @@ function Featured() {
         {[{
           img: '/drink4.jpg',
           title: 'Cortado',
-          desc: 'Three ristretto shots of Starbucks® Blonde Espresso combined with steamed whole milk and served in an 8 fl oz short cup.',
-        },{
+          desc: 'Three ristretto shots of Meowbucks® Blonde Espresso combined with steamed whole milk and served in an 8 fl oz short cup.',
+        }, {
           img: '/drink5.jpg',
           title: 'Brown Sugar Oatmilk Cortado',
-          desc: 'Three ristretto shots of Starbucks® Blonde Espresso, brown sugar syrup, cinnamon and steamed oatmilk in an 8 fl oz short cup.',
+          desc: 'Three ristretto shots of Meowbucks® Blonde Espresso, brown sugar syrup, cinnamon and steamed oatmilk in an 8 fl oz short cup.',
         }].map((item, i) => (
           <div key={i} className="flex flex-col mx-auto max-w-[800px] text-center bg-[#5f4633] text-[#ffffff] justify-between h-full">
             <img className="w-full h-auto object-cover mb-6" src={item.img} alt={item.title} />

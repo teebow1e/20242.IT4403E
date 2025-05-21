@@ -10,17 +10,17 @@ import { rateLimiter } from '../utils/RateLimiter';
 import { getDatabase, ref, set } from "firebase/database";
 
 const getClientIdentifier = async () => {
-    try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        return data.ip;
-    } catch (error) {
-        const fingerprint = navigator.userAgent + 
-                          window.screen.width + 
-                          window.screen.height + 
-                          new Date().getTimezoneOffset();
-        return fingerprint;
-    }
+  try {
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    return data.ip;
+  } catch (error) {
+    const fingerprint = navigator.userAgent +
+      window.screen.width +
+      window.screen.height +
+      new Date().getTimezoneOffset();
+    return fingerprint;
+  }
 };
 
 function SignupScreen() {
@@ -42,11 +42,11 @@ function SignupScreen() {
   };
 
   const onSubmit = async ({ fName, lName, email, password }) => {
-    const clientId = await getClientIdentifier(); 
+    const clientId = await getClientIdentifier();
 
     if (rateLimiter.isRateLimited(clientId)) {
-        setSubmitError('Too many requests. Please try again later.');
-        return;
+      setSubmitError('Too many requests. Please try again later.');
+      return;
     }
 
     setIsSubmitting(true);
@@ -55,11 +55,10 @@ function SignupScreen() {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       // Store user role in Realtime Database
       const uid = userCredential.user.uid;
-      console.log("User UID:", uid);
       const db = getDatabase();
       try {
         const userRef = ref(db, `users/${uid}`);
-        await set(userRef, {role: 'customer'});
+        await set(userRef, { role: 'customer' });
       } catch (error) {
         console.error("Error writing to database:", error);
         setSubmitError('Failed to save user role. Please try again.');
@@ -67,7 +66,7 @@ function SignupScreen() {
       }
 
       await updateProfile(userCredential.user, { displayName: `${fName} ${lName}` });
-      
+
       // Send verification email
       await sendEmailVerification(userCredential.user, {
         url: window.location.origin + '/account/verify-email',
@@ -79,7 +78,7 @@ function SignupScreen() {
 
       // Show verification screen instead of navigating
       setVerificationSent(true);
-        
+
     } catch (error) {
       console.error("Signup error:", error);
       switch (error.code) {
@@ -113,7 +112,7 @@ function SignupScreen() {
         </div>
 
         <h2 className="text-2xl font-bold text-center mb-4">Verify your email</h2>
-        
+
         <p className="text-gray-600 text-center mb-6">
           We've sent a verification link to your email address. Please check your inbox and verify your email to complete signup.
         </p>
@@ -144,7 +143,7 @@ function SignupScreen() {
         <div className="grid place-items-center text-center p-5 max-w-[50%] text-gray-600">
           <h4 className="text-[15px] font-bold mb-5">STARBUCK® REWARDS</h4>
           <p className="text-[14px] max-w-[80%] leading-[1.7]">
-            Join Starbucks Rewards to earn Stars for free food and drinks, any way you pay.
+            Join Meowbucks Rewards to earn Stars for free food and drinks, any way you pay.
             Get access to mobile ordering, a birthday Reward, and{' '}
             <Link to="https://www.starbucks.com/rewards" className="text-gray-600 underline hover:no-underline">
               more
@@ -254,7 +253,7 @@ function SignupScreen() {
               )}
 
               <h4 className='text-gray-600 text-sm my-6'>Collect more Stars & Earn Rewards</h4>
-              <span className='text-gray-800 font-semibold block'>Email is a great way to know about offers and what's new from Starbucks.</span>
+              <span className='text-gray-800 font-semibold block'>Email is a great way to know about offers and what's new from Meowbucks.</span>
 
               <div className="flex justify-end w-full mt-4">
                 <button
