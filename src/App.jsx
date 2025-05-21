@@ -12,7 +12,9 @@ import CheckoutScreen from './screens/CheckoutScreen';
 import OrderConfirmationScreen from './screens/OrderConfirmationScreen';
 import WaiterScreen from './screens/WaiterScreen';
 import VerifyEmailScreen from './screens/VerifyEmailScreen';
+import UnauthorizedScreen from './screens/UnauthorizedScreen';
 import { auth } from './firebase';
+import { getDatabase, ref, onValue } from "firebase/database";
 import { login, logout, selectUser } from './features/UserSlice';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,63 +36,84 @@ import WholeBean from './screens/menu/wholebean/WholeBean';
 import ViaInstant from './screens/menu/viainstant/ViaInstant';
 import Bag from './screens/menu/bag/Bag';
 
-import { getDatabase, ref } from "firebase/database";
-import { onValue } from "firebase/database";
+import { getRedirectByRole } from './utils/RoleBasedRedirect';
+
 
 function App() {
     const user = useSelector(selectUser);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        auth.onAuthStateChanged((userAuth) => {
+        const unsubscribeAuth = auth.onAuthStateChanged((userAuth) => {
             if (userAuth) {
                 const db = getDatabase();
                 const uid = userAuth.uid;
                 const userRef = ref(db, `users/${uid}`);
-                onValue(userRef, (snapshot) => {
+                const unsubscribeDB = onValue(userRef, (snapshot) => {
                     const data = snapshot.val();
-                    if (data) {
-                    dispatch(login({
-                        email: userAuth.email,
-                        uid: userAuth.uid,
-                        displayName: userAuth.displayName,
-                        role: data.role,
-                    }));
-                }});
+                    const shouldUpdate =
+                        !user ||
+                        user.uid !== userAuth.uid ||
+                        user.role !== data.role;
+
+                    if (shouldUpdate) {
+                        dispatch(login({
+                            email: userAuth.email,
+                            uid: userAuth.uid,
+                            displayName: userAuth.displayName,
+                            role: data.role,
+                        }));
+                    }
+                });
+
+                return () => {
+                    // Hủy đăng ký onValue khi component unmount
+                    unsubscribeDB();
+                }
 
             } else {
                 // User is signed out
                 dispatch(logout());
             }
-        }
-        );
-    }, [dispatch]);
+        });
+
+        return () => unsubscribeAuth();
+            // Hủy đăng ký onAuthStateChanged khi component unmount
+    }, [dispatch, user]);
     
     return (
         <Router>
             <Routes>
+                {/* Unauthorized route */}
+                <Route path="unauthorized" element={<UnauthorizedScreen />} />
+
+                {/* Admin routes */}
+
                 {/* Waiter routes */}
                 <Route path="waiter" element={
-                    <ProtectedRoute allowedRole={["waiter"]}>
-                        <WaiterScreen />
-                    </ProtectedRoute>
-                } />
+                      <ProtectedRoute allowedRoles={["waiter"]}>
+                            <Layout page={"waiter"} />
+                      </ProtectedRoute> 
+                    }>  
+                    <Route index element={<WaiterScreen />} />  
+                </Route>
 
                 {/* Nesting routes inside Layout so they share Header, Footer, and Outlet */}
-                <Route path="/" element={<Layout menuPage={false} />}>
+                <Route path="/" element={<Layout menuPage={false} /> }>
                     <Route index element={<HomeScreen />} />
                     {/* User Authentication routes */}
                     <Route
                         path="account/signin"
-                        element={user ? <Navigate to="/menu" replace /> : <LoginScreen />}
+                        element={user ? <Navigate to={getRedirectByRole(user.role)} replace /> : <LoginScreen />
+                        }  
                     />
                     <Route
                         path="account/create"
-                        element={user ? <Navigate to="/menu" replace /> : <SignupScreen />}
+                        element={user ? <Navigate to={getRedirectByRole(user.role)} replace /> : <SignupScreen />}
                     />
                     <Route
                         path="account/forgot-password"
-                        element={user ? <Navigate to="/menu" replace /> : <ForgotPasswordScreen />}
+                        element={user ? <Navigate to={getRedirectByRole(user.role)} replace /> : <ForgotPasswordScreen />}
                     />
                     <Route
                         path="account/logout"
@@ -104,17 +127,17 @@ function App() {
                     {/* Cart and checkout routes - protected by auth */}
                     
                     <Route path="cart" element={
-                        <ProtectedRoute allowedRole={["customer"]}>
+                        <ProtectedRoute allowedRoles={["customer"]}>
                             <CartScreen />
                         </ProtectedRoute>
                     } />
                     <Route path="checkout" element={
-                        <ProtectedRoute allowedRole={["customer"]}>
+                        <ProtectedRoute allowedRoles={["customer"]}>
                             <CheckoutScreen />
                         </ProtectedRoute>
                     } />
                     <Route path="order-confirmation" element={
-                        <ProtectedRoute allowedRole={["customer"]}>
+                        <ProtectedRoute allowedRoles={["customer"]}>
                             <OrderConfirmationScreen />
                         </ProtectedRoute>
                     } />
@@ -125,7 +148,7 @@ function App() {
                 <Route 
                     path="/menu" 
                     element={
-                      <ProtectedRoute allowedRole={["customer"]}>
+                      <ProtectedRoute allowedRoles={["customer"]}>
                           <Layout menuPage={true}/>
                       </ProtectedRoute> 
                     }
@@ -194,9 +217,7 @@ function App() {
                     <Route
                         path="at-home-coffee/shopping-bag"
                         element={<Bag />}
-                    />
-
-                    
+                    />                    
                 </Route>
             </Routes>
         </Router>

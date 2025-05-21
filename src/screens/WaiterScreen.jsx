@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import OrderCard from "../components/OrderCard";
 import { OrderService } from "../services/OrderService";
 import { onChildAdded, ref, off } from 'firebase/database';
@@ -7,7 +7,8 @@ import { db } from "../firebase";
 function WaiterScreen() {
     const [loading, setLoading] = useState(false);
     const [unfinishedOrders, setUnfinishedOrders] = useState([]);
-
+    
+    // run once
     useEffect(() => {
         if (unfinishedOrders.length == 0) {
             setLoading(true);
@@ -29,28 +30,29 @@ function WaiterScreen() {
         fetchUnfinishedOrders();
     }, []);
 
+    const handleNewOrder = useCallback((snapshot) => {
+        const id = snapshot.key;
+        const value = snapshot.val();
+        if (value.finished !== "Pending") return;
+        const newOrder = { id, ...value };
+
+        setUnfinishedOrders((unfinishedOrders) => {
+        // Tránh thêm trùng đơn hàng
+        const exists = unfinishedOrders.some(order => order.id === newOrder.id);
+        if (exists) return unfinishedOrders;
+            return [...unfinishedOrders, newOrder];
+        });
+    }, []);
+    
     useEffect(() => {
         const ordersRef = ref(db, "orders");
-        const handleNewOrder = (snapshot) => {
-            const id = snapshot.key;
-            const value = snapshot.val();
-            if (value.finished !== "Pending") return;
-            const newOrder = { id, ...value };
-
-            setUnfinishedOrders((unfinishedOrders) => {
-            // Tránh thêm trùng đơn hàng
-            const exists = unfinishedOrders.some(order => order.id === newOrder.id);
-            if (exists) return unfinishedOrders;
-                return [...unfinishedOrders, newOrder];
-            });
-        }
         onChildAdded(ordersRef, handleNewOrder);
 
         // Cleanup khi component unmount (rời màn hình)
         return () => {
             off(ordersRef, "child_added", handleNewOrder);
         };
-    });
+    }, [handleNewOrder]);
 
     const onCancel = async(order) => {
         setUnfinishedOrders((unfinishedOrders) =>
