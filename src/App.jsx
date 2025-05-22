@@ -12,6 +12,7 @@ import CheckoutScreen from './screens/CheckoutScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import OrderConfirmationScreen from './screens/OrderConfirmationScreen';
 import VerifyEmailScreen from './screens/VerifyEmailScreen';
+import AccountSecurityScreen from './screens/AccountSecurityScreen';
 import { auth } from './firebase';
 import { login, logout, selectUser } from './features/UserSlice';
 import { useEffect } from 'react';
@@ -85,6 +86,12 @@ function App() {
                         path="account/reset-password"
                         element={<ResetPasswordScreen />}
                     />
+
+                    <Route path="account/security" element={
+                        <ProtectedRoute>
+                            <AccountSecurityScreen />
+                        </ProtectedRoute>
+                    } />
 
                     {/* Cart and checkout routes - protected by auth */}
 

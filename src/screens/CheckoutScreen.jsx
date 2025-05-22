@@ -1,16 +1,19 @@
+// src/screens/CheckoutScreen.jsx (Updated)
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { TextField, FormControl, FormControlLabel, Radio, RadioGroup, FormLabel } from '@mui/material';
+import { TextField, FormControl, FormControlLabel, Radio, RadioGroup, Alert } from '@mui/material';
 import { selectCartItems, selectCartTotalAmount, clearCart } from '../features/CartSlice';
 import { setLastOrderReceipt } from '../features/ReceiptSlice';
 import { selectUser } from '../features/UserSlice';
+import { TOTPService } from '../services/TOTPService';
 import OrderService from '../services/OrderService';
 import FormSubmit from '../forms/FormSubmit';
 
 function CheckoutScreen() {
-    const [otpToken, setOtpToken] = useState('');
-    const [otpRequired, setOtpRequired] = useState(false);
+    const [totpToken, setTotpToken] = useState('');
+    const [totpRequired, setTotpRequired] = useState(false);
+    const [totpEnabled, setTotpEnabled] = useState(false);
 
     const cartItems = useSelector(selectCartItems);
     const totalAmount = useSelector(selectCartTotalAmount);
@@ -32,6 +35,7 @@ function CheckoutScreen() {
         cardName: '',
         cardExpiry: '',
         cardCvv: '',
+        deliveryMethod: 'pickup'
     });
 
     const [errors, setErrors] = useState({});
@@ -51,8 +55,22 @@ function CheckoutScreen() {
                 lastName,
                 email: user.email || ''
             }));
+
+            // Check if user has TOTP enabled
+            checkTOTPStatus();
         }
     }, [user]);
+
+    const checkTOTPStatus = async () => {
+        if (user) {
+            try {
+                const enabled = await TOTPService.isTOTPEnabled(user.uid);
+                setTotpEnabled(enabled);
+            } catch (error) {
+                console.error('Error checking TOTP status:', error);
+            }
+        }
+    };
 
     useEffect(() => {
         if (cartItems.length === 0) {
@@ -98,6 +116,13 @@ function CheckoutScreen() {
             if (!formData.cardCvv.trim()) newErrors.cardCvv = 'CVV is required';
         }
 
+        if (formData.deliveryMethod === 'delivery') {
+            if (!formData.address.trim()) newErrors.address = 'Address is required';
+            if (!formData.city.trim()) newErrors.city = 'City is required';
+            if (!formData.state.trim()) newErrors.state = 'State is required';
+            if (!formData.zip.trim()) newErrors.zip = 'ZIP code is required';
+        }
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -111,28 +136,30 @@ function CheckoutScreen() {
 
         setIsSubmitting(true);
 
-        if (!otpToken) {
-            try {
-                // Generate and send OTP
-                const response = await fetch('http://localhost:5000/api/send-otp', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        email: formData.email,
-                        phone: formData.phone
-                    })
-                });
+        // If TOTP is enabled and we haven't verified yet, require TOTP
+        if (totpEnabled && !totpRequired) {
+            setTotpRequired(true);
+            setIsSubmitting(false);
+            return;
+        }
 
-                if (response.ok) {
-                    setOtpRequired(true);
+        // If TOTP is required, verify the token
+        if (totpRequired && totpEnabled) {
+            if (!totpToken || totpToken.length !== 6) {
+                setErrors({ totp: 'Please enter a valid 6-digit code from your authenticator app' });
+                setIsSubmitting(false);
+                return;
+            }
+
+            try {
+                const verifyResult = await TOTPService.verifyTOTP(user.uid, totpToken);
+                if (!verifyResult.success) {
+                    setErrors({ totp: verifyResult.message });
                     setIsSubmitting(false);
                     return;
                 }
             } catch (error) {
-                console.error('Error sending OTP:', error);
-                alert('Failed to send verification code. Please try again.');
+                setErrors({ totp: 'Failed to verify authenticator code' });
                 setIsSubmitting(false);
                 return;
             }
@@ -153,37 +180,16 @@ function CheckoutScreen() {
                 customizations: item.customizations
             })),
             paymentMethod: formData.paymentMethod,
-            deliveryAddress: formData.address
-                ? {
-                    address: formData.address,
-                    city: formData.city,
-                    state: formData.state,
-                    zip: formData.zip
-                }
-                : undefined,
+            deliveryAddress: formData.deliveryMethod === 'delivery' ? {
+                address: formData.address,
+                city: formData.city,
+                state: formData.state,
+                zip: formData.zip
+            } : null,
             totalAmount: totalAmount * 1.0725 // including tax
         };
 
         try {
-            if (otpRequired) {
-                const verifyResponse = await fetch('http://localhost:5000/api/verify-otp', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        otp: otpToken,
-                        email: formData.email
-                    })
-                });
-
-                if (!verifyResponse.ok) {
-                    alert('Invalid verification code. Please try again.');
-                    setIsSubmitting(false);
-                    return;
-                }
-            }
-
             const response = await OrderService.placeOrder(orderData);
 
             if (response.success) {
@@ -270,7 +276,6 @@ function CheckoutScreen() {
                                         error={!!errors.phone}
                                         helperText={errors.phone}
                                         fullWidth
-                                        required
                                     />
                                 </div>
                             </div>
@@ -282,7 +287,7 @@ function CheckoutScreen() {
                             <FormControl component="fieldset">
                                 <RadioGroup
                                     name="deliveryMethod"
-                                    value={formData.deliveryMethod || 'pickup'}
+                                    value={formData.deliveryMethod}
                                     onChange={handleChange}
                                 >
                                     <FormControlLabel value="pickup" control={<Radio />} label="Pickup in store" />
@@ -290,7 +295,7 @@ function CheckoutScreen() {
                                 </RadioGroup>
                             </FormControl>
 
-{formData.deliveryMethod === 'delivery' && (
+                            {formData.deliveryMethod === 'delivery' && (
                                 <div className="mt-4">
                                     <div className="mb-4">
                                         <TextField
@@ -413,16 +418,31 @@ function CheckoutScreen() {
                             )}
                         </div>
 
-                        {otpRequired && (
+                        {totpRequired && totpEnabled && (
                             <div className="bg-white p-6 rounded-lg shadow-sm">
-                                <h2 className="text-xl font-bold mb-4">OTP Verification</h2>
+                                <h2 className="text-xl font-bold mb-4">Two-Factor Authentication</h2>
+                                <p className="text-gray-600 mb-4">
+                                    Please enter the 6-digit code from your authenticator app to complete your order.
+                                </p>
                                 <TextField
-                                    label="6-digit OTP"
-                                    value={otpToken}
-                                    onChange={(e) => setOtpToken(e.target.value)}
+                                    label="Authenticator Code"
+                                    value={totpToken}
+                                    onChange={(e) => setTotpToken(e.target.value)}
+                                    error={!!errors.totp}
+                                    helperText={errors.totp}
                                     fullWidth
                                     required
+                                    inputProps={{
+                                        maxLength: 6,
+                                        pattern: '[0-9]{6}',
+                                        autoComplete: 'one-time-code'
+                                    }}
                                 />
+                                {errors.totp && (
+                                    <Alert severity="error" className="mt-2">
+                                        {errors.totp}
+                                    </Alert>
+                                )}
                             </div>
                         )}
 
@@ -431,10 +451,17 @@ function CheckoutScreen() {
                                 type="button"
                                 onClick={() => navigate('/cart')}
                                 className="px-6 py-2 mr-4 bg-gray-200 rounded-full hover:bg-gray-300 transition"
+                                disabled={isSubmitting}
                             >
                                 Back to Cart
                             </button>
-                            <FormSubmit name="Place Order" type="submit" />
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className="relative inline-block z-10 px-6 py-4.5 bg-[#00a862] shadow-lg border-0 rounded-full text-white text-lg font-bold leading-tight overflow-hidden text-center transition-all duration-200 ease-in-out ml-auto cursor-pointer hover:shadow-xl hover:transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isSubmitting ? 'Processing...' : 'Place Order'}
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -481,6 +508,19 @@ function CheckoutScreen() {
                                 </div>
                             </div>
                         </div>
+
+                        {totpEnabled && (
+                            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+                                <div className="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    <span className="text-sm text-blue-800">
+                                        Two-factor authentication enabled
+                                    </span>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
