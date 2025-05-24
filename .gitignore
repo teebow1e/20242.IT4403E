@@ -14,3 +14,6 @@ dist/
 psd
 thumb
 sketch
+
+server/.env
+server/serviceAccountKey.json
