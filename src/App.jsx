@@ -91,22 +91,26 @@ function App() {
                 <Route path="*" element={<NotFoundScreen />} />
 
                 {/* Admin routes */}
-                <Route path="admin/manage-users" element={
-                    <ProtectedRoute allowedRoles={["admin"]}>
-                        <Layout page="admin" />
-                        <ManangeUsersScreen />
-                    </ProtectedRoute>
-                } />
-                <Route path="admin/*" element={<NotFoundScreen />} />
+                <Route path="admin" element={
+                    <Layout page={"admin"} />
+                } >
+                    <Route path="manage-users" element={
+                        <ProtectedRoute allowedRoles={["admin"]}>
+                            <ManangeUsersScreen/>
+                        </ProtectedRoute>
+                    }/>
+                    <Route path="" element={<NotFoundScreen />} />
+                </Route>
 
                 {/* Waiter routes */}
                 <Route path="waiter" element={
-                    <ProtectedRoute allowedRoles={["waiter"]}>
-                        <Layout page="waiter" />
-                        <WaiterScreen />
-                    </ProtectedRoute>
-                } />
-                <Route path="waiter/*" element={<NotFoundScreen />} />
+                      <ProtectedRoute allowedRoles={["waiter"]}>
+                            <Layout page={"waiter"} />
+                      </ProtectedRoute> 
+                    }>  
+                    <Route index element={<WaiterScreen />} />  
+                    <Route path="" element={<NotFoundScreen />} />  
+                </Route>
 
                 {/* Auth Pages - public*/}
                 <Route path="/" element={<Layout menuPage={false} /> }>
