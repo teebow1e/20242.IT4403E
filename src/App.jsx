@@ -14,6 +14,7 @@ import WaiterScreen from './screens/WaiterScreen';
 import VerifyEmailScreen from './screens/VerifyEmailScreen';
 import UnauthorizedScreen from './screens/UnauthorizedScreen';
 import ManangeUsersScreen from './screens/ManageUsersScreen';
+import NotFoundScreen from './screens/NotFoundScreen';
 import { auth } from './firebase';
 import { getDatabase, ref, onValue } from "firebase/database";
 import { login, logout, selectUser } from './features/UserSlice';
@@ -85,30 +86,29 @@ function App() {
     return (
         <Router>
             <Routes>
-                {/* Unauthorized route */}
+                {/* Unauthorized + NotFound */}
                 <Route path="unauthorized" element={<UnauthorizedScreen />} />
+                <Route path="*" element={<NotFoundScreen />} />
 
                 {/* Admin routes */}
-                <Route path="admin" element={
-                    <Layout page={"admin"} />
-                } >
-                    <Route path="manage-users" element={
-                        <ProtectedRoute allowedRoles={["admin"]}>
-                            <ManangeUsersScreen/>
-                        </ProtectedRoute>
-                    }/>
-                </Route>
+                <Route path="admin/manage-users" element={
+                    <ProtectedRoute allowedRoles={["admin"]}>
+                        <Layout page="admin" />
+                        <ManangeUsersScreen />
+                    </ProtectedRoute>
+                } />
+                <Route path="admin/*" element={<NotFoundScreen />} />
 
                 {/* Waiter routes */}
                 <Route path="waiter" element={
-                      <ProtectedRoute allowedRoles={["waiter"]}>
-                            <Layout page={"waiter"} />
-                      </ProtectedRoute> 
-                    }>  
-                    <Route index element={<WaiterScreen />} />  
-                </Route>
+                    <ProtectedRoute allowedRoles={["waiter"]}>
+                        <Layout page="waiter" />
+                        <WaiterScreen />
+                    </ProtectedRoute>
+                } />
+                <Route path="waiter/*" element={<NotFoundScreen />} />
 
-                {/* Nesting routes inside Layout so they share Header, Footer, and Outlet */}
+                {/* Auth Pages - public*/}
                 <Route path="/" element={<Layout menuPage={false} /> }>
                     <Route index element={<HomeScreen />} />
                     {/* User Authentication routes */}
@@ -134,8 +134,7 @@ function App() {
                         element={<VerifyEmailScreen />} 
                     />
 
-                    {/* Cart and checkout routes - protected by auth */}
-                    
+                    {/* Cart & Checkout - customer only */}
                     <Route path="cart" element={
                         <ProtectedRoute allowedRoles={["customer"]}>
                             <CartScreen />
@@ -154,7 +153,7 @@ function App() {
                     
                 </Route>
 
-                {/* Menu routes */}
+                {/* Menu - customer only */}
                 <Route 
                     path="/menu" 
                     element={
