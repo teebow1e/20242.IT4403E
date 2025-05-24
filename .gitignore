@@ -17,3 +17,5 @@ sketch
 
 server/.env
 server/serviceAccountKey.json
+
+firebase-admin-server/serviceAccountKey.json
