@@ -22,7 +22,6 @@ function ProtectedRoute({ children, allowedRoles }) {
         console.log("Unauthorized access attempt by user:", user);
         return <Navigate to="/unauthorized" replace />;
     }
-    console.log("hi3");
 
     return children;
 }

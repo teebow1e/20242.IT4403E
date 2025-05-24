@@ -1,138 +1,99 @@
 import { getAuth } from "firebase-admin/auth";
+import admin from "firebase-admin";
+import { readFileSync } from "fs";
 
-import admin from 'firebase-admin';
-import serviceAccount from './serviceAccountKey.json' assert { type: 'json' };
+const serviceAccount = JSON.parse(
+  readFileSync("./firebase-admin-server/serviceAccountKey.json")
+);
+
 if (!admin.apps.length) {
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        databaseURL: 'https://it4403e-default-rtdb.asia-southeast1.firebasedatabase.app/',
-    });
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL:
+      "https://it4403e-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  });
 }
+
+const ok  = (msg) => ({ success: true,  message: msg });
+const err = (e, fallback) =>
+  ({ success: false, message: e?.message || fallback });
 
 export const AdminService = {
-    createAccount: async (accountData) => {
-        try {
-            const userRecord = await getAuth().createUser({
-                email: accountData.email,
-                password: accountData.password,
-                displayName: accountData.displayName,
-            })
-            // See the UserRecord reference doc for the contents of userRecord.
-            console.log('Successfully created new user:', userRecord.uid);
-
-            // Add user to Realtime Database
-            const db = admin.database();
-            const dbRef = ref(db, `users/${userRecord.uid}`);
-            await set(dbRef, {
-                role: accountData.role,
-            });
-            return {
-                success: true,
-                message: 'Account created successfully',
-            };
-        } catch (error) {
-            console.log('Error creating new user:', error);
-            return {
-                success: false,
-                message: error.message || 'Failed to add account'
-            };
-        };
-    },
-
-    listAllUsers: async () => {
-        const users = [];
-        try {
-            // Fetch all users from Firebase Authentication & Realtime Database
-            // includes uid, displayName, email, creationTime and role
-            // List batch of users, 1000 at a time.
-            const listUsersResult = await getAuth().listUsers();
-            for (const userRecord of listUsersResult.users) {
-                const dbRef = admin.database().ref(`users/${userRecord.uid}`);
-                const snapshot = await dbRef.get();
-                const role = snapshot.exists() ? snapshot.val().role : 'unknown';
-
-                users.push({
-                    uid: userRecord.uid,
-                    displayName: userRecord.displayName,
-                    email: userRecord.email,
-                    role: role,
-                    creationTime: userRecord.metadata.creationTime,
-                });
-            }
-            // if (listUsersResult.pageToken) {
-            //     // List next batch of users.
-            //     listAllUsers(listUsersResult.pageToken);
-            // }
-            return {
-                success: true,
-                message: users
-            };
-        } catch (error) {
-            console.log('Error listing users:', error);
-            return {
-                success: false,
-                message: error.message || 'Failed to list users'
-            };
-        };
-    },
-
-    deleteAccount: async (uid) => {
-        try {
-            await getAuth().deleteUser(uid);
-            // Delete user from Realtime Database
-            await admin.database().ref(`users/${uid}`).remove();
-            return {
-                success: true,
-                message: 'User deleted successfully'
-            };
-        } catch (error) {
-            console.log('Error deleting user:', error);
-            return {
-                success: false,
-                message: error.message || 'Failed to delete user'
-            };
-        };
-    },
-
-    updateAccount: async (uid, accountData) => {
-        try {
-            // Update user data in Firebase Authentication
-            await getAuth().updateUser(uid, {
-                email: accountData.email,
-                password: accountData.password,
-                displayName: accountData.displayName,
-            });
-            // Update role in Firebase Realtime Database
-            const db = admin.database();
-            const dbRef = ref(db, `users/${uid}`);
-            await set(dbRef, { role: accountData.role });
-            return {
-                success: true,
-                message: 'Account updated successfully'
-            };
-        } catch (error) {
-            console.error('Error updating account:', error);
-            return { 
-                success: false, 
-                message: error.message || 'Failed to update account' 
-            };
-        }
-    },
-
-    getUserByEmail: async (email) => {
-        try {
-            const userRecord = await getAuth().getUserByEmail(email);
-            return {
-                success: true,
-                message: userRecord
-            };
-        } catch (error) {
-            console.error('Error getting user by email:', error);
-            return { 
-                success: false, 
-                message: error.message || 'Failed to get user by email' 
-            };
-        }
+  async createAccount({ email, password, displayName, role }) {
+    try {
+      const user = await getAuth().createUser({ email, password, displayName });
+      await admin.database().ref(`users/${user.uid}`).set({ role });
+      return ok("Account created successfully");
+    } catch (e) {
+      console.error("createAccount:", e);
+      return err(e, "Failed to add account");
     }
-}
+  },
 
+  async listAllUsers() {
+    try {
+      const { users } = await getAuth().listUsers();
+      const enriched = await Promise.all(
+        users.map(async (u) => {
+          const snap = await admin.database().ref(`users/${u.uid}`).get();
+          return {
+            uid: u.uid,
+            displayName: u.displayName,
+            email: u.email,
+            role: snap.exists() ? snap.val().role : "unknown",
+            creationTime: u.metadata.creationTime,
+          };
+        })
+      );
+      return ok(enriched);
+    } catch (e) {
+      console.error("listAllUsers:", e);
+      return err(e, "Failed to list users");
+    }
+  },
+
+  async deleteAccount(uid) {
+    try {
+      await getAuth().deleteUser(uid);
+      await admin.database().ref(`users/${uid}`).remove();
+      return ok("User deleted successfully");
+    } catch (e) {
+      console.error("deleteAccount:", e);
+      return err(e, "Failed to delete user");
+    }
+  },
+
+  async updateAccount(
+    uid,
+    { email, displayName, role } 
+  ) {
+    try {
+      const authUpdate = {};
+      if (email)       authUpdate.email       = email;
+      if (displayName) authUpdate.displayName = displayName;
+
+      if (Object.keys(authUpdate).length) {
+        await getAuth().updateUser(uid, authUpdate);
+      }
+
+      if (role) {
+        await admin.database().ref(`users/${uid}`).set({ role });
+      }
+
+      return ok("Account updated successfully");
+    } catch (e) {
+      console.error("updateAccount:", e);
+      return err(e, "Failed to update account");
+    }
+  },
+
+  async getUserByEmail(email) {
+    try {
+      const user = await getAuth().getUserByEmail(email);
+      return ok(user);
+    } catch (e) {
+      console.error("getUserByEmail:", e);
+      return err(e, "Failed to get user by email");
+    }
+  },
+};

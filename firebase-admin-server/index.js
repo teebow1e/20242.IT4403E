@@ -1,65 +1,61 @@
 import dotenv from 'dotenv';
 dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
 
-const app = express();
-
 import { AdminService } from './AdminService.js';
+
+const app = express();
 
 app.use(cors());
 app.use(express.json());
 
+/**
+ * GET /list-users
+ * Return every user (uid, displayName, email, role, creationTime)
+ */
 app.get('/list-users', async (req, res) => {
-    try {
-        const users = await AdminService.listAllUsers();
-        res.status(200).json(users);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: err.message });
-    }
+  try {
+    const result = await AdminService.listAllUsers();
+    res.status(result.success ? 200 : 400).json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: err.message });
+  }
 });
 
-app.get('/user', async (req, res) => {
-    try {
-        const email = req.query.email;
-        console.log("Fetching user by email:", email);
-        if (!email || typeof email !== 'string' || !email.includes('@')) {
-            throw new Error('Invalid email address provided');
-        }
-        const user = await AdminService.getUserByEmail(email);
-        res.status(200).json(user);
-    } catch (err) {
-        res.status(404).json({ error: err.message });
-    }
+/**
+ * POST /update-user
+ * Body: { uid, displayName, email, role, [password] }
+ * Updates Auth record + role in Realtime DB.
+ */
+app.post('/update-user', async (req, res) => {
+  const { uid, displayName, email, role } = req.body;
+  const accountData = { displayName, email, role };
+  const result = await AdminService.updateAccount(uid, accountData);
+  res.status(result.success ? 200 : 400).json(result);
 });
 
-app.put('/user', async (req, res) => {
-    try {
-        const { displayName, email, role } = req.body;
-        const uid = req.params.uid;
-        const user = await AdminService.updateAccount(uid, {
-            displayName,
-            email,
-            role
-        });
-        res.status(200).json(user);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
+/**
+ * POST /delete-user
+ * Body: { uid }
+ * Deletes user from Auth and Realtime DB.
+ */
+app.post('/delete-user', async (req, res) => {
+  const { uid } = req.body;
 
-app.delete('/user', async (req, res) => {
-    try {
-        const uid = req.params.uid;
-        await AdminService.deleteUser(uid);
-        res.status(200).json({ message: 'User deleted' });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+  if (!uid) {
+    return res
+      .status(400)
+      .json({ success: false, message: 'uid is required' });
+  }
+
+  const result = await AdminService.deleteAccount(uid);
+  res.status(result.success ? 200 : 400).json(result);
 });
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-    console.log(`Admin server listening on port ${PORT}`);
+  console.log(`Admin server listening on port ${PORT}`);
 });
