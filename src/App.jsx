@@ -13,6 +13,7 @@ import OrderConfirmationScreen from './screens/OrderConfirmationScreen';
 import WaiterScreen from './screens/WaiterScreen';
 import VerifyEmailScreen from './screens/VerifyEmailScreen';
 import UnauthorizedScreen from './screens/UnauthorizedScreen';
+import ManangeUsersScreen from './screens/ManageUsersScreen';
 import { auth } from './firebase';
 import { getDatabase, ref, onValue } from "firebase/database";
 import { login, logout, selectUser } from './features/UserSlice';
@@ -88,6 +89,15 @@ function App() {
                 <Route path="unauthorized" element={<UnauthorizedScreen />} />
 
                 {/* Admin routes */}
+                <Route path="admin" element={
+                    <Layout page={"admin"} />
+                } >
+                    <Route path="manage-users" element={
+                        <ProtectedRoute allowedRoles={["admin"]}>
+                            <ManangeUsersScreen/>
+                        </ProtectedRoute>
+                    }/>
+                </Route>
 
                 {/* Waiter routes */}
                 <Route path="waiter" element={
