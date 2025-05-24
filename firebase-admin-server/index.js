@@ -57,5 +57,9 @@ app.post('/delete-user', async (req, res) => {
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
+<<<<<<< HEAD
   console.log(`Admin server listening on port ${PORT}`);
+=======
+    console.log(`Admin server listening on port ${PORT}`);
+>>>>>>> dc3ef9141552acd413bde7eb31fd74b1dc744eef
 });
