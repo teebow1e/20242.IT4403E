@@ -1,273 +1,189 @@
-// src/services/TOTPService.js
-import { ref, set, get } from 'firebase/database';
-import { db } from '../firebase';
-import jsSHA from 'jssha';
-import QRCode from 'qrcode';
+import { auth } from '../firebase';
 
-export class TOTPService {
-  static async setupTOTP(userId, userEmail) {
+const API_BASE_URL = 'http://192.168.194.130:3000';
+
+class TOTPServiceAPI {
+  async getAuthHeaders() {
     try {
-      // Generate a secret manually using browser crypto
-      const secret = this.generateSecret();
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error('User not authenticated');
+      }
 
-      // Create the service name and account name
-      const serviceName = 'Meowbucks Coffee';
-      const accountName = userEmail;
+      const idToken = await user.getIdToken();
+      return {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${idToken}`
+      };
+    } catch (error) {
+      console.error('Error getting auth headers:', error);
+      throw new Error('Authentication failed');
+    }
+  }
 
-      // Generate the otpauth URL manually
-      const otpauthUrl = `otpauth://totp/${encodeURIComponent(accountName)}?secret=${secret}&issuer=${encodeURIComponent(serviceName)}&algorithm=SHA1&digits=6&period=30`;
+  async makeRequest(endpoint, options = {}) {
+    try {
+      const headers = await this.getAuthHeaders();
 
-      // Store the secret in Firebase
-      const userSecretRef = ref(db, `userSecrets/${userId}/totp`);
-      await set(userSecretRef, {
-        secret: secret,
-        enabled: false,
-        setupComplete: false,
-        createdAt: new Date().toISOString()
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        headers,
+        ...options
       });
 
-      // Generate QR code
-      const qrCodeUrl = await QRCode.toDataURL(otpauthUrl);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || `HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      return data;
+    } catch (error) {
+      console.error(`API request failed for ${endpoint}:`, error);
+
+      if (error.message.includes('fetch')) {
+        throw new Error('Unable to connect to server. Please check your internet connection.');
+      }
+
+      if (error.message.includes('401')) {
+        throw new Error('Authentication failed. Please sign in again.');
+      }
+
+      throw error;
+    }
+  }
+
+  async setupTOTP(userId, userEmail) {
+    try {
+      const response = await this.makeRequest('/api/totp/setup', {
+        method: 'POST'
+      });
 
       return {
         success: true,
-        secret: secret,
-        qrCodeUrl,
-        manualEntryKey: secret
+        qrCodeUrl: response.qrCodeUrl,
+        manualEntryKey: response.manualEntryKey
       };
     } catch (error) {
       console.error('Error setting up TOTP:', error);
       return {
         success: false,
-        message: 'Failed to setup authenticator'
+        message: error.message || 'Failed to setup authenticator'
       };
     }
   }
 
-  // Generate secret manually using browser crypto
-  static generateSecret() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'; // Base32 alphabet
-    let secret = '';
-
-    // Generate 32 characters (160 bits when base32 decoded)
-    const array = new Uint8Array(32);
-    crypto.getRandomValues(array);
-
-    for (let i = 0; i < 32; i++) {
-      secret += chars[array[i] % chars.length];
-    }
-
-    return secret;
-  }
-
-  static async verifyTOTPSetup(userId, token) {
+  async verifyTOTPSetup(userId, token) {
     try {
-      // Get user's secret
-      const userSecretRef = ref(db, `userSecrets/${userId}/totp`);
-      const snapshot = await get(userSecretRef);
-
-      if (!snapshot.exists()) {
-        return { success: false, message: 'No TOTP secret found' };
-      }
-
-      const { secret } = snapshot.val();
-
-      // Verify the token using our implementation
-      const verified = this.verifyToken(token, secret);
-
-      if (verified) {
-        // Mark TOTP as enabled and setup complete
-        await set(userSecretRef, {
-          secret,
-          enabled: true,
-          setupComplete: true,
-          enabledAt: new Date().toISOString()
-        });
-      }
+      const response = await this.makeRequest('/api/totp/verify-setup', {
+        method: 'POST',
+        body: JSON.stringify({ token })
+      });
 
       return {
-        success: verified,
-        message: verified ? 'Authenticator setup successful' : 'Invalid code'
+        success: true,
+        message: response.message,
+        backupCodes: response.backupCodes
       };
     } catch (error) {
       console.error('Error verifying TOTP setup:', error);
       return {
         success: false,
-        message: 'Verification failed'
+        message: error.message || 'Verification failed'
       };
     }
   }
 
-  static async verifyTOTP(userId, token) {
+  async verifyTOTP(userId, token) {
     try {
-      // Get user's secret
-      const userSecretRef = ref(db, `userSecrets/${userId}/totp`);
-      const snapshot = await get(userSecretRef);
-
-      if (!snapshot.exists()) {
-        return { success: false, message: 'TOTP not setup' };
-      }
-
-      const { secret, enabled, setupComplete } = snapshot.val();
-
-      if (!enabled || !setupComplete) {
-        return { success: false, message: 'TOTP not enabled' };
-      }
-
-      // Verify the token using our implementation
-      const verified = this.verifyToken(token, secret);
+      const response = await this.makeRequest('/api/totp/verify', {
+        method: 'POST',
+        body: JSON.stringify({ token })
+      });
 
       return {
-        success: verified,
-        message: verified ? 'Code verified' : 'Invalid code'
+        success: true,
+        message: response.message
       };
     } catch (error) {
       console.error('Error verifying TOTP:', error);
       return {
         success: false,
-        message: 'Verification failed'
+        message: error.message || 'Verification failed'
       };
     }
   }
 
-  static verifyToken(token, secret) {
-    const timeStep = 30; // 30 seconds
-    const window = 2; // Allow ±2 time steps for clock drift
-    const currentTime = Math.floor(Date.now() / 1000 / timeStep);
-
-    for (let i = -window; i <= window; i++) {
-      const timeCounter = currentTime + i;
-      const expectedToken = this.generateTOTP(secret, timeCounter);
-
-      if (expectedToken === token) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  static generateTOTP(secret, timeCounter) {
-    // Decode base32 secret to bytes
-    const secretBytes = this.base32Decode(secret);
-
-    // Convert time counter to 8-byte big-endian array
-    const timeBytes = new ArrayBuffer(8);
-    const timeView = new DataView(timeBytes);
-    timeView.setUint32(4, timeCounter, false); // Big-endian, put in last 4 bytes
-
-    // Generate HMAC-SHA1
-    const hmac = this.hmacSHA1(secretBytes, new Uint8Array(timeBytes));
-
-    // Dynamic truncation
-    const offset = hmac[hmac.length - 1] & 0x0f;
-    const code = (
-      ((hmac[offset] & 0x7f) << 24) |
-      ((hmac[offset + 1] & 0xff) << 16) |
-      ((hmac[offset + 2] & 0xff) << 8) |
-      (hmac[offset + 3] & 0xff)
-    ) % 1000000;
-
-    return code.toString().padStart(6, '0');
-  }
-
-  static hmacSHA1(key, message) {
-    const shaObj = new jsSHA('SHA-1', 'UINT8ARRAY');
-    shaObj.setHMACKey(key, 'UINT8ARRAY');
-    shaObj.update(message);
-    return new Uint8Array(shaObj.getHMAC('UINT8ARRAY'));
-  }
-
-  static base32Decode(encoded) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-    let bits = '';
-
-    // Convert each character to 5-bit binary
-    for (let i = 0; i < encoded.length; i++) {
-      const char = encoded[i].toUpperCase();
-      const index = chars.indexOf(char);
-      if (index === -1) continue;
-      bits += index.toString(2).padStart(5, '0');
-    }
-
-    // Convert bits to bytes
-    const bytes = [];
-    for (let i = 0; i < bits.length - 7; i += 8) {
-      const byte = parseInt(bits.substr(i, 8), 2);
-      bytes.push(byte);
-    }
-
-    return new Uint8Array(bytes);
-  }
-
-  static async isTOTPEnabled(userId) {
+  async isTOTPEnabled(userId) {
     try {
-      const userSecretRef = ref(db, `userSecrets/${userId}/totp`);
-      const snapshot = await get(userSecretRef);
-
-      if (!snapshot.exists()) {
-        return false;
-      }
-
-      const { enabled, setupComplete } = snapshot.val();
-      return enabled && setupComplete;
+      const response = await this.makeRequest('/api/totp/status');
+      return response.enabled || false;
     } catch (error) {
       console.error('Error checking TOTP status:', error);
       return false;
     }
   }
 
-  static async disableTOTP(userId) {
+  async disableTOTP(userId) {
     try {
-      const userSecretRef = ref(db, `userSecrets/${userId}/totp`);
-      const snapshot = await get(userSecretRef);
+      const response = await this.makeRequest('/api/totp/disable', {
+        method: 'DELETE'
+      });
 
-      if (snapshot.exists()) {
-        const currentData = snapshot.val();
-        await set(userSecretRef, {
-          ...currentData,
-          enabled: false,
-          disabledAt: new Date().toISOString()
-        });
-      }
-
-      return { success: true };
+      return {
+        success: true,
+        message: response.message
+      };
     } catch (error) {
       console.error('Error disabling TOTP:', error);
-      return { success: false, message: 'Failed to disable TOTP' };
+      return {
+        success: false,
+        message: error.message || 'Failed to disable TOTP'
+      };
     }
   }
 
-  // Helper method to generate backup codes
-  static generateBackupCodes() {
-    const codes = [];
-    for (let i = 0; i < 10; i++) {
-      // Generate 8-character backup codes
-      const array = new Uint8Array(4);
-      crypto.getRandomValues(array);
-      const code = Array.from(array)
-        .map(b => b.toString(16).padStart(2, '0'))
-        .join('')
-        .toUpperCase();
-      codes.push(code);
-    }
-    return codes;
-  }
-
-  static async storeBackupCodes(userId, codes) {
+  async checkHealth() {
     try {
-      const backupCodesRef = ref(db, `userSecrets/${userId}/backupCodes`);
-      const hashedCodes = codes.map(code => ({
-        code: btoa(code), // Simple encoding, in production use proper hashing
-        used: false,
-        createdAt: new Date().toISOString()
-      }));
-
-      await set(backupCodesRef, hashedCodes);
-      return { success: true };
+      const response = await fetch(`${API_BASE_URL}/api/health`);
+      return response.ok;
     } catch (error) {
-      console.error('Error storing backup codes:', error);
-      return { success: false };
+      console.error('Backend health check failed:', error);
+      return false;
+    }
+  }
+
+  async safeRequest(operation, fallbackResult = { success: false, message: 'Service unavailable' }) {
+    try {
+      const isHealthy = await this.checkHealth();
+      if (!isHealthy) {
+        throw new Error('Backend service is unavailable');
+      }
+
+      return await operation();
+    } catch (error) {
+      console.error('Safe request failed:', error);
+      return {
+        ...fallbackResult,
+        message: error.message || fallbackResult.message
+      };
+    }
+  }
+
+  async retryOperation(operation, maxRetries = 3, delay = 1000) {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        return await operation();
+      } catch (error) {
+        if (attempt === maxRetries) {
+          throw error;
+        }
+
+        console.warn(`Operation failed (attempt ${attempt}/${maxRetries}):`, error.message);
+        await new Promise(resolve => setTimeout(resolve, delay * attempt));
+      }
     }
   }
 }
+
+export const TOTPService = new TOTPServiceAPI();
+export default TOTPService;
