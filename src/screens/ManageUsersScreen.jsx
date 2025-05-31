@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+const API_URL = "https://firebase-admin-coffee.trungtqt.com"
+
 function ManageUsersScreen() {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
@@ -23,7 +25,7 @@ function ManageUsersScreen() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:4000/list-users", {
+      const res = await fetch(`${API_URL}/list-users`, {
         headers: {
           "Authorization": `Bearer ${currentUser.token}`
         }
@@ -66,12 +68,12 @@ function ManageUsersScreen() {
     }
 
     if (!window.confirm(`Delete user ${user.displayName}? This cannot be undone.`)) return;
-    
+
     setIsSubmitting(true);
     try {
-      const res = await fetch("http://localhost:4000/delete-user", {
+      const res = await fetch(`${API_URL}/delete-user`, {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${currentUser.token}`
         },
@@ -106,11 +108,11 @@ function ManageUsersScreen() {
 
     setIsSubmitting(true);
     setError(null);
-    
+
     try {
-      const res = await fetch("http://localhost:4000/update-user", {
+      const res = await fetch(`${API_URL}/update-user`, {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${currentUser.token}`
         },
@@ -119,7 +121,7 @@ function ManageUsersScreen() {
           ...formData
         }),
       });
-      
+
       const data = await res.json();
       console.log("Update response:", data);
       if (data.success) {
@@ -146,7 +148,7 @@ function ManageUsersScreen() {
       {error && (
         <div className="mb-4 p-4 bg-red-100 text-red-700 rounded-lg flex justify-between items-center">
           <span>{error}</span>
-          <button 
+          <button
             onClick={() => setError(null)}
             className="text-red-700 hover:text-red-900"
           >
