@@ -615,19 +615,19 @@
         },
         "VI001": {
             "type_id": "flavored",
-            "name": "Starbucks VIA® Instant Sweetened Iced Coffee",
+            "name": "Meowbucks VIA® Instant Sweetened Iced Coffee",
             "price": 5.79,
             "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/SBX20190715_ViaInstantSweetenedIcedCoffee.jpg?impolicy=1by1_tight_288"
         },
         "VI002": {
             "type_id": "blondeRoast",
-            "name": "Starbucks VIA® Instant Veranda Blend®",
+            "name": "Meowbucks VIA® Instant Veranda Blend®",
             "price": 5.99,
             "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/SBX20190715_ViaInstantBlondeVerandaBlend.jpg?impolicy=1by1_tight_288"
         },
         "VI003": {
             "type_id": "mediumRoast",
-            "name": "Starbucks VIA® Instant Pike Place Roast",
+            "name": "Meowbucks VIA® Instant Pike Place Roast",
             "price": 6.29,
             "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/SBX20190715_ViaInstantPikePlaceRoast.jpg?impolicy=1by1_tight_288"
         },
@@ -645,13 +645,13 @@
         },
         "WB003": {
             "type_id": "blondeRoast",
-            "name": "Starbucks® Sunsera Blend Whole Bean",
+            "name": "Meowbucks® Sunsera Blend Whole Bean",
             "price": 12.99,
             "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/SunseraBlendUS.jpg?impolicy=1by1_tight_288"
         },
         "WB004": {
             "type_id": "blondeRoast",
-            "name": "Starbucks® Green Apron Blend™",
+            "name": "Meowbucks® Green Apron Blend™",
             "price": 13.29,
             "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/SBX20230124_GreenApronBlend2023.jpg?impolicy=1by1_tight_288"
         },
@@ -663,7 +663,7 @@
         },
         "WB006": {
             "type_id": "blondeRoast",
-            "name": "Starbucks® Blonde Espresso Roast",
+            "name": "Meowbucks® Blonde Espresso Roast",
             "price": 12.49,
             "image": "https://globalassets.starbucks.com/digitalassets/products/at-home/BlondeEspressoRoast.jpg?impolicy=1by1_tight_288"
         }

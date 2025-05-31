@@ -8,7 +8,7 @@ function HomeScreen() {
               Jingle all the way to free favorites
             </h2>
             <p className="font-sodo my-1 text-[24px] leading-[1.7]">
-              Join Starbucks ® Rewards for delicious deals & exclusive offers.
+              Join Meowbuck ® Rewards for delicious deals & exclusive offers.
               <br />
               <a href="#" className=" text-white hover:underline">
                 Learn more
@@ -49,7 +49,7 @@ function HomeScreen() {
               Our smoothest, brightest coffee yet
             </h2>
             <p className="my-1 text-[24px] leading-[1.7]">
-              Discover the people and places behind the new Starbucks® Sunsera Blend™ as it makes its way from farm to cup.
+              Discover the people and places behind the new Meowbuck® Sunsera Blend™ as it makes its way from farm to cup.
             </p>
             <a
               href="#"
@@ -72,7 +72,7 @@ function HomeScreen() {
               It’s a great day for free coffee
             </h2>
             <p className="my-1 text-[24px] leading-[1.7]">
-              Start your Starbucks® Rewards journey with a coffee on us. Join now and enjoy a free handcrafted drink with a qualifying purchase during your first week.*
+              Start your Meowbucks® Rewards journey with a coffee on us. Join now and enjoy a free handcrafted drink with a qualifying purchase during your first week.*
             </p>
             <a
               href="#"

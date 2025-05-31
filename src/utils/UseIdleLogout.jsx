@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { signOut } from "firebase/auth";
-import { auth } from "./firebase";
+import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
 const IDLE_TIMEOUT = 50000 * 1000; //  50000 secs

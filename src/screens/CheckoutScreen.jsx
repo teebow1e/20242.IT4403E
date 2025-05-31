@@ -1,13 +1,20 @@
+// src/screens/CheckoutScreen.jsx (Updated)
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { TextField, FormControl, FormControlLabel, Radio, RadioGroup, FormLabel } from '@mui/material';
+import { TextField, FormControl, FormControlLabel, Radio, RadioGroup, Alert } from '@mui/material';
 import { selectCartItems, selectCartTotalAmount, clearCart } from '../features/CartSlice';
+import { setLastOrderReceipt } from '../features/ReceiptSlice';
 import { selectUser } from '../features/UserSlice';
+import { TOTPService } from '../services/TOTPService';
 import OrderService from '../services/OrderService';
 import FormSubmit from '../forms/FormSubmit';
 
 function CheckoutScreen() {
+    const [totpToken, setTotpToken] = useState('');
+    const [totpRequired, setTotpRequired] = useState(false);
+    const [totpEnabled, setTotpEnabled] = useState(false);
+
     const cartItems = useSelector(selectCartItems);
     const totalAmount = useSelector(selectCartTotalAmount);
     const user = useSelector(selectUser);
@@ -28,10 +35,13 @@ function CheckoutScreen() {
         cardName: '',
         cardExpiry: '',
         cardCvv: '',
+        deliveryMethod: 'pickup'
     });
 
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [orderCompleted, setOrderCompleted] = useState(false);
+    const [completedOrderData, setCompletedOrderData] = useState(null);
 
     useEffect(() => {
         if (user) {
@@ -45,8 +55,36 @@ function CheckoutScreen() {
                 lastName,
                 email: user.email || ''
             }));
+
+            // Check if user has TOTP enabled
+            checkTOTPStatus();
         }
     }, [user]);
+
+    const checkTOTPStatus = async () => {
+        if (user) {
+            try {
+                const enabled = await TOTPService.isTOTPEnabled(user.uid);
+                setTotpEnabled(enabled);
+            } catch (error) {
+                console.error('Error checking TOTP status:', error);
+            }
+        }
+    };
+
+    useEffect(() => {
+        if (cartItems.length === 0) {
+            navigate('/cart');
+        }
+    }, [cartItems.length, navigate]);
+
+    useEffect(() => {
+        if (orderCompleted && completedOrderData) {
+            navigate('/order-confirmation', {
+                state: completedOrderData
+            });
+        }
+    }, [orderCompleted, completedOrderData, navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -78,6 +116,13 @@ function CheckoutScreen() {
             if (!formData.cardCvv.trim()) newErrors.cardCvv = 'CVV is required';
         }
 
+        if (formData.deliveryMethod === 'delivery') {
+            if (!formData.address.trim()) newErrors.address = 'Address is required';
+            if (!formData.city.trim()) newErrors.city = 'City is required';
+            if (!formData.state.trim()) newErrors.state = 'State is required';
+            if (!formData.zip.trim()) newErrors.zip = 'ZIP code is required';
+        }
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -90,6 +135,35 @@ function CheckoutScreen() {
         }
 
         setIsSubmitting(true);
+
+        // If TOTP is enabled and we haven't verified yet, require TOTP
+        if (totpEnabled && !totpRequired) {
+            setTotpRequired(true);
+            setIsSubmitting(false);
+            return;
+        }
+
+        // If TOTP is required, verify the token
+        if (totpRequired && totpEnabled) {
+            if (!totpToken || totpToken.length !== 6) {
+                setErrors({ totp: 'Please enter a valid 6-digit code from your authenticator app' });
+                setIsSubmitting(false);
+                return;
+            }
+
+            try {
+                const verifyResult = await TOTPService.verifyTOTP(user.uid, totpToken);
+                if (!verifyResult.success) {
+                    setErrors({ totp: verifyResult.message });
+                    setIsSubmitting(false);
+                    return;
+                }
+            } catch (error) {
+                setErrors({ totp: 'Failed to verify authenticator code' });
+                setIsSubmitting(false);
+                return;
+            }
+        }
 
         const orderData = {
             customer: {
@@ -106,14 +180,12 @@ function CheckoutScreen() {
                 customizations: item.customizations
             })),
             paymentMethod: formData.paymentMethod,
-            deliveryAddress: formData.address
-                ? {
-                    address: formData.address,
-                    city: formData.city,
-                    state: formData.state,
-                    zip: formData.zip
-                }
-                : undefined,
+            deliveryAddress: formData.deliveryMethod === 'delivery' ? {
+                address: formData.address,
+                city: formData.city,
+                state: formData.state,
+                zip: formData.zip
+            } : null,
             totalAmount: totalAmount * 1.0725 // including tax
         };
 
@@ -124,14 +196,11 @@ function CheckoutScreen() {
                 // Clear the cart
                 dispatch(clearCart());
 
-                // Show success message and redirect
-                alert(`Order placed successfully! Your order ID is ${response.orderId}`);
-                navigate('/order-confirmation', {
-                    state: {
-                        orderId: response.orderId,
-                        orderDetails: orderData
-                    }
+                setCompletedOrderData({
+                    orderId: response.orderId,
+                    orderDetails: orderData
                 });
+                setOrderCompleted(true);
             } else {
                 alert(`Failed to place order: ${response.message}`);
             }
@@ -144,8 +213,7 @@ function CheckoutScreen() {
     };
 
     if (cartItems.length === 0) {
-        navigate('/cart');
-        return null;
+        return <div className="text-center py-8">Redirecting to cart...</div>;
     }
 
     return (
@@ -219,7 +287,7 @@ function CheckoutScreen() {
                             <FormControl component="fieldset">
                                 <RadioGroup
                                     name="deliveryMethod"
-                                    value={formData.deliveryMethod || 'pickup'}
+                                    value={formData.deliveryMethod}
                                     onChange={handleChange}
                                 >
                                     <FormControlLabel value="pickup" control={<Radio />} label="Pickup in store" />
@@ -228,45 +296,53 @@ function CheckoutScreen() {
                             </FormControl>
 
                             {formData.deliveryMethod === 'delivery' && (
-                                <div className="mt-4 space-y-4">
-                                    <TextField
-                                        label="Address"
-                                        name="address"
-                                        value={formData.address}
-                                        onChange={handleChange}
-                                        error={!!errors.address}
-                                        helperText={errors.address}
-                                        fullWidth
-                                    />
+                                <div className="mt-4">
+                                    <div className="mb-4">
+                                        <TextField
+                                            label="Address"
+                                            name="address"
+                                            value={formData.address}
+                                            onChange={handleChange}
+                                            error={!!errors.address}
+                                            helperText={errors.address}
+                                            fullWidth
+                                        />
+                                    </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        <TextField
-                                            label="City"
-                                            name="city"
-                                            value={formData.city}
-                                            onChange={handleChange}
-                                            error={!!errors.city}
-                                            helperText={errors.city}
-                                            fullWidth
-                                        />
-                                        <TextField
-                                            label="State"
-                                            name="state"
-                                            value={formData.state}
-                                            onChange={handleChange}
-                                            error={!!errors.state}
-                                            helperText={errors.state}
-                                            fullWidth
-                                        />
-                                        <TextField
-                                            label="ZIP Code"
-                                            name="zip"
-                                            value={formData.zip}
-                                            onChange={handleChange}
-                                            error={!!errors.zip}
-                                            helperText={errors.zip}
-                                            fullWidth
-                                        />
+                                        <div>
+                                            <TextField
+                                                label="City"
+                                                name="city"
+                                                value={formData.city}
+                                                onChange={handleChange}
+                                                error={!!errors.city}
+                                                helperText={errors.city}
+                                                fullWidth
+                                            />
+                                        </div>
+                                        <div>
+                                            <TextField
+                                                label="State"
+                                                name="state"
+                                                value={formData.state}
+                                                onChange={handleChange}
+                                                error={!!errors.state}
+                                                helperText={errors.state}
+                                                fullWidth
+                                            />
+                                        </div>
+                                        <div>
+                                            <TextField
+                                                label="ZIP Code"
+                                                name="zip"
+                                                value={formData.zip}
+                                                onChange={handleChange}
+                                                error={!!errors.zip}
+                                                helperText={errors.zip}
+                                                fullWidth
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             )}
@@ -289,60 +365,103 @@ function CheckoutScreen() {
                             </FormControl>
 
                             {formData.paymentMethod === 'creditCard' && (
-                                <div className="mt-4 space-y-4">
-                                    <TextField
-                                        label="Card Number"
-                                        name="cardNumber"
-                                        value={formData.cardNumber}
-                                        onChange={handleChange}
-                                        error={!!errors.cardNumber}
-                                        helperText={errors.cardNumber}
-                                        fullWidth
-                                    />
+                                <div className="mt-4">
+                                    <div className="mb-4">
+                                        <TextField
+                                            label="Card Number"
+                                            name="cardNumber"
+                                            value={formData.cardNumber}
+                                            onChange={handleChange}
+                                            error={!!errors.cardNumber}
+                                            helperText={errors.cardNumber}
+                                            fullWidth
+                                        />
+                                    </div>
 
-                                    <TextField
-                                        label="Name on Card"
-                                        name="cardName"
-                                        value={formData.cardName}
-                                        onChange={handleChange}
-                                        error={!!errors.cardName}
-                                        helperText={errors.cardName}
-                                        fullWidth
-                                    />
+                                    <div className="mb-4">
+                                        <TextField
+                                            label="Name on Card"
+                                            name="cardName"
+                                            value={formData.cardName}
+                                            onChange={handleChange}
+                                            error={!!errors.cardName}
+                                            helperText={errors.cardName}
+                                            fullWidth
+                                        />
+                                    </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <TextField
-                                            label="Expiry Date (MM/YY)"
-                                            name="cardExpiry"
-                                            value={formData.cardExpiry}
-                                            onChange={handleChange}
-                                            error={!!errors.cardExpiry}
-                                            helperText={errors.cardExpiry}
-                                            fullWidth
-                                        />
-                                        <TextField
-                                            label="CVV"
-                                            name="cardCvv"
-                                            value={formData.cardCvv}
-                                            onChange={handleChange}
-                                            error={!!errors.cardCvv}
-                                            helperText={errors.cardCvv}
-                                            fullWidth
-                                        />
+                                        <div>
+                                            <TextField
+                                                label="Expiry Date (MM/YY)"
+                                                name="cardExpiry"
+                                                value={formData.cardExpiry}
+                                                onChange={handleChange}
+                                                error={!!errors.cardExpiry}
+                                                helperText={errors.cardExpiry}
+                                                fullWidth
+                                            />
+                                        </div>
+                                        <div>
+                                            <TextField
+                                                label="CVV"
+                                                name="cardCvv"
+                                                value={formData.cardCvv}
+                                                onChange={handleChange}
+                                                error={!!errors.cardCvv}
+                                                helperText={errors.cardCvv}
+                                                fullWidth
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             )}
                         </div>
+
+                        {totpRequired && totpEnabled && (
+                            <div className="bg-white p-6 rounded-lg shadow-sm">
+                                <h2 className="text-xl font-bold mb-4">Two-Factor Authentication</h2>
+                                <p className="text-gray-600 mb-4">
+                                    Please enter the 6-digit code from your authenticator app to complete your order.
+                                </p>
+                                <TextField
+                                    label="Authenticator Code"
+                                    value={totpToken}
+                                    onChange={(e) => setTotpToken(e.target.value)}
+                                    error={!!errors.totp}
+                                    helperText={errors.totp}
+                                    fullWidth
+                                    required
+                                    inputProps={{
+                                        maxLength: 6,
+                                        pattern: '[0-9]{6}',
+                                        autoComplete: 'one-time-code'
+                                    }}
+                                />
+                                {errors.totp && (
+                                    <Alert severity="error" className="mt-2">
+                                        {errors.totp}
+                                    </Alert>
+                                )}
+                            </div>
+                        )}
 
                         <div className="flex justify-end">
                             <button
                                 type="button"
                                 onClick={() => navigate('/cart')}
                                 className="px-6 py-2 mr-4 bg-gray-200 rounded-full hover:bg-gray-300 transition"
+                                disabled={isSubmitting}
                             >
                                 Back to Cart
                             </button>
-                            <FormSubmit name="Place Order" type="submit" />
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className="relative inline-block z-10 px-6 py-4.5 bg-[#00a862] shadow-lg border-0 rounded-full text-white text-lg font-bold leading-tight overflow-hidden text-center transition-all duration-200 ease-in-out ml-auto cursor-pointer hover:shadow-xl hover:transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isSubmitting ? 'Processing...' : 'Place Order'}
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -389,6 +508,19 @@ function CheckoutScreen() {
                                 </div>
                             </div>
                         </div>
+
+                        {totpEnabled && (
+                            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+                                <div className="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    <span className="text-sm text-blue-800">
+                                        Two-factor authentication enabled
+                                    </span>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
