@@ -27,13 +27,7 @@ function OrderCard({ orderId, order, onCancel, onSuccess }) {
                         <div
                         key={`${item.id}-${JSON.stringify(item.customizations)}`}
                         className="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 mb-4 border rounded-lg"
-                        >
-                            <img
-                            src={item.image}
-                            alt={item.type}
-                            className="rounded-full w-24 h-24 object-cover"
-                            />
-            
+                        >            
                             <div className="flex-1">
                                 <h3 className="text-lg font-semibold">{item.name}</h3>
                                 <p className="text-gray-600 mb-2">Quantity: {item.quantity}</p>
