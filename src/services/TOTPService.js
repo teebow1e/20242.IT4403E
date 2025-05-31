@@ -1,6 +1,6 @@
 import { auth } from '../firebase';
 
-const API_BASE_URL = 'http://192.168.194.130:3000';
+const API_BASE_URL = 'https://backend-coffee.trungtqt.com';
 
 class TOTPServiceAPI {
   async getAuthHeaders() {

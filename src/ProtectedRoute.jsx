@@ -35,10 +35,10 @@ function ProtectedRoute({ children, allowedRoles }) {
         return null; // Tránh render trong khi `auth.signOut()` đang thực hiện
     }
 
-    // Không thuộc vai trò cho phép
-    if (!allowedRoles.includes(user.role)) {
-        return <Navigate to="/unauthorized" replace />;
-    }
+    // // Không thuộc vai trò cho phép
+    // if (!allowedRoles.includes(user.role)) {
+    //     return <Navigate to="/unauthorized" replace />;
+    // }
 
     // Đủ điều kiện => cho phép truy cập
     return children;

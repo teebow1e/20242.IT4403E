@@ -5,8 +5,8 @@ import tailwindcss from '@tailwindcss/vite'
 import mkcert from 'vite-plugin-mkcert'
 
 export default defineConfig({
-//   plugins: [react(), tailwindcss(), mkcert(), VitePWA({
-  plugins: [react(), tailwindcss(), VitePWA({
+  plugins: [react(), tailwindcss(), mkcert(), VitePWA({
+//   plugins: [react(), tailwindcss(), VitePWA({
     registerType: 'autoUpdate',
     injectRegister: false,
 
