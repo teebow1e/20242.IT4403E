@@ -79,10 +79,6 @@ function App() {
                 // User is signed out
                 dispatch(logout());
             }
-        }
-        );
-    }, [dispatch]);
-
         });
 
         return () => unsubscribeAuth();

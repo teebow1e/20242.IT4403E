@@ -6,7 +6,6 @@
             "price": 2.99,
             "image": "https://globalassets.starbucks.com/digitalassets/products/merch/SBX20210405_SirenShopperBag.jpg"
         },
-        
         "BK001": {
             "type_id": "croissantsAndDanishes",
             "name": "Vanilla Bean Custard Danish",
@@ -567,7 +566,7 @@
         },
         "SK009": {
             "type_id": "saltySnacks",
-            "name": "Starbucks Butter Popcorn",
+            "name": "Meowbucks Butter Popcorn",
             "price": 2.99,
             "image": "https://globalassets.starbucks.com/digitalassets/products/food/SBX20210825_ButteredGourmetPopcorn.jpg?impolicy=1by1_tight_288"
         },

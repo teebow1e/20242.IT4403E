@@ -3,9 +3,9 @@ import { ref, onValue } from 'firebase/database';
 import { db } from '../../../firebase';
 import SectionedMenu from '../MenuSubItem';
 
-export default function StarbucksReserve() {
+export default function MeowbucksReserve() {
     const [data, setData] = useState({
-        starbucksReserve: [],
+        meowbucksReserve: [],
         blondeRoast: []
     });
 
@@ -48,7 +48,7 @@ export default function StarbucksReserve() {
     }, []);
 
     const sections = [
-        { key: 'starbucksReserve', title: 'Starbucks Reserve®', clickable: false },
+        { key: 'meowbucksReserve', title: 'Meowbucks Reserve®', clickable: false },
         { key: 'blondeRoast', title: 'Blonde Roast', clickable: false }
     ];
 

@@ -7,6 +7,7 @@ logs
 .env
 
 node_modules
+packege-lock.json
 bower_components
 dist/
 build/
@@ -21,3 +22,8 @@ server/.env
 server/serviceAccountKey.json
 
 firebase-admin-server/serviceAccountKey.json
+firebase-admin-server/.env
+
+backend/.env
+backend/node_modules
+backend/package-lock.json
