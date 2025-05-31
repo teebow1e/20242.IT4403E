@@ -32,13 +32,12 @@ function MenuItem({ path, type, image, category }) {
           <img
             src={image}
             alt={type}
-            className={`rounded-full object-cover w-[120px] h-[120px] transition-transform duration-500 ${
-              isHovered ? 'scale-105' : 'scale-100'
-            }`}
+            className={`rounded-full object-cover w-[120px] h-[120px] transition-transform duration-500 ${isHovered ? 'scale-105' : 'scale-100'
+              }`}
           />
         </div>
 
-        {/* replaced custom color class with explicit Starbucks green hex */}
+        {/* replaced custom color class with explicit Meowbucks green hex */}
         <h3 className="text-center text-base font-medium text-gray-800 group-hover:text-[#006241] transition-colors duration-300">
           {type}
         </h3>

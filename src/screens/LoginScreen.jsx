@@ -9,6 +9,8 @@ import { auth } from '../firebase';
 import { login } from '../features/UserSlice';
 import { useDispatch } from 'react-redux';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { getDatabase, ref, get } from "firebase/database";
+import { getRedirectByRole } from '../utils/RoleBasedRedirect';
 
 function LoginScreen() {
     const { handleSubmit, register, formState: { errors } } = useForm();
@@ -27,11 +29,26 @@ function LoginScreen() {
                 return;
             }
 
+            // Fetch role from Realtime Database
+            const db = getDatabase();
+            const roleSnap = await get(ref(db, `users/${userAuth.user.uid}/role`));
+            const role = roleSnap.val();
+            console.log(role);
+
+            if (!role) {
+                alert("Your account does not have a role assigned. Please contact support.");
+                return;
+            }
+
             dispatch(login({
                 email: userAuth.user.email,
                 uid: userAuth.user.uid,
-                displayName: userAuth.user.displayName
+                displayName: userAuth.user.displayName,
+                role: role,
             }));
+
+            // Redirect based on role
+            window.location.ref = getRedirectByRole(role);
         } catch (e) {
             console.log("Something wrong!", e);
             if (e.code === "auth/invalid-credential") {

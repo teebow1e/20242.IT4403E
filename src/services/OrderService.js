@@ -27,7 +27,7 @@ export const OrderService = {
                 deliveryAddress: orderData.deliveryAddress || null,
                 totalAmount: orderData.totalAmount,
                 timestamp: timestamp,
-                finished: false // Default to NO as requested
+                finished: "Pending" // Default to NO as requested
             };
 
             console.log(orderToSave);
@@ -130,7 +130,7 @@ export const OrderService = {
                     date: data.timestamp,
                     items: data.items,
                     totalAmount: data.totalAmount,
-                    status: data.finished ? 'Completed' : 'Pending',
+                    finished: data.finished,
                     customer: data.customer,
                     deliveryAddress: data.deliveryAddress,
                     paymentMethod: data.paymentMethod
@@ -146,14 +146,14 @@ export const OrderService = {
     },
 
     // Mark an order as completed/fulfilled (for waiters)
-    updateOrderStatus: async (orderId, markAsCompleted = true) => {
+    updateOrderStatus: async (orderId, markAsCompleted) => {
         try {
             // Update just the 'finished' field
             await set(ref(db, `orders/${orderId}/finished`), markAsCompleted);
 
             return {
                 success: true,
-                message: markAsCompleted ? 'Order marked as completed' : 'Order marked as pending'
+                message: `Order marked as ${markAsCompleted}`
             };
         } catch (error) {
             console.error('Error updating order:', error);
@@ -162,6 +162,44 @@ export const OrderService = {
                 message: error.message || 'Failed to update order'
             };
         }
+    },
+
+    getUnfinishedOrders: async () => {
+        const ordersRef = ref(db, 'orders');
+        const ordersQuery = query(
+            ordersRef, 
+            orderByChild('finished'), 
+            equalTo("Pending")
+        );
+        const snapshot = await get(ordersQuery);
+
+        if (!snapshot.exists()) {
+            return {
+                success: false,
+                message: 'No unfinished orders found',
+                orders: []
+            }
+        }
+        
+        let orders = [];
+        snapshot.forEach(childSnapshot => {
+            const key = childSnapshot.key;
+            const data = childSnapshot.val();
+            orders.push({
+                id: key,
+                date: data.timestamp,
+                items: data.items,
+                totalAmount: data.totalAmount,
+                finished: data.finished,
+                customer: data.customer
+            });
+        });
+
+        return {
+            success: true,
+            message: 'Unfinished orders fetched successfully',
+            orders: orders
+        };
     },
 
     // src/services/OrderService.js

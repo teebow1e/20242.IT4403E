@@ -46,7 +46,7 @@ function ForgotPassScreen() {
         {!resetSent ? (
           <div className="max-w-[500px] w-full bg-white shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-xl">
             <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col p-12'>
-              <p className="mb-6 text-gray-600">Enter the email address associated with your Starbucks account, and we'll send you a link to reset your password.</p>
+              <p className="mb-6 text-gray-600">Enter the email address associated with your Meowbucks account, and we'll send you a link to reset your password.</p>
 
               <div className='relative flex flex-col mb-5'>
                 <TextField
@@ -68,7 +68,7 @@ function ForgotPassScreen() {
                 />
                 {errors.email && (
                   <div className="mt-1 flex items-center gap-1 text-xs">
-                    <Close fontSize="small" className="text-[#e75b52]"/>
+                    <Close fontSize="small" className="text-[#e75b52]" />
                     <span>{errors.email.message || "Enter a valid email address."}</span>
                     <DangerousSharp
                       fontSize="small"

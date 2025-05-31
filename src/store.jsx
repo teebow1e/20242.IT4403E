@@ -17,7 +17,7 @@ const store = configureStore({
   reducer: {
     user: userReducer,
     cart: persistedCartReducer,
-    receipt: receiptReducer
+    receipt: receiptReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

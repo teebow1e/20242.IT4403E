@@ -16,6 +16,7 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { rateLimiter } from '../utils/RateLimiter';
+import { getDatabase, ref, set } from "firebase/database";
 
 const getClientIdentifier = async () => {
   try {
@@ -23,8 +24,7 @@ const getClientIdentifier = async () => {
     const data = await response.json();
     return data.ip;
   } catch (error) {
-    const fingerprint =
-      navigator.userAgent +
+    const fingerprint = navigator.userAgent +
       window.screen.width +
       window.screen.height +
       new Date().getTimezoneOffset();
@@ -59,34 +59,32 @@ function SignupScreen() {
   };
 
   const onSubmit = async ({ fName, lName, email, password }) => {
-    if (submittingRef.current) return;
-    submittingRef.current = true;
-
     const clientId = await getClientIdentifier();
     if (rateLimiter.isRateLimited(clientId)) {
       setSubmitError('Too many requests. Please try again later.');
-      submittingRef.current = false;
       return;
     }
 
     setIsSubmitting(true);
     setSubmitError(null);
-
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const currentUser = userCredential.user;
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      // Store user role in Realtime Database
+      const uid = userCredential.user.uid;
+      const db = getDatabase();
+      try {
+        const userRef = ref(db, `users/${uid}`);
+        await set(userRef, { role: 'customer' });
+      } catch (error) {
+        console.error("Error writing to database:", error);
+        setSubmitError('Failed to save user role. Please try again.');
+        return;
+      }
 
-      await auth.signOut();
+      await updateProfile(userCredential.user, { displayName: `${fName} ${lName}` });
 
-      await updateProfile(currentUser, {
-        displayName: `${fName} ${lName}`,
-      });
-
-      await sendEmailVerification(currentUser, {
+      // Send verification email
+      await sendEmailVerification(userCredential.user, {
         url: window.location.origin + '/account/verify-email',
         handleCodeInApp: true,
       });
@@ -180,12 +178,9 @@ function SignupScreen() {
         <div className="grid place-items-center text-center p-5 max-w-[50%] text-gray-600">
           <h4 className="text-[15px] font-bold mb-5">STARBUCK® REWARDS</h4>
           <p className="text-[14px] max-w-[80%] leading-[1.7]">
-            Join Starbucks Rewards to earn Stars for free food and drinks, any
-            way you pay. Get access to mobile ordering, a birthday Reward, and{' '}
-            <Link
-              to="https://www.starbucks.com/rewards"
-              className="text-gray-600 underline hover:no-underline"
-            >
+            Join Meowbucks Rewards to earn Stars for free food and drinks, any way you pay.
+            Get access to mobile ordering, a birthday Reward, and{' '}
+            <Link to="https://www.starbucks.com/rewards" className="text-gray-600 underline hover:no-underline">
               more
             </Link>
             .
@@ -343,6 +338,20 @@ function SignupScreen() {
                   </button>
                 </div>
               </fieldset>
+
+
+              <h4 className='text-gray-600 text-sm my-6'>Collect more Stars & Earn Rewards</h4>
+              <span className='text-gray-800 font-semibold block'>Email is a great way to know about offers and what's new from Meowbucks.</span>
+
+              <div className="flex justify-end w-full mt-4">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="relative inline-block z-10 px-6 py-4.5 bg-[#00a862] shadow-lg border-0 rounded-full text-white text-lg font-bold leading-tight overflow-hidden text-center transition-all duration-200 ease-in-out ml-auto cursor-pointer hover:shadow-xl hover:transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? 'Creating account...' : 'Create account'}
+                </button>
+              </div>
             </form>
           </div>
         </div>
