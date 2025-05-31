@@ -117,7 +117,7 @@ function LoginScreen() {
                     </form>
                 </div>
                 <div className='grid place-items-center text-center p-5 px-10 text-[#00653e] max-w-[50%] lg:max-w-[70%] md:max-w-[90%]'>
-                    <h4 className="text-xs font-normal mb-3">JOIN STARBUCK® REWARDS</h4>
+                    <h4 className="text-xs font-normal mb-3">JOIN MEOWBUCK® REWARDS</h4>
                     <p className="text-xs text-black mb-3 leading-relaxed">As a member, start earning free food and drinks, unlock our best offers and celebrate your birthday with a treat from us. Best of all, it's free to join.</p>          </div>
                 <div className='w-full flex justify-center items-center mb-8 mx-auto max-w-[300px]'>
                     <Link to="/account/create" className="inline-block bg-transparent border border-solid rounded-full no-underline text-[#00653e] font-semibold text-sm py-1 px-4 leading-relaxed hover:bg-[rgba(0,86,62,0.06)]">Join now</Link>

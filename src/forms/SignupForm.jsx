@@ -171,7 +171,7 @@ function SignupForm() {
                 Collect more Stars & Earn Rewards
               </h4>
               <span className='text-[rgba(0,0,0,0.87)] font-semibold text-[14px] sm:text-base'>
-                Email is a great way to know about offers and what&apos;s new from Starbucks.
+                Email is a great way to know about offers and what&apos;s new from Meowbucks.
               </span>
               <FormSubmit name='Create account' type='submit'>Sign up</FormSubmit>
             </form>
