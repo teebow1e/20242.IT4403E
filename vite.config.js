@@ -4,9 +4,9 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import mkcert from 'vite-plugin-mkcert'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), mkcert(), VitePWA({
+//   plugins: [react(), tailwindcss(), mkcert(), VitePWA({
+  plugins: [react(), tailwindcss(), VitePWA({
     registerType: 'autoUpdate',
     injectRegister: false,
 
