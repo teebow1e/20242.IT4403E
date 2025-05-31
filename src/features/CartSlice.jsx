@@ -1,4 +1,38 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { db } from '../firebase';
+import { ref, get } from 'firebase/database';
+
+export const addToCartAsync = createAsyncThunk(
+  'cart/addToCartAsync',
+  // only pass id & customizations from the UI
+  async ({ id, customizations = {} }, { dispatch }) => {
+    const productRef = ref(db, `products/${id}`);
+    const snapshot  = await get(productRef);
+
+    if (!snapshot.exists()) {
+      console.warn(`Product ${id} not found — defaulting price to 4.95`);
+      dispatch(addToCart({
+        id,
+        type:           'Unknown Product',
+        image:          '',
+        price:          2.95,
+        category:       '',
+        customizations
+      }));
+      return;
+    }
+
+    const { name, image, price, type_id } = snapshot.val();
+    dispatch(addToCart({
+      id,
+      type:           name,
+      image,
+      price,
+      category:       type_id,
+      customizations
+    }));
+  }
+);
 
 export const cartSlice = createSlice({
   name: 'cart',

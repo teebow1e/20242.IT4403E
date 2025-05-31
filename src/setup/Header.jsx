@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '../features/UserSlice';
 import { auth } from '../firebase';
 import CartIcon from '../components/CartIcon';
+import UserMenu from '../components/UserMenu';
 
 function Header({ menuPage }) {
   const user = useSelector(selectUser);
@@ -46,7 +47,7 @@ function Header({ menuPage }) {
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="mr-4">
-              <img src="/logo.svg" alt="Starbucks" className="h-16 w-16" />
+              <img src="/logo.svg" alt="Meowbucks" className="h-16 w-16" />
             </Link>
 
             {/* Desktop Navigation */}
@@ -116,48 +117,41 @@ function Header({ menuPage }) {
 
             {/* User Actions */}
             <div className="flex items-center">
-              {user && (
-                <div className="mr-4">
-                  <CartIcon />
-                </div>
-              )}
+  {user && (
+    <div className="mr-4">
+      <CartIcon />
+    </div>
+  )}
 
-              {!user ? (
-                <div className="flex items-center">
-                  <Link
-                    to="/account/signin"
-                    className="mr-3 px-4 py-1.5 text-sm font-medium border border-black rounded-full hover:bg-gray-100 transition"
-                  >
-                    Sign in
-                  </Link>
-                  <Link
-                    to="/account/create"
-                    className="px-4 py-1.5 text-sm font-medium bg-black text-white rounded-full hover:bg-gray-800 transition"
-                  >
-                    Join now
-                  </Link>
-                </div>
-              ) : (
-                <div className="flex items-center">
-                  {!menuPage ? (
-                    <Link
-                      to="/menu"
-                      className="mr-3 px-4 py-1.5 text-sm font-medium bg-[#006241] text-white rounded-full hover:bg-[#1e3932] transition"
-                    >
-                      Order now
-                    </Link>
-                  ) : (
-                    <Link
-                      to="/"
-                      onClick={handleLogout}
-                      className="px-4 py-1.5 text-sm font-medium bg-black text-white rounded-full hover:bg-gray-800 transition"
-                    >
-                      Sign out
-                    </Link>
-                  )}
-                </div>
-              )}
-            </div>
+  {!user ? (
+    <div className="flex items-center">
+      <Link
+        to="/account/signin"
+        className="mr-3 px-4 py-1.5 text-sm font-medium border border-black rounded-full hover:bg-gray-100 transition"
+      >
+        Sign in
+      </Link>
+      <Link
+        to="/account/create"
+        className="px-4 py-1.5 text-sm font-medium bg-black text-white rounded-full hover:bg-gray-800 transition"
+      >
+        Join now
+      </Link>
+    </div>
+  ) : (
+    <div className="flex items-center">
+      {!menuPage ? (
+        <Link
+          to="/menu"
+          className="mr-3 px-4 py-1.5 text-sm font-medium bg-[#006241] text-white rounded-full hover:bg-[#1e3932] transition"
+        >
+          Order now
+        </Link>
+      ) : null}
+      <UserMenu />
+    </div>
+  )}
+</div>
 
             {/* Mobile Menu Button */}
             <button

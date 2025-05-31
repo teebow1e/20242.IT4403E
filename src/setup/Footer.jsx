@@ -57,7 +57,7 @@ function Footer() {
               <Link to="#" className="hover:text-[#00653e]">Our Company</Link>
               <Link to="#" className="hover:text-[#00653e]">Our Coffee</Link>
               <Link to="#" className="hover:text-[#00653e]">Stories and News</Link>
-              <Link to="#" className="hover:text-[#00653e]">Starbucks Archive</Link>
+              <Link to="#" className="hover:text-[#00653e]">Meowbucks Archive</Link>
               <Link to="#" className="hover:text-[#00653e]">Investor Relations</Link>
               <Link to="#" className="hover:text-[#00653e]">Customer Service</Link>
             </div>
@@ -176,7 +176,7 @@ function Footer() {
         </div>
 
         {/* Copyright */}
-        <p className="mt-5 opacity-70 text-sm pb-8">© {new Date().getFullYear()} Starbucks Coffee Company. All rights reserved.</p>
+        <p className="mt-5 opacity-70 text-sm pb-8">© {new Date().getFullYear()} Meowbucks Coffee Company. All rights reserved.</p>
       </div>
     </footer>
   );
