@@ -101,31 +101,62 @@ function CheckoutScreen() {
         }
     };
 
+    const isEmpty = (value) => !value || !value.trim();
+    const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
+
     const validateForm = () => {
         const newErrors = {};
 
-        if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
-        if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
-        if (!formData.email.trim()) newErrors.email = 'Email is required';
-        if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
+        const requiredFields = [
+            { field: 'firstName', message: 'First name is required' },
+            { field: 'lastName', message: 'Last name is required' },
+            { field: 'email', message: 'Email is required' },
+        ];
+
+        requiredFields.forEach(({ field, message }) => {
+            if (isEmpty(formData[field])) {
+                newErrors[field] = message;
+            }
+        });
+
+        if (formData.email && !isValidEmail(formData.email)) {
+            newErrors.email = 'Email is invalid';
+        }
 
         if (formData.paymentMethod === 'creditCard') {
-            if (!formData.cardNumber.trim()) newErrors.cardNumber = 'Card number is required';
-            if (!formData.cardName.trim()) newErrors.cardName = 'Name on card is required';
-            if (!formData.cardExpiry.trim()) newErrors.cardExpiry = 'Expiry date is required';
-            if (!formData.cardCvv.trim()) newErrors.cardCvv = 'CVV is required';
+            const creditCardFields = [
+                { field: 'cardNumber', message: 'Card number is required' },
+                { field: 'cardName', message: 'Name on card is required' },
+                { field: 'cardExpiry', message: 'Expiry date is required' },
+                { field: 'cardCvv', message: 'CVV is required' },
+            ];
+
+            creditCardFields.forEach(({ field, message }) => {
+                if (isEmpty(formData[field])) {
+                    newErrors[field] = message;
+                }
+            });
         }
 
         if (formData.deliveryMethod === 'delivery') {
-            if (!formData.address.trim()) newErrors.address = 'Address is required';
-            if (!formData.city.trim()) newErrors.city = 'City is required';
-            if (!formData.state.trim()) newErrors.state = 'State is required';
-            if (!formData.zip.trim()) newErrors.zip = 'ZIP code is required';
+            const deliveryFields = [
+                { field: 'address', message: 'Address is required' },
+                { field: 'city', message: 'City is required' },
+                { field: 'state', message: 'State is required' },
+                { field: 'zip', message: 'ZIP code is required' },
+            ];
+
+            deliveryFields.forEach(({ field, message }) => {
+                if (isEmpty(formData[field])) {
+                    newErrors[field] = message;
+                }
+            });
         }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();

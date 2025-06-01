@@ -52,6 +52,7 @@ function ProductDetail({ item, category, onClose }) {
   };
 
   const calculatePrice = () => {
+    let price = 0;
     price += sizes[customizations.size]?.price || 0;
     if (customizations.shots > 2) price += (customizations.shots - 2) * 0.8;
     price += milkOptions.find((m) => m.name === customizations.milk)?.price || 0;
