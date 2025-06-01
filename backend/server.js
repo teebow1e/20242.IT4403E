@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
+const crypto = require('crypto');
+const bcrypt = require('bcrypt');
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
 const admin = require('firebase-admin');
@@ -33,24 +34,112 @@ const db = admin.database();
 
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://192.168.194.130:5173',
-  credentials: true
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'Content-Type', 'Accept', 'Authorization']
 }));
+app.set('trust proxy', true);
 
-const generalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.'
-});
-
-const totpLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // limit each IP to 10 TOTP requests per windowMs
-  message: 'Too many TOTP requests, please try again later.'
-});
-
-app.use(generalLimiter);
 app.use(express.json({ limit: '10mb' }));
+
+const ENCRYPTION_KEY = Buffer.from(process.env.ENCRYPTION_KEY, 'hex');
+const IV_LENGTH = 16;
+const SALT_ROUNDS = 12;
+
+const failedAttempts = new Map();
+const usedTokens = new Map();
+
+setInterval(() => {
+  const now = Date.now();
+
+  for (const [key, data] of failedAttempts.entries()) {
+    if (now - data.timestamp > 900000) {
+      failedAttempts.delete(key);
+    }
+  }
+
+  for (const [key, timestamp] of usedTokens.entries()) {
+    if (now - timestamp > 90000) {
+      usedTokens.delete(key);
+    }
+  }
+}, 300000);
+
+function encrypt(text) {
+  const algorithm = 'aes-256-cbc';
+  const key = crypto.scryptSync(ENCRYPTION_KEY, 'salt', 32);
+  const iv = crypto.randomBytes(16);
+
+  const cipher = crypto.createCipheriv(algorithm, key, iv);
+  let encrypted = cipher.update(text, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+
+  return iv.toString('hex') + ':' + encrypted;
+}
+
+function decrypt(text) {
+  try {
+    const algorithm = 'aes-256-cbc';
+    const key = crypto.scryptSync(ENCRYPTION_KEY, 'salt', 32);
+
+    const parts = text.split(':');
+    if (parts.length !== 2) throw new Error('Invalid encrypted data format');
+
+    const iv = Buffer.from(parts[0], 'hex');
+    const encrypted = parts[1];
+
+    const decipher = crypto.createDecipheriv(algorithm, key, iv);
+    let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+
+    return decrypted;
+  } catch (error) {
+    throw new Error('Decryption failed');
+  }
+}
+
+function constantTimeEquals(a, b) {
+  if (a.length !== b.length) {
+    return false;
+  }
+
+  let result = 0;
+  for (let i = 0; i < a.length; i++) {
+    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+
+  return result === 0;
+}
+
+async function recordFailedAttempt(userId) {
+  const now = Date.now();
+  const existing = failedAttempts.get(userId);
+
+  if (existing && (now - existing.timestamp) < 900000) {
+    existing.count++;
+    existing.timestamp = now;
+  } else {
+    failedAttempts.set(userId, { count: 1, timestamp: now });
+  }
+}
+
+async function clearFailedAttempts(userId) {
+  failedAttempts.delete(userId);
+}
+
+function isTokenReused(userId, token) {
+  const key = `${userId}:${token}`;
+  const timestamp = usedTokens.get(key);
+
+  if (timestamp) {
+    return true; // Token already used
+  }
+
+  // Mark token as used
+  usedTokens.set(key, Date.now());
+  return false;
+}
 
 const authenticateUser = async (req, res, next) => {
   try {
@@ -81,8 +170,40 @@ const handleValidationErrors = (req, res, next) => {
   next();
 };
 
+function verifyTOTPSecure(secret, token) {
+  const expectedToken = speakeasy.totp({
+    secret,
+    encoding: 'base32',
+    window: 0
+  });
+
+  if (constantTimeEquals(token, expectedToken)) {
+    return true;
+  }
+
+  for (let window = 1; window <= 2; window++) {
+    const pastToken = speakeasy.totp({
+      secret,
+      encoding: 'base32',
+      window: -window
+    });
+
+    const futureToken = speakeasy.totp({
+      secret,
+      encoding: 'base32',
+      window: window
+    });
+
+    if (constantTimeEquals(token, pastToken) || constantTimeEquals(token, futureToken)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+
 app.post('/api/totp/setup',
-  totpLimiter,
   authenticateUser,
   async (req, res) => {
     try {
@@ -108,7 +229,7 @@ app.post('/api/totp/setup',
       const qrCodeUrl = await QRCode.toDataURL(secret.otpauth_url);
 
       await existingRef.set({
-        secret: secret.base32,
+        secret: encrypt(secret.base32),
         enabled: false,
         setupComplete: false,
         createdAt: new Date().toISOString()
@@ -131,7 +252,6 @@ app.post('/api/totp/setup',
 );
 
 app.post('/api/totp/verify-setup',
-  totpLimiter,
   authenticateUser,
   [
     body('token').isLength({ min: 6, max: 6 }).isNumeric().withMessage('Token must be a 6-digit number')
@@ -142,7 +262,6 @@ app.post('/api/totp/verify-setup',
       const userId = req.user.uid;
       const { token } = req.body;
 
-      // Get user's secret
       const secretRef = db.ref(`userSecrets/${userId}/totp`);
       const snapshot = await secretRef.once('value');
 
@@ -153,7 +272,7 @@ app.post('/api/totp/verify-setup',
         });
       }
 
-      const { secret, enabled } = snapshot.val();
+      const { secret: encryptedSecret, enabled } = snapshot.val();
 
       if (enabled) {
         return res.status(400).json({
@@ -162,29 +281,18 @@ app.post('/api/totp/verify-setup',
         });
       }
 
-      // Verify token
-      const verified = speakeasy.totp.verify({
-        secret,
-        encoding: 'base32',
-        token,
-        window: 2 // Allow some time drift
-      });
+      const secret = decrypt(encryptedSecret);
+      const verified = verifyTOTPSecure(secret, token);
 
       if (verified) {
-        // Enable TOTP
         await secretRef.update({
           enabled: true,
           setupComplete: true,
           enabledAt: new Date().toISOString()
         });
 
-        // Generate backup codes
-        const backupCodes = generateBackupCodes();
-        const hashedBackupCodes = backupCodes.map(code => ({
-          code: Buffer.from(code).toString('base64'), // Simple encoding
-          used: false,
-          createdAt: new Date().toISOString()
-        }));
+        const backupCodes = generateSecureBackupCodes();
+        const hashedBackupCodes = await hashBackupCodes(backupCodes);
 
         await db.ref(`userSecrets/${userId}/backupCodes`).set(hashedBackupCodes);
 
@@ -211,7 +319,6 @@ app.post('/api/totp/verify-setup',
 );
 
 app.post('/api/totp/verify',
-  totpLimiter,
   authenticateUser,
   [
     body('token').isLength({ min: 6, max: 6 }).isNumeric().withMessage('Token must be a 6-digit number')
@@ -221,6 +328,13 @@ app.post('/api/totp/verify',
     try {
       const userId = req.user.uid;
       const { token } = req.body;
+
+      if (isTokenReused(userId, token)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Security error. Please generate a new code.'
+        });
+      }
 
       // Get user's TOTP data
       const secretRef = db.ref(`userSecrets/${userId}/totp`);
@@ -233,7 +347,7 @@ app.post('/api/totp/verify',
         });
       }
 
-      const { secret, enabled, setupComplete } = snapshot.val();
+      const { secret: encryptedSecret, enabled, setupComplete } = snapshot.val();
 
       if (!enabled || !setupComplete) {
         return res.status(400).json({
@@ -242,12 +356,8 @@ app.post('/api/totp/verify',
         });
       }
 
-      const verified = speakeasy.totp.verify({
-        secret,
-        encoding: 'base32',
-        token,
-        window: 2
-      });
+      const secret = decrypt(encryptedSecret);
+      const verified = verifyTOTPSecure(secret, token);
 
       if (verified) {
         await db.ref(`userSecrets/${userId}/lastVerification`).set({
@@ -255,11 +365,14 @@ app.post('/api/totp/verify',
           ip: req.ip || req.connection.remoteAddress
         });
 
+        await clearFailedAttempts(userId);
+
         res.json({
           success: true,
           message: 'Code verified successfully'
         });
       } else {
+        await recordFailedAttempt(userId);
         res.status(400).json({
           success: false,
           message: 'Invalid verification code'
@@ -310,7 +423,6 @@ app.get('/api/totp/status',
 );
 
 app.delete('/api/totp/disable',
-  totpLimiter,
   authenticateUser,
   async (req, res) => {
     try {
@@ -345,16 +457,21 @@ app.delete('/api/totp/disable',
   }
 );
 
-function generateBackupCodes() {
+function generateSecureBackupCodes() {
   const codes = [];
   for (let i = 0; i < 10; i++) {
-    const code = Array.from(crypto.getRandomValues(new Uint8Array(4)))
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('')
-      .toUpperCase();
+    const code = crypto.randomBytes(4).toString('hex').toUpperCase();
     codes.push(code);
   }
   return codes;
+}
+
+async function hashBackupCodes(codes) {
+  return Promise.all(codes.map(async (code) => ({
+    hash: await bcrypt.hash(code, SALT_ROUNDS),
+    used: false,
+    createdAt: new Date().toISOString()
+  })));
 }
 
 app.get('/api/health', (req, res) => {
@@ -369,6 +486,13 @@ app.use((error, req, res, next) => {
   });
 });
 
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Welcome to the TOTP Backend API'
+  });
+});
+
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -376,7 +500,7 @@ app.use((req, res) => {
   });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, '127.0.0.1', () => {
   console.log(`TOTP Backend server running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
