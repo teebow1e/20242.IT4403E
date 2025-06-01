@@ -88,19 +88,48 @@ function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Layout menuPage={false} />}>
+                                {/* Unauthorized + NotFound */}
+                <Route path="unauthorized" element={<UnauthorizedScreen />} />
+                <Route path="*" element={<NotFoundScreen />} />
+
+                {/* Admin routes */}
+                <Route path="admin" element={
+                    <Layout page={"admin"} />
+                } >
+                    <Route path="manage-users" element={
+                        <ProtectedRoute allowedRoles={["admin"]}>
+                            <ManangeUsersScreen/>
+                        </ProtectedRoute>
+                    }/>
+                    <Route path="" element={<NotFoundScreen />} />
+                </Route>
+
+                {/* Waiter routes */}
+                <Route path="waiter" element={
+                      <ProtectedRoute allowedRoles={["waiter"]}>
+                            <Layout page={"waiter"} />
+                      </ProtectedRoute>
+                    }>
+                    <Route index element={<WaiterScreen />} />
+                    <Route path="" element={<NotFoundScreen />} />
+                </Route>
+
+                {/* Auth Pages - public*/}
+                <Route path="/" element={<Layout menuPage={false} /> }>
                     <Route index element={<HomeScreen />} />
+                    {/* User Authentication routes */}
                     <Route
                         path="account/signin"
-                        element={user ? <Navigate to="/menu" replace /> : <LoginScreen />}
+                        element={user ? <Navigate to={getRedirectByRole(user.role)} replace /> : <LoginScreen />
+                        }
                     />
                     <Route
                         path="account/create"
-                        element={user ? <Navigate to="/menu" replace /> : <SignupScreen />}
+                        element={user ? <Navigate to={getRedirectByRole(user.role)} replace /> : <SignupScreen />}
                     />
                     <Route
                         path="account/forgot-password"
-                        element={user ? <Navigate to="/menu" replace /> : <ForgotPasswordScreen />}
+                        element={user ? <Navigate to={getRedirectByRole(user.role)} replace /> : <ForgotPasswordScreen />}
                     />
                     <Route
                         path="account/logout"
@@ -124,17 +153,17 @@ function App() {
                     {/* Cart and checkout routes - protected by auth */}
 
                     <Route path="cart" element={
-                        <ProtectedRoute>
+                        <ProtectedRoute allowedRoles={["customer"]}>
                             <CartScreen />
                         </ProtectedRoute>
                     } />
                     <Route path="checkout" element={
-                        <ProtectedRoute>
+                        <ProtectedRoute allowedRoles={["customer"]}>
                             <CheckoutScreen />
                         </ProtectedRoute>
                     } />
                     <Route path="order-confirmation" element={
-                        <ProtectedRoute>
+                        <ProtectedRoute allowedRoles={["customer"]}>
                             <OrderConfirmationScreen />
                         </ProtectedRoute>
                     } />
@@ -145,9 +174,9 @@ function App() {
                 <Route
                     path="/menu"
                     element={
-                        <ProtectedRoute>
-                            <Layout menuPage={true} />
-                        </ProtectedRoute>
+                      <ProtectedRoute allowedRoles={["customer"]}>
+                          <Layout menuPage={true}/>
+                      </ProtectedRoute>
                     }
                 >
                     <Route index element={<MenuScreen />} />
@@ -221,7 +250,6 @@ function App() {
             </Routes>
         </Router>
     );
-
 }
 
 export default App;
