@@ -1,3 +1,7 @@
 name = "web-secure"
 compatibility_date = "2025-04-03"
 main = "./src/main.jsx"
+
+[[rules]]
+type = "Text"
+globs = ["**/*.ttf", "**/*.woff", "**/*.woff2"]
