@@ -107,7 +107,7 @@ function WaiterScreen() {
                 (
                 <div className="flex flex-col gap-4">
                     {unfinishedOrders.map((order) => (
-                        <OrderCard orderId={order.id} order={order} onCancel={onCancel} onSuccess={onSuccess} />
+                        <OrderCard key={order.id} orderId={order.id} order={order} onCancel={onCancel} onSuccess={onSuccess} />
                     ))}
                 </div>
                 )
