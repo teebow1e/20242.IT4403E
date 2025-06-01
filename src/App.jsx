@@ -145,7 +145,7 @@ function App() {
                     />
 
                     <Route path="account/security" element={
-                        <ProtectedRoute>
+                        <ProtectedRoute allowedRoles={["customer"]}>
                             <AccountSecurityScreen />
                         </ProtectedRoute>
                     } />
