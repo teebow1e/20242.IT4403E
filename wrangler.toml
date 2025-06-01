@@ -1,17 +1,3 @@
 name = "web-secure"
 compatibility_date = "2025-04-03"
 main = "./src/main.jsx"
-
-# Add this to handle static assets
-[site]
-bucket = "./dist"
-
-# Add rules for handling different file types
-[[rules]]
-type = "Text"
-globs = ["**/*.ttf", "**/*.woff", "**/*.woff2"]
-fallthrough = true
-
-[[rules]]
-type = "Text"
-globs = ["**/*.txt", "**/*.html"]
