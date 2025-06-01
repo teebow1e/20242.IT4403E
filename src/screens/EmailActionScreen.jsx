@@ -199,14 +199,12 @@ function EmailActionScreen() {
           </div>
           <h2 className="text-2xl font-bold text-red-700 mb-4">Action Failed</h2>
           <p className="text-gray-600 mb-6">{error}</p>
-          <div className="w-full flex justify-center items-center mx-auto max-w-[300px]">
-            <button
-              onClick={() => navigate('/account/signin')}
-              className="inline-block bg-transparent border border-solid rounded-full no-underline text-[#00653e] font-semibold text-sm py-1 px-4 leading-relaxed hover:bg-[rgba(0,86,62,0.06)]"
-            >
-              Go to Sign In
-            </button>
-          </div>
+          <button
+            onClick={() => navigate('/account/signin')}
+            className="px-6 py-2 bg-[#006241] text-white rounded-full hover:bg-[#1e3932] transition"
+          >
+            Go to Sign In
+          </button>
         </div>
       );
     }
@@ -224,12 +222,11 @@ function EmailActionScreen() {
             {mode === 'verifyEmail' && 'Email Verified Successfully!'}
             {mode === 'recoverEmail' && 'Email Recovered Successfully!'}
           </h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600">
             {mode === 'resetPassword' && 'Your password has been updated. You will be redirected to the login page shortly.'}
             {mode === 'verifyEmail' && 'Your email has been verified. You can now sign in to your account.'}
             {mode === 'recoverEmail' && 'Your email has been recovered successfully.'}
           </p>
-          <p className="text-sm text-gray-500">Redirecting...</p>
         </div>
       );
     }
@@ -237,62 +234,52 @@ function EmailActionScreen() {
     // Show password reset form
     if (mode === 'resetPassword' && email) {
       return (
-        <div>
+        <div className="max-w-md mx-auto">
           <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Reset Your Password</h2>
             <p className="text-gray-600">Enter a new password for <strong>{email}</strong></p>
           </div>
 
-          <form onSubmit={handlePasswordResetSubmit} className="space-y-5">
-            <div className="relative flex flex-col">
-              <div className="relative">
-                <TextField
-                  label="New Password"
-                  type={passwordShown ? "text" : "password"}
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  slotProps={{
-                    style: { color: "rgba(0,0,0,.30)" },
-                    htmlInput: { style: { fontWeight: "400" } }
-                  }}
-                  className="w-full"
-                  required
-                  error={!!error && error.includes('Password')}
-                />
-                <div
-                  onClick={() => setPasswordShown(prev => !prev)}
-                  className="cursor-pointer text-gray-500 absolute right-4 top-1/2 transform -translate-y-1/2 z-10"
-                >
-                  {passwordShown ? <VisibilityOutlined /> : <VisibilityOffOutlined />}
-                </div>
+          <form onSubmit={handlePasswordResetSubmit} className="space-y-4">
+            <div className="relative">
+              <TextField
+                label="New Password"
+                type={passwordShown ? "text" : "password"}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                fullWidth
+                required
+                error={!!error && error.includes('Password')}
+              />
+              <div
+                onClick={() => setPasswordShown(prev => !prev)}
+                className="cursor-pointer text-gray-500 absolute right-4 top-1/2 transform -translate-y-1/2 z-10"
+              >
+                {passwordShown ? <VisibilityOutlined /> : <VisibilityOffOutlined />}
               </div>
             </div>
 
-            <div className="relative flex flex-col">
-              <div className="relative">
-                <TextField
-                  label="Confirm Password"
-                  type={confirmPasswordShown ? "text" : "password"}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  slotProps={{
-                    style: { color: "rgba(0,0,0,.30)" },
-                    htmlInput: { style: { fontWeight: "400" } }
-                  }}
-                  className="w-full"
-                  required
-                  error={!!error && error.includes('match')}
-                />
-                <div
-                  onClick={() => setConfirmPasswordShown(prev => !prev)}
-                  className="cursor-pointer text-gray-500 absolute right-4 top-1/2 transform -translate-y-1/2 z-10"
-                >
-                  {confirmPasswordShown ? <VisibilityOutlined /> : <VisibilityOffOutlined />}
-                </div>
+            <div className="relative">
+              <TextField
+                label="Confirm Password"
+                type={confirmPasswordShown ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                fullWidth
+                required
+                error={!!error && error.includes('match')}
+              />
+              <div
+                onClick={() => setConfirmPasswordShown(prev => !prev)}
+                className="cursor-pointer text-gray-500 absolute right-4 top-1/2 transform -translate-y-1/2 z-10"
+              >
+                {confirmPasswordShown ? <VisibilityOutlined /> : <VisibilityOffOutlined />}
               </div>
-              <h5 className="text-gray-500 text-xs mt-2">
-                Password must be 8-25 characters long with at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.
-              </h5>
             </div>
+
+            <p className="text-gray-500 text-xs">
+              Password must be 8-25 characters long with at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.
+            </p>
 
             {error && (
               <div className="p-3 bg-red-50 text-red-800 rounded text-sm">
@@ -300,13 +287,11 @@ function EmailActionScreen() {
               </div>
             )}
 
-            <div className="flex justify-end w-full mt-4">
-              <FormSubmit
-                name={loading ? "Resetting Password..." : "Reset Password"}
-                type="submit"
-                disabled={loading}
-              />
-            </div>
+            <FormSubmit
+              name={loading ? "Resetting Password..." : "Reset Password"}
+              type="submit"
+              disabled={loading}
+            />
           </form>
         </div>
       );
@@ -316,15 +301,12 @@ function EmailActionScreen() {
   };
 
   return (
-    <div>
-      <div className="grid place-items-center w-full h-full text-sm mt-8 mb-8">
-        <h1 className="text-[32px] font-bold text-black text-center">{getPageTitle()}</h1>
-      </div>
-
-      <div className="grid place-items-center w-full h-full text-sm mt-8 mb-36 px-4">
-        <div className="max-w-[500px] w-full bg-white shadow-[0_0_10px_rgba(0,0,0,0.1)] rounded-xl p-8">
-          {renderContent()}
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800">{getPageTitle()}</h1>
         </div>
+        {renderContent()}
       </div>
     </div>
   );

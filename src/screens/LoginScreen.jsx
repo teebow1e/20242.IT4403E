@@ -21,7 +21,7 @@ function LoginScreen() {
     const onSubmit = async ({ email, password }) => {
         try {
             const userAuth = await signInWithEmailAndPassword(auth, email, password);
-            
+
             // Check if email is verified
             if (!userAuth.user.emailVerified) {
                 await auth.signOut();

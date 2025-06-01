@@ -39,6 +39,7 @@ import Lunch from './screens/menu/lunch/Lunch';
 import WholeBean from './screens/menu/wholebean/WholeBean';
 import ViaInstant from './screens/menu/viainstant/ViaInstant';
 import Bag from './screens/menu/bag/Bag';
+import EmailActionScreen from './screens/EmailActionScreen';
 
 import { getRedirectByRole } from './utils/RoleBasedRedirect';
 
@@ -88,7 +89,8 @@ function App() {
     return (
         <Router>
             <Routes>
-                                {/* Unauthorized + NotFound */}
+                <Route path="/auth/action" element={<EmailActionScreen />} />
+                {/* Unauthorized + NotFound */}
                 <Route path="unauthorized" element={<UnauthorizedScreen />} />
                 <Route path="*" element={<NotFoundScreen />} />
 
@@ -139,10 +141,10 @@ function App() {
                         path="/account/verify-email"
                         element={<VerifyEmailScreen />}
                     />
-                    <Route
+                    {/* <Route
                         path="account/reset-password"
                         element={<ResetPasswordScreen />}
-                    />
+                    /> */}
 
                     <Route path="account/security" element={
                         <ProtectedRoute allowedRoles={["customer"]}>

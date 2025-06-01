@@ -85,7 +85,7 @@ function SignupScreen() {
 
       // Send verification email
       await sendEmailVerification(userCredential.user, {
-        url: window.location.origin + '/account/verify-email',
+        url: window.location.origin + '/auth/action',
         handleCodeInApp: true,
       });
 
