@@ -141,10 +141,10 @@ function App() {
                         path="/account/verify-email"
                         element={<VerifyEmailScreen />}
                     />
-                    {/* <Route
+                    <Route
                         path="account/reset-password"
                         element={<ResetPasswordScreen />}
-                    /> */}
+                    />
 
                     <Route path="account/security" element={
                         <ProtectedRoute allowedRoles={["customer"]}>
