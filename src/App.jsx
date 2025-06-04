@@ -39,7 +39,8 @@ import Lunch from './screens/menu/lunch/Lunch';
 import WholeBean from './screens/menu/wholebean/WholeBean';
 import ViaInstant from './screens/menu/viainstant/ViaInstant';
 import Bag from './screens/menu/bag/Bag';
-import EmailActionScreen from './screens/EmailActionScreen';
+// import EmailActionScreen from './screens/EmailActionScreen';
+import PWAUpdateNotification from './components/PWAUpdateNotification';
 
 import { getRedirectByRole } from './utils/RoleBasedRedirect';
 
@@ -89,7 +90,6 @@ function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/auth/action" element={<EmailActionScreen />} />
                 {/* Unauthorized + NotFound */}
                 <Route path="unauthorized" element={<UnauthorizedScreen />} />
                 <Route path="*" element={<NotFoundScreen />} />
@@ -250,6 +250,7 @@ function App() {
 
                 </Route>
             </Routes>
+            <PWAUpdateNotification />
         </Router>
     );
 }

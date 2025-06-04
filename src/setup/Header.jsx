@@ -5,6 +5,7 @@ import { selectUser } from '../features/UserSlice';
 import { auth } from '../firebase';
 import CartIcon from '../components/CartIcon';
 import UserMenu from '../components/UserMenu';
+import InstallPrompt from '../components/InstallPrompt';
 import { logout } from '../features/UserSlice';
 import { getRedirectByRole } from '../utils/RoleBasedRedirect';
 
@@ -55,16 +56,17 @@ function Header({ menuPage }) {
               </div>
 
               {/* Right Side Actions */}
-              <div className="flex items-center">
-                {/* Waiter Action */}
-                <div className="flex items-center">
-                  <Link
-                    to={getRedirectByRole(user.role)}
-                    className="px-4 py-1.5 text-sm font-medium bg-black text-white rounded-full hover:bg-gray-800 transition"
-                  >
-                    Go back
-                  </Link>
-                </div>
+              <div className="flex items-center space-x-3">
+                {/* Install App Button for Waiter/Admin */}
+                <InstallPrompt />
+
+                {/* Back to Role Specific Page */}
+                <Link
+                  to={getRedirectByRole(user.role)}
+                  className="px-4 py-1.5 text-sm font-medium bg-black text-white rounded-full hover:bg-gray-800 transition"
+                >
+                  Go back
+                </Link>
               </div>
             </div>
           </nav>
@@ -144,6 +146,11 @@ function Header({ menuPage }) {
                   </svg>
                   <span className="text-sm">Find a store</span>
                 </Link>
+
+                {/* Install App Button - Desktop */}
+                <div className="hidden md:block mr-4">
+                  <InstallPrompt />
+                </div>
 
                 {/* User Actions */}
                 <div className="flex items-center">
@@ -274,6 +281,11 @@ function Header({ menuPage }) {
                   <span>Find a store</span>
                 </Link>
 
+                {/* Install App Button - Mobile */}
+                <div className="mb-6">
+                  <InstallPrompt />
+                </div>
+
                 <div className="flex mt-4 gap-3">
                   {!user ? (
                     <>
@@ -317,9 +329,6 @@ function Header({ menuPage }) {
               </div>
             </div>
           </div>
-
-          {/* Space filler to compensate for fixed header */}
-          {/* <div className="h-20" /> */}
         </header>
       }
     </>
